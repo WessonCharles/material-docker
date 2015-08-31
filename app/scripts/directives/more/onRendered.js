@@ -1,7 +1,7 @@
 'use strict';
 define(['angular'],function(angular){
   return angular.module("ThCofAngSeed.directives.table",[])
-  .directive('mdTable', function () {
+  .directive('mdTable',["$filter",function ($filter) {
     return {
       restrict: 'E',
       scope: { 
@@ -12,15 +12,18 @@ define(['angular'],function(angular){
         customClass: '=customClass',
         thumbs:'=', 
         count: '=',
-        links:'=' 
+        links:'=',
+        isselect:'@',
+        selected:'=' 
       },
-      controller: function ($scope,$filter,$window) {
+      link: function ($scope,$element,$attr) {
+        console.log($scope.headers)
         var orderBy = $filter('orderBy');
         $scope.tablePage = 0;
         $scope.nbOfPages = function () {
           return Math.ceil($scope.content.length / $scope.count);
         },
-          $scope.handleSort = function (field) {
+        $scope.handleSort = function (field) {
             if ($scope.sortable.indexOf(field) > -1) { return true; } else { return false; }
         };
         $scope.order = function(predicate, reverse) {
@@ -34,10 +37,44 @@ define(['angular'],function(angular){
         $scope.goToPage = function (page) {
           $scope.tablePage = page;
         };
+
+        // $scope.selected = [];
+        $scope.toggleall = function(datas,list,count){
+          console.log(JSON.stringify(list))
+          console.log(JSON.stringify(datas))
+          if(JSON.stringify(list)==JSON.stringify(datas)){
+            console.log("yes")
+            list = [];
+            console.log(list)
+          }else{
+            console.log("no")
+            list = JSON.parse(JSON.stringify(datas));
+            console.log(list)
+          }
+          $scope.selected = list;
+          console.log(JSON.stringify(list)==JSON.stringify(datas))
+        }
+
+        $scope.allexists = function(datas,list,count){
+          $scope.checkall = JSON.stringify(list)==JSON.stringify(datas);
+          return JSON.stringify(list)==JSON.stringify(datas);  
+        }
+
+        $scope.toggle = function (item, list) {
+          var idx = list.indexOf(item);
+          if (idx > -1) list.splice(idx, 1);
+          else list.push(item);
+        };
+        $scope.exists = function (item, list) {
+          if($scope.checkall){
+             return $scope.checkall;
+          }
+          return list.indexOf(item) > -1;
+        };
       },
       templateUrl:'module/table-template.html'// angular.element(document.querySelector('#md-table-template')).html()
     }
-  })
+  }])
   .directive('mdColresize', function ($timeout) {
     return {
       restrict: 'A',

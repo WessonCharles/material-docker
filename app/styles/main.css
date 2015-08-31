@@ -412,6 +412,12 @@ a.hq-button{
 button:hover,a.md-button:hover,.md-button.md-raised:not([disabled]):hover{
     box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.14), 0 4px 5px 0 rgba(0, 0, 0, 0.098), 0 1px 10px 0 rgba(0, 0, 0, 0.082);
 }
+.border{
+  box-shadow:0 0 1px 0 rgba(0,0,0,0.2),0 1px 1px 0 rgba(0,0,0,0.24)
+}
+.shadow{
+  box-shadow:0 0 20px 0 rgba(0,0,0,0.2),0 5px 5px 0 rgba(0,0,0,0.24)
+}
 [layout=row]{
   background-color: #fff;
 }
@@ -724,7 +730,28 @@ button:hover,a.md-button:hover,.md-button.md-raised:not([disabled]):hover{
  * modal
  */
 .modal {
-will-change: visibility, opacity;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  height: 100%;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  left: 0;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  visibility: hidden;
+  -webkit-transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+-webkit-transition-delay: 0s;
+        transition-delay: 0s;
+
+/*will-change: visibility, opacity;
 display: -webkit-box;
 display: -webkit-flex;
 display: -ms-flexbox;
@@ -750,7 +777,7 @@ opacity: 0;
 -webkit-transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 -webkit-transition-delay: 0s;
-        transition-delay: 0s;
+        transition-delay: 0s;*/
 }
 .modal--active {
 visibility: visible;
@@ -768,6 +795,7 @@ background: transparent;
 }
 .modal__dialog {
 max-width: 600px;
+margin:0 auto;
 padding: 1.2rem;
 }
 .modal__content {
@@ -833,7 +861,9 @@ opacity: 1;
 -webkit-transition: opacity 0.1s ease-out, -webkit-transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         transition: opacity 0.1s ease-out, transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
-
+form .md-subheader {
+    margin-left: -20px;
+}
 
 
 /* angular material table*/
@@ -875,7 +905,7 @@ opacity: 1;
   text-align: left;
   font-size: 0.75em;
   font-weight: 700;
-  padding: 16px 16px 16px 0;
+  padding: 8px 8px 8px 0;
 }
 
 .md-table-header a{
@@ -886,7 +916,7 @@ opacity: 1;
 .md-table-content {
   white-space: nowrap;
   font-size: 0.8em;
-  padding: 16px 16px 16px 0;
+  padding: 8px 8px 8px 0;
   /*height: 72px;*/
 }
 
@@ -935,6 +965,12 @@ opacity: 1;
 
 .md-table-active-page {
   font-weight: 700;
+}
+md-checkbox{
+  margin:0;
+}
+.JColResizer td:first-child,.JColResizer th:first-child{
+  padding-left:8px!important;
 }
 
 .bold {
@@ -1006,4 +1042,14 @@ switch page
   -ms-transform: scale(0.5);
   transform: scale(0.5);
   opacity: 0;
+}
+
+/*
+项目详情
+ */
+.switchdiv{
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  left:0;
 }
