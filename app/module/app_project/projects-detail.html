@@ -1,0 +1,49 @@
+<div ng-controller="prodetailctrl">
+  <div class="button-title">
+    <div layout="row" layout-margin >
+      <div flex flex-order="1" class="noshadow">
+        <button viewclose link="/projects" md-button class="md-raised md-icon-btn" ng-click="backlist();">
+          <md-icon class="fa fa-arrow-left fa-lg"></md-icon>
+        </button>
+        <button md-button class="md-raised md-primary">
+          <md-icon class="fa fa-trash-o fa-lg"></md-icon>
+          Primary
+        </button>
+        <md-menu>
+          <md-button class="md-raised" aria-label="Open phone interactions menu" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
+            <md-icon md-menu-origin class="fa fa-caret-square-o-down"></md-icon>
+            更多操作
+          </md-button>
+          <md-menu-content width="2">
+            <md-menu-item>
+              <md-button ng-click="ctrl.redial($event)">
+                <md-icon md-menu-align-target></md-icon>
+                Redial
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="ctrl.checkVoicemail()">
+                <md-icon></md-icon>
+                Check voicemail
+              </md-button>
+            </md-menu-item>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item>
+              <md-button ng-click="ctrl.toggleNotifications()">
+                <md-icon></md-icon>
+                {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </div>
+    </div>
+  </div>
+  <div class="content-table">
+    <div layout="row" layout-margin>
+      <div flex flex-order="1" class="noshadow bl-main" ng-click="toggleSearch=false">
+            <md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count"></md-table>
+      </div>
+    </div>
+  </div>
+</div>          

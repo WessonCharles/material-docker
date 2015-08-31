@@ -1,0 +1,19 @@
+{
+  "name": "3coffee-angular-seed",
+  "version": "1.0.0",
+  "description": "This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular) version 0.12.1.",
+  "directories": {
+    "test": "test"
+  },
+  "author": "chqiangs@gmail.com",
+  "license": "ISC",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-htmlmin": "^0.4.0",
+    "grunt-contrib-requirejs": "^0.4.4"
+  },
+  "dependencies": {
+    "grunt-rev": "^0.1.0",
+    "grunt-usemin": "^3.0.0"
+  }
+}

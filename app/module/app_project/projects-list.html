@@ -1,0 +1,100 @@
+<div ng-controller="projectctrl">
+  <div class="button-title">
+    <div layout="row" layout-margin >
+      <div flex flex-order="1" class="noshadow">
+        <button class="md-raised md-button modal__trigger" data-modal="#modal">
+          <md-icon class="fa fa-cog fa-lg"></md-icon>
+          创建项目
+        </button>
+        <div id="modal" class="modal modal__bg" role="dialog" aria-hidden="true">
+          <div class="modal__dialog">
+            <div class="modal__content">
+              <h2>创建项目</h2>
+              <form name="myForm">
+              <p>Note that invalid styling only applies if invalid and dirty</p>
+              <md-input-container >
+                <label>项目名 (必填)</label>
+                <input ng-model="project.name" type="text" ng-required="true">
+              </md-input-container>
+              <md-input-container>
+                <label>项目配额</label>
+                <md-select placeholder="内存" name="ram" ng-model="project.ram" required>
+                  <md-option value="1">One</md-option>
+                  <md-option value="2">Two</md-option>
+                </md-select>
+                <div class="errors" ng-messages="myForm.project.$error" ng-if="myForm.$dirty">
+                  <div ng-message="required">Required</div>
+                </div>
+              </md-input-container>
+              <md-input-container>
+                <!-- <label>项目</label> -->
+                <md-select placeholder="存储" name="rom" ng-model="project.rom" required>
+                  <md-option value="1">One</md-option>
+                  <md-option value="2">Two</md-option>
+                </md-select>
+                <div class="errors" ng-messages="myForm.project.$error" ng-if="myForm.$dirty">
+                  <div ng-message="required">Required</div>
+                </div>
+              </md-input-container>
+              <div layout="row">
+                <md-button ng-click="clearValue()" ng-disabled="!project" style="margin-right: 20px;">清除</md-button>
+                <md-button ng-click="save()" ng-disabled="myForm.$invalid" class="md-primary" layout layout-align="center end">保存</md-button>
+              </div>
+            </form>
+              <!-- modal close button -->
+              <a class="modal__close demo-close">
+                <i class="fa fa-times"></i>
+              </a>
+            </div>
+          </div>
+        </div> 
+        <button md-button class="md-raised md-primary">
+          <md-icon class="fa fa-trash-o fa-lg"></md-icon>
+          Primary
+        </button>
+        <md-menu>
+          <md-button class="md-raised" aria-label="Open phone interactions menu" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
+            <md-icon md-menu-origin class="fa fa-caret-square-o-down"></md-icon>
+            更多操作
+          </md-button>
+          <md-menu-content width="2">
+            <md-menu-item>
+              <md-button ng-click="ctrl.redial($event)">
+                <md-icon md-menu-align-target></md-icon>
+                Redial
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="ctrl.checkVoicemail()">
+                <md-icon></md-icon>
+                Check voicemail
+              </md-button>
+            </md-menu-item>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item>
+              <md-button ng-click="ctrl.toggleNotifications()">
+                <md-icon></md-icon>
+                {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </div>
+    </div>
+  </div>
+  <div class="content-table">
+    <div layout="row" layout-margin>
+      <div flex flex-order="1" class="noshadow bl-main" ng-click="toggleSearch=false">
+            <md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count" links="links"></md-table>
+      </div>
+    </div>
+  </div>
+</div>          
+          
+        
+<div layout="row" layout-margin layout-fill layout-padding>
+  <div flex class="md-raised md-pink md-button md-default-theme">I'm on the left, and there's an empty area around me.</div>
+  <div flex class="md-raised md-grey md-button md-default-theme">I'm on the left, and there's an empty area around me.</div>
+  <div flex class="md-raised md-light-blue md-button md-default-theme">I'm on the left, and there's an empty area around me.</div>
+  <div flex class="md-raised md-amber md-button md-default-theme">I'm on the right, and there's an empty area around me.</div>
+</div>

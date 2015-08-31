@@ -1,0 +1,59 @@
+<div id="sidebar" class="shadow-hover">
+    <div class="sidebar-head">
+        <div class="navbar navbar-default">
+            <div class="navbar-logo">
+              LightDocker
+            </div>
+        </div>
+    </div>
+    <div class="header-relative"></div>
+    <div class="sidebar-set" ng-click="toggleside()">
+      <i class="fa fa-bars"></i>
+    </div>
+    <div class="sidebar-ul">
+      <ul>
+        <li ng-class="current_app('')">
+          <a href="/">
+          <div class="icon">
+            <i class="fa fa-dashboard"></i>
+          </div>
+          <div class="text">
+            DashBoard
+          </div>
+          </a>
+        </li>
+        <li ng-class="current_app('projects')">
+          <a href="/projects">
+              <div class="icon">
+              <i class="fa fa-object-group"></i>
+            </div>
+            <div class="text">项目</div>
+          </a>
+        </li>
+        <li ng-class="current_app('images')">
+          <a href="/images">
+          <div class="icon">
+            <i class="fa fa-image"></i>
+          </div>
+          <div class="text">镜像</div>
+          </a>
+        </li>
+        <li ng-class="current_app('groups')">
+          <a href="/groups">
+          <div class="icon">
+            <i class="fa fa-group"></i>
+          </div>
+          <div class="text">集群</div>
+          </a>
+        </li>
+        <li ng-class="current_app('users')">
+          <a href="/users">
+          <div class="icon">
+            <i class="fa fa-user"></i>
+          </div>
+          <div class="text">用户</div>
+          </a>
+        </li>
+      </ul>
+    </div> 
+</div>
