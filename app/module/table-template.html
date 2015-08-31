@@ -2,22 +2,32 @@
   <table md-colresize="md-colresize" class="md-table">
     <thead>
       <tr class="md-table-headers-row">
+        <th  ng-if="isselect" class="md-table-header">
+          <md-checkbox ng-checked="allexists(content,selected,count)" ng-click="toggleall(content, selected,count)">
+             <!-- <span ng-if="allexists(content,selected,count)">selected</span> -->
+          </md-checkbox> 
+        </th>
         <th ng-repeat="h in headers" class="md-table-header">
           <a href="#" ng-if="handleSort(h.field)" ng-click="reverse=!reverse;order(h.field,reverse)">{{h.name}} 
             <i ng-show="reverse && h.field == predicate"  class="fa fa-sort-desc"></i>
             <i ng-show="!reverse && h.field == predicate" class="fa fa-unsorted"></i>
           </a>
           <span ng-if="!handleSort(h.field)">{{h.name}}</span></th>
-        <th class="md-table-header"></th>
+        <th class="md-table-header">More Action</th>
       </tr>
     </thead>
     <tbody>
       <tr ng-click="openview($event.target);" ng-repeat="c in content | filter:filters | startFrom:tablePage*count | limitTo: count" class="md-table-content-row">
-        <td>
+        <td ng-if="isselect" class="md-table-content">
+          <md-checkbox ng-checked="exists(c, selected)" ng-click="toggle(c, selected)">
+             <!-- <span ng-if="exists(c, selected)">selected</span> -->
+          </md-checkbox>
+        </td>
+        <!-- <td>
           <div ng-repeat="h in headers" ng-if="h.field == thumbs" class="md-table-thumbs">
             <div style="background-image:url({{c.thumb}})"></div>
           </div>
-        </td>
+        </td> -->
         <td ng-repeat="h in headers" ng-class="customClass[h.field]" ng-if="h.field != thumbs" class="md-table-content">
             <a ng-if="links" href="{{links}}/111" viewload>{{(h.field.indexOf('date') > 0) ? $filter('date')(c[h.field]) : c[h.field];}}</a>
             <span ng-if="!links">{{(h.field.indexOf('date') > 0) ? $filter('date')(c[h.field]) : c[h.field];}}</span>

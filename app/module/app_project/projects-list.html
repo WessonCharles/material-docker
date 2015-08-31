@@ -48,7 +48,7 @@
             </div>
           </div>
         </div> 
-        <button md-button class="md-raised md-primary">
+        <button md-button class="md-raised md-primary" ng-click="showselected();">
           <md-icon class="fa fa-trash-o fa-lg"></md-icon>
           Primary
         </button>
@@ -85,7 +85,7 @@
   <div class="content-table">
     <div layout="row" layout-margin>
       <div flex flex-order="1" class="noshadow bl-main" ng-click="toggleSearch=false">
-            <md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count" links="links"></md-table>
+            <md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count" isselect="true" selected="selected" links="links"></md-table>
       </div>
     </div>
   </div>
