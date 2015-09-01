@@ -154,6 +154,16 @@ define(['angular'],function(angular){
       }
     }
   }])
+  .directive('initmodal',['$timeout',function($timeout){
+    return {
+      restrict:'A',
+      link:function(s,e,a){
+        $timeout(function(){
+          Modal.init();
+        })
+      }
+    }
+  }])
   .directive('viewclose',['$location','$route','$timeout','$window',function($location,$route,$timeout,$window){
     return {
       restrict :'A',

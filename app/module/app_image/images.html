@@ -1,0 +1,74 @@
+<div ng-controller="imagesctrl">
+  <div class="button-title">
+    <div layout="row" layout-margin >
+      <div flex="80" class="noshadow">
+        <button class="md-raised md-button modal__trigger" data-modal="#modal">
+          <md-icon class="fa fa-cog fa-lg"></md-icon>
+          制作镜像
+        </button>
+        <md-menu>
+          <md-button class="md-raised" aria-label="Open phone interactions menu" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
+            <md-icon md-menu-origin class="fa fa-caret-square-o-down"></md-icon>
+            更多操作
+          </md-button>
+          <md-menu-content width="2">
+            <md-menu-item>
+              <md-button ng-click="ctrl.redial($event)">
+                <md-icon md-menu-align-target></md-icon>
+                Redial
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="ctrl.checkVoicemail()">
+                <md-icon></md-icon>
+                Check voicemail
+              </md-button>
+            </md-menu-item>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item>
+              <md-button ng-click="ctrl.toggleNotifications()">
+                <md-icon></md-icon>
+                {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </div>
+      <div flex="20" class="noshadow">
+        <md-input-container md-no-float class="nopaddingbot">
+          <md-icon class="fa fa-search"></md-icon>
+          <input ng-model="imagectrl.search" type="text" placeholder="Search">
+        </md-input-container>
+      </div>
+    </div>
+  </div>
+  <div class="content-table">
+    <div layout="row" layout-margin>
+      <div flex flex-order="1" class="noshadow bl-main">
+          <md-content>
+            <md-tabs md-dynamic-height md-border-bottom>
+              <md-tab label="最近使用">
+                <md-content class="md-padding">
+                </md-content>
+              </md-tab>
+              <md-tab label="私有镜像">
+                <md-content class="md-padding">
+                </md-content>
+              </md-tab>
+              <md-tab label="镜像收藏">
+                <md-content class="md-padding">
+                </md-content>
+              </md-tab>
+              <md-tab label="镜像市场">
+                <md-content class="md-padding">
+                </md-content>
+              </md-tab>
+              <md-tab label="制作或发布镜像">
+                <md-content class="md-padding">
+                </md-content>
+              </md-tab> 
+            </md-tabs>   
+          </md-content>
+      </div>
+    </div>
+  </div

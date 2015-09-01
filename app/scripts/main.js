@@ -49,6 +49,7 @@ require([
 	// "services/service",
 	// "services/more/modal",
 	'../module/app_project/router',
+	'../module/app_image/router',
 	'app',
 	],function(angular){
 		angular.element().ready(function() {

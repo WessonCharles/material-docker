@@ -13,6 +13,7 @@ define([
   "directives/directive",
   "filters",
   "../module/app_project/controller",
+  "../module/app_image/controller",
   ],function(angular){
   window.ThCofAngSeedModule = angular.module('ThCofAngSeed', [
       'ngRoute',
@@ -23,6 +24,7 @@ define([
       'ThCofAngSeed.directives',
       'ThCofAngSeed.filters',
       'ThCofAngSeed.project_ctrl',
+      'ThCofAngSeed.images_ctrl'
   ]).controller("baseCtrl",["$scope", "$http","$rootScope", "$location","$timeout", "$filter","$window",'$route',
       
       function($scope,$http,$rootScope,$location,$timeout,$filter,$window,$route){
