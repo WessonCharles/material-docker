@@ -1,9 +1,9 @@
 // (function(){
 	'use strict';
-	define(["angular","services/more/modal"],function(angular){
+	define(["angular","services/more/formDataObject"],function(angular){
 		/*Some bits and pieces Service*//*ËùÓÐÁãËéµÄservice*/
 		var depend = [
-			// 'ThCofAngSeed.services.modal',
+			'ThCofAngSeed.services.formDataObject',
 			// 'services.formDataObject',
 			/*.....*/
 		];

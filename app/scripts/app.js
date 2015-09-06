@@ -7,7 +7,7 @@ define([
   "angular",
   "modal",
   "configs/config",
-  "services/more/modal",
+  "services/more/formDataObject",
   "services/service",
   "directives/more/onRendered",
   "directives/directive",
@@ -17,8 +17,9 @@ define([
   ],function(angular){
   window.ThCofAngSeedModule = angular.module('ThCofAngSeed', [
       'ngRoute',
+      'ngResource',
       'ThCofAngSeed.configs',
-      'ThCofAngSeed.services.modal',
+      'ThCofAngSeed.services.formDataObject',
       'ThCofAngSeed.services',
       'ThCofAngSeed.directives.table',
       'ThCofAngSeed.directives',
