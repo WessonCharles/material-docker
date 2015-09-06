@@ -1,0 +1,85 @@
+<div ng-controller="imagesctrl" style="position:relative;">
+  <div class="button-title">
+    <div layout="row" layout-margin >
+      <div flex="80" class="noshadow">
+        <button class="md-raised md-button modal__trigger" data-modal="#modal">
+          <md-icon class="fa fa-cog fa-lg"></md-icon>
+          制作镜像
+        </button>
+        <md-menu>
+          <md-button class="md-raised" aria-label="Open phone interactions menu" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
+            <md-icon md-menu-origin class="fa fa-caret-square-o-down"></md-icon>
+            更多操作
+          </md-button>
+          <md-menu-content width="2">
+            <md-menu-item>
+              <md-button ng-click="ctrl.redial($event)">
+                <md-icon md-menu-align-target></md-icon>
+                Redial
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="ctrl.checkVoicemail()">
+                <md-icon></md-icon>
+                Check voicemail
+              </md-button>
+            </md-menu-item>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item>
+              <md-button ng-click="ctrl.toggleNotifications()">
+                <md-icon></md-icon>
+                {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </div>
+      <div flex="18" class="noshadow">
+        <md-input-container md-no-float class="nopaddingbot">
+          <md-icon class="fa fa-search"></md-icon>
+          <input ng-model="imagectrl.search" type="text" placeholder="Search">
+        </md-input-container>
+      </div>
+    </div>
+  </div>
+  <div class="content-table">
+    <div layout="row" layout-margin>
+      <div flex class="noshadow bl-main">
+          <md-content>
+            <md-tabs md-dynamic-height md-border-bottom >
+              <md-tab label="最近使用">
+                <md-content class="md-padding"  id="images" style="min-height:500px">
+                  <md-bottom-sheet class="md-grid" style="position:relative;border:none;z-index:0">
+                    <md-list>
+                      <md-list-item ng-repeat="item in items">
+                        <md-button class="md-grid-item-content" ng-click="listItemClick($index)">
+                          <md-icon class="fa fa-3x fa-{{item.icon}}"></md-icon>
+                          <div class="md-grid-text"> {{ item.name }} </div>
+                        </md-button>
+                      </md-list-item>
+                    </md-list>
+                    <div style="clear:both"></div>
+                  </md-bottom-sheet>
+                </md-content>
+              </md-tab>
+              <md-tab label="私有镜像">
+                <md-content class="md-padding">
+                </md-content>
+              </md-tab>
+              <md-tab label="镜像收藏">
+                <md-content class="md-padding">
+                </md-content>
+              </md-tab>
+              <md-tab label="镜像市场">
+                <md-content class="md-padding">
+                </md-content>
+              </md-tab>
+              <md-tab label="制作或发布镜像">
+                <md-content class="md-padding">
+                </md-content>
+              </md-tab> 
+            </md-tabs>   
+          </md-content>
+      </div>
+    </div>
+  </div

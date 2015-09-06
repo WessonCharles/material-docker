@@ -2,7 +2,7 @@
 	'user strict';
   define(["angular"],function(angular){
 	/*formDataObject*/
-  	angular.module('services.formDataObject',[])
+  	angular.module('ThCofAngSeed.services.formDataObject',['ngResource'])
     .factory("formDataObject",function(){
       return function(data) {
         var fd = new FormData();
@@ -12,5 +12,12 @@
         return fd;
       };
     })
+    .factory("restful",['$resource',function($resource){
+      var restful = {};
+      restful.action = function(url,obj){
+        return $resource(url,obj);
+      }
+      return restful;
+    }])
   });  
 // }());

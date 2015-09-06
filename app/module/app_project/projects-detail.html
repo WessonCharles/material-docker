@@ -2,7 +2,7 @@
   <div class="button-title">
     <div layout="row" layout-margin >
       <div flex flex-order="1" class="noshadow">
-        <button viewclose link="/projects" md-button class="md-raised md-icon-btn" ng-click="backlist();">
+        <button  aria-label="returntolist" viewclose link="/projects" md-button class="md-raised md-icon-btn" ng-click="backlist();">
           <md-icon class="fa fa-arrow-left fa-lg"></md-icon>
         </button>
         <button md-button class="md-raised md-primary modal__trigger" data-modal="#modal">
@@ -15,75 +15,87 @@
               <h2>创建Service</h2>
               <div class="modal_content_inner">
               <form name="myForm">
-                <md-subheader class="md-primary">基本设置</md-subheader>
-                  <md-input-container >
-                    <label>Service Name</label>
-                    <input ng-model="service.name" type="text" ng-required="true">
-                  </md-input-container>
-                  <div layout="" layout-sm="column">
-                    <md-input-container flex>
-                      <label>Image</label>
-                      <md-select placeholder="内存" name="ram" ng-model="service.ram" required>
-                        <md-option value="1">One</md-option>
-                        <md-option value="2">Two</md-option>
-                      </md-select>
-                      <div class="errors" ng-messages="myForm.service.$error" ng-if="myForm.$dirty">
-                        <div ng-message="required">Required</div>
-                      </div>
-                    </md-input-container>
-                    <div flex class="noshadow">
-                        还没有镜像？<a class="md-button modal__trigger" data-modal="#imageform">创建一个</a>
-                        <div id="imageform" class="modal modal__bg" role="dialog" aria-hidden="true">
-                          <div class="modal__dialog">
-                            <div class="modal__content">
+                <md-content class="md-padding">
+                  <md-tabs md-dynamic-height md-border-bottom>
+                    <md-tab label="基本设置">
+                      <md-content class="md-padding">
+                        <!-- <h1 class="md-display-2"></h1> -->
+                        <md-input-container >
+                          <label>Service Name</label>
+                          <input ng-model="service.name" type="text" ng-required="true">
+                        </md-input-container>
+                        <div layout="" layout-sm="column">
+                          <md-input-container flex class="noshadow">
+                            <label>Image</label>
+                            <md-select placeholder="内存" name="ram" ng-model="service.ram" required>
+                              <md-option value="1">One</md-option>
+                              <md-option value="2">Two</md-option>
+                            </md-select>
+                            <div class="errors" ng-messages="myForm.service.$error" ng-if="myForm.$dirty">
+                              <div ng-message="required">Required</div>
                             </div>
-                            <a class="modal__close demo-close">
-                              <i class="fa fa-times"></i>
-                            </a>
+                          </md-input-container>
+                          <div flex class="noshadow" initmodal style="padding: 29px 0px 29px 20px;">
+                              <span>还没有镜像？</span><a class="md-raised md-button modal__trigger" data-modal="#imageform">创建一个</a>
+                          </div>
+                        </div> 
+                      </md-content>
+                    </md-tab>
+                    <md-tab label="更多设置">
+                      <md-content class="md-padding">
+                        <!-- <h1 class="md-display-2"></h1> -->
+                        <div layout="" layout-sm="column">
+                          <md-input-container flex class="noshadow">
+                            <label for="input_25">ENV</label>
+                            <input ng-model="service.env" class="ng-pristine ng-valid md-input ng-touched" id="input_25" tabindex="0" aria-invalid="false" style="">
+                          </md-input-container>
+                          <md-input-container flex class="noshadow">
+                            <label for="input_26"></label>
+                            <input ng-model="user.state" class="ng-pristine ng-valid md-input ng-touched" id="input_26" tabindex="0" aria-invalid="false" style="">
+                          </md-input-container>
                         </div>
-                      </div>
-                    </div>
-                  </div>  
-                <md-subheader class="md-primary">更多设置</md-subheader>
-                  <div layout="" layout-sm="column">
-                    <md-input-container flex class="noshadow">
-                      <label for="input_25">ENV</label>
-                      <input ng-model="service.env" class="ng-pristine ng-valid md-input ng-touched" id="input_25" tabindex="0" aria-invalid="false" style="">
-                    </md-input-container>
-                    <md-input-container flex class="noshadow">
-                      <label for="input_26"></label>
-                      <input ng-model="user.state" class="ng-pristine ng-valid md-input ng-touched" id="input_26" tabindex="0" aria-invalid="false" style="">
-                    </md-input-container>
-                  </div>
-                <md-subheader class="md-primary">高级设置</md-subheader>
-                  <md-input-container>
-                    <label>内存</label>
-                    <md-select placeholder="内存" name="ram" ng-model="service.ram" required>
-                      <md-option value="1">One</md-option>
-                      <md-option value="2">Two</md-option>
-                    </md-select>
-                    <div class="errors" ng-messages="myForm.service.$error" ng-if="myForm.$dirty">
-                      <div ng-message="required">Required</div>
-                    </div>
-                  </md-input-container>
-                  <md-input-container>
-                    <label>存储</label>
-                    <md-select placeholder="存储" name="ram" ng-model="service.rom" required>
-                      <md-option value="1">One</md-option>
-                      <md-option value="2">Two</md-option>
-                    </md-select>
-                    <div class="errors" ng-messages="myForm.service.$error" ng-if="myForm.$dirty">
-                      <div ng-message="required">Required</div>
-                    </div>
-                  </md-input-container>
-                  <md-input-container>
-                    <label>启动个数</label>
-                    <input type="number">
-                    <div class="errors" ng-messages="myForm.service.$error" ng-if="myForm.$dirty">
-                      <div ng-message="required">Required</div>
-                    </div>
-                  </md-input-container>
-                <md-subheader class="md-primary">对外服务</md-subheader>  
+                      </md-content>
+                    </md-tab>
+                    <md-tab label="高级设置">
+                      <md-content class="md-padding">
+                        <!-- <h1 class="md-display-2"></h1> -->
+                        <md-input-container>
+                          <label>内存</label>
+                          <md-select placeholder="内存" name="ram" ng-model="service.ram" required>
+                            <md-option value="1">One</md-option>
+                            <md-option value="2">Two</md-option>
+                          </md-select>
+                          <div class="errors" ng-messages="myForm.service.$error" ng-if="myForm.$dirty">
+                            <div ng-message="required">Required</div>
+                          </div>
+                        </md-input-container>
+                        <md-input-container>
+                          <label>存储</label>
+                          <md-select placeholder="存储" name="ram" ng-model="service.rom" required>
+                            <md-option value="1">One</md-option>
+                            <md-option value="2">Two</md-option>
+                          </md-select>
+                          <div class="errors" ng-messages="myForm.service.$error" ng-if="myForm.$dirty">
+                            <div ng-message="required">Required</div>
+                          </div>
+                        </md-input-container>
+                        <md-input-container>
+                          <label>启动个数</label>
+                          <input type="number">
+                          <div class="errors" ng-messages="myForm.service.$error" ng-if="myForm.$dirty">
+                            <div ng-message="required">Required</div>
+                          </div>
+                        </md-input-container>
+                      </md-content>
+                    </md-tab>
+                    <md-tab label="对外服务">
+                      <md-content>
+                        <!-- <h1 class="md-display-2"></h1> -->
+
+                      </md-content>
+                    </md-tab>
+                  </md-tabs>
+                </md-content>    
                 <div layout="row">
                   <md-button ng-click="clearValue()" ng-disabled="!project" style="margin-right: 20px;">清除</md-button>
                   <md-button ng-click="save()" ng-disabled="myForm.$invalid" class="md-primary" layout layout-align="center end">保存</md-button>
@@ -140,5 +152,64 @@
         </div>
       </div>
     <!-- </div>   -->
+  </div>
+
+  <div id="imageform" class="modal modal__bg" role="dialog" aria-hidden="true">
+      <div class="modal__dialog">
+        <div class="modal__content">
+          <h2>创建Image</h2>
+          <form>
+            <md-input-container>
+              <label>Image Name</label>
+              <input ng-model="image.name" type="text" ng-required="true">
+            </md-input-container>
+            <md-content class="md-padding">
+              <label>代码源</label>
+              <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="URL">
+                  <md-content class="md-padding">
+                  </md-content>
+                </md-tab>
+                <md-tab label="Github">
+                  <md-content class="md-padding">
+                  </md-content>
+                </md-tab>
+                <md-tab label="GitCafe">
+                  <md-content class="md-padding">
+                  </md-content>
+                </md-tab>
+                <md-tab label="GitLabe">
+                  <md-content class="md-padding">
+                  </md-content>
+                </md-tab> 
+              </md-tabs>   
+            </md-content>
+            <md-subheader class="md-primary">构建位置</md-subheader>
+              <div layout="" layout-sm="column">
+                <md-input-container flex class="noshadow">
+                  <label>路径</label>
+                  <input ng-model="image.name" type="text" ng-required="true">
+                </md-input-container>
+                <md-input-container flex class="noshadow">
+                  <label>Dockerfile</label>
+                  <input ng-model="image.name" type="text" ng-required="true">
+                </md-input-container>
+              </div>
+            <md-subheader class="md-primary">发布镜像</md-subheader>
+              <md-radio-group layout="" layout-sm="column" ng-model="image.group">
+                <md-radio-button flex class="noshadow" value="Apple" class="md-primary">仓库</md-radio-button>
+                <md-radio-button flex class="noshadow" value="Banana"> Docker Hub </md-radio-button>
+                <md-radio-button flex class="noshadow" value="Mango">私有仓库</md-radio-button>
+              </md-radio-group>
+              <div layout="row">
+                  <md-button ng-click="clearValue()" ng-disabled="!project" style="margin-right: 20px;">清除</md-button>
+                  <md-button ng-click="save()" ng-disabled="myForm.$invalid" class="md-primary" layout layout-align="center end">保存</md-button>
+              </div>
+          </form>
+        </div>
+        <a class="modal__close demo-close">
+          <i class="fa fa-times"></i>
+        </a>
+      </div>
   </div>
 </div>          

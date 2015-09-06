@@ -7,22 +7,25 @@ define([
   "angular",
   "modal",
   "configs/config",
-  "services/more/modal",
+  "services/more/formDataObject",
   "services/service",
   "directives/more/onRendered",
   "directives/directive",
   "filters",
   "../module/app_project/controller",
+  "../module/app_image/controller",
   ],function(angular){
   window.ThCofAngSeedModule = angular.module('ThCofAngSeed', [
       'ngRoute',
+      'ngResource',
       'ThCofAngSeed.configs',
-      'ThCofAngSeed.services.modal',
+      'ThCofAngSeed.services.formDataObject',
       'ThCofAngSeed.services',
       'ThCofAngSeed.directives.table',
       'ThCofAngSeed.directives',
       'ThCofAngSeed.filters',
       'ThCofAngSeed.project_ctrl',
+      'ThCofAngSeed.images_ctrl'
   ]).controller("baseCtrl",["$scope", "$http","$rootScope", "$location","$timeout", "$filter","$window",'$route',
       
       function($scope,$http,$rootScope,$location,$timeout,$filter,$window,$route){

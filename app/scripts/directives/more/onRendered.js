@@ -21,6 +21,7 @@ define(['angular'],function(angular){
         var orderBy = $filter('orderBy');
         $scope.tablePage = 0;
         $scope.nbOfPages = function () {
+          console.log($scope.content.length)
           return Math.ceil($scope.content.length / $scope.count);
         },
         $scope.handleSort = function (field) {
@@ -154,6 +155,16 @@ define(['angular'],function(angular){
       }
     }
   }])
+  .directive('initmodal',['$timeout',function($timeout){
+    return {
+      restrict:'A',
+      link:function(s,e,a){
+        $timeout(function(){
+          Modal.init();
+        })
+      }
+    }
+  }])
   .directive('viewclose',['$location','$route','$timeout','$window',function($location,$route,$timeout,$window){
     return {
       restrict :'A',
@@ -167,19 +178,21 @@ define(['angular'],function(angular){
                   bt = b[0].getBoundingClientRect().top,
                   bw = b[0].offsetWidth,
                   bh = b[0].offsetHeight;
-            //   var se = $('<section style="left:'+l+'px;top:'+to+'px;width:'+w+'px;height:'+h+'px">'
-            //   +'<md-progress-circular md-mode="indeterminate" aria-valuemin="0" aria-valuemax="100" role="progressbar" class="md-default-theme" style="transform: scale(1);"><div class="md-spinner-wrapper"><div class="md-inner"><div class="md-gap"></div><div class="md-left"><div class="md-half-circle"></div></div><div class="md-right"><div class="md-half-circle"></div></div></div></div></md-progress-circular>'
-            // +'</section>');
-              // $(".bl-main").addClass( 'bl-expand-item' );//section's parent 
-              b.css({
-                '-webkit-transition': 'all 0.5s ease-in-out',
-                '-moz-transition': 'all 0.5s ease-in-out',
-                'transition': 'all 0.5s ease-in-out',
-                '-webkit-transform': 'scale(1,0.1)',
-                '-moz-transform': 'scale(1,0.1)',
-                '-ms-transform': 'scale(1,0.1)',
-                'transform': 'scale(1,0.1)'
-              })
+              var a = $('<div class="overlay-1"></div>'),
+                  c = $('<div class="overlay-2"></div>'),
+                  d = $('<section class="overlays">'
+                    +'<md-progress-circular md-mode="indeterminate" aria-valuemin="0" aria-valuemax="100" role="progressbar" class="md-default-theme" style="transform: scale(1);"><div class="md-spinner-wrapper"><div class="md-inner"><div class="md-gap"></div><div class="md-left"><div class="md-half-circle"></div></div><div class="md-right"><div class="md-half-circle"></div></div></div></div></md-progress-circular>'
+                    +'</section>');
+              b.append(a),b.append(c);
+              b.append(d);
+              a.animate({
+                'top':'-3%'
+              },500)
+              c.animate({
+                'bottom':'-3%'
+              },500)
+              d.addClass('bl-expand bl-expand-top')
+              // return;
               console.log($window.history)
               setTimeout(function(){
                 $window.history.back();

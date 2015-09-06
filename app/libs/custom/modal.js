@@ -1,4 +1,4 @@
-var Modal = (function() {
+var Modal = (function($) {
 
   var trigger = $qsa('.modal__trigger'); // what you click to activate the modal
   var modals = $qsa('.modal'); // the entire modal (takes up entire window)
@@ -211,6 +211,10 @@ var Modal = (function() {
   var init = function(a) {
       trigger = $qsa('.modal__trigger'); // what you click to activate the modal
       modals = $qsa('.modal'); // the entire modal (takes up entire window)
+      // modals = document.getElementsByClassName("modal");
+      // var tabmodal = $("md-tabs-content-wrapper").find(".modal");
+      // console.log(tabmodal)
+      console.log(modals)
       modalsbg = $qsa('.modal__bg'); // the entire modal (takes up entire window)
       content = $qsa('.modal__content'); // the inner content of the modal
       closers = $qsa('.modal__close');
@@ -225,5 +229,5 @@ var Modal = (function() {
     init: init
   };
 
-}());
+}(window.jQuery));
 

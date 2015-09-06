@@ -15,7 +15,7 @@ body {
   font-weight: 500;*/
   padding: 0;
     height: auto;
-    background-color: #EEEEEE;
+    background-color: #fff;
     color: #7A8491;
     -webkit-font-smoothing: antialiased;
     font-family: 'sans-serif',arial;
@@ -435,6 +435,9 @@ button:hover,a.md-button:hover,.md-button.md-raised:not([disabled]):hover{
 .noshadow:hover{
   box-shadow: none;
 }
+.nopaddingbot{
+  padding-bottom: 0;
+}
 /**
  * navbar
  */
@@ -730,10 +733,10 @@ button:hover,a.md-button:hover,.md-button.md-raised:not([disabled]):hover{
  * modal
  */
 .modal {
-  -webkit-box-align: start;
-  -webkit-align-items: flex-start;
-  -ms-flex-align: start;
-  align-items: flex-start;
+  -webkit-box-align: center;
+  -webkit-align-items: flex-center;
+  -ms-flex-align: center;
+  align-items: flex-center;
   height: 100%;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -797,6 +800,7 @@ background: transparent;
 max-width: 600px;
 margin:0 auto;
 padding: 1.2rem;
+position: relative;
 }
 .modal__content {
 will-change: transform, opacity;
@@ -835,7 +839,7 @@ opacity: 1;
 position: relative;
 display: inline-block;
 color: rgba(0,0,0,0.7);
-line-height: 1;
+/*line-height: 1;*/
 cursor: pointer;
 background: #fff;
 overflow: visible;
@@ -853,18 +857,18 @@ top: 0;
 left: 0;
 right: 0;
 bottom: 0;
-background: #fff;
+background: #0094B2;
+box-shadow:0 0 20px 0 rgba(0,0,0,0.2),0 5px 5px 0 rgba(0,0,0,0.24)
 -webkit-transform: none;
     -ms-transform: none;
         transform: none;
-opacity: 1;
+opacity: 0.1;
 -webkit-transition: opacity 0.1s ease-out, -webkit-transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         transition: opacity 0.1s ease-out, transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 form .md-subheader {
     margin-left: -20px;
 }
-
 
 /* angular material table*/
 .main-fab {
@@ -998,6 +1002,16 @@ switch page
   background-color: #00BCD4;
   opacity: 0.5;
 }
+section.overlays {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background-color: #00BCD4;
+  opacity: 0.5;
+  z-index: 30;
+  top:0;
+}
 .bl-main section md-progress-circular{
   position: absolute;
   left: 50%;
@@ -1012,10 +1026,29 @@ switch page
   opacity: 0;
   pointer-events: none;
 }
+section.overlays md-progress-circular{
+  position: absolute;
+  left: 50%;
+  top:50%;
+}
+section.overlays .bl-icon-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+}
 .bl-main section {
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
+}
+
+section.overlays.bl-expand{
+  opacity: 0.21;
+  /*background-color: #fff;*/
 }
 
 .bl-main section.bl-expand {
@@ -1026,7 +1059,7 @@ switch page
   /*padding: 8px;
   margin: -8px;*/
   opacity: 1;
-  background-color: #eee;
+  background-color: #fff;
 }
 
 .bl-main section.bl-expand-top {
@@ -1052,4 +1085,52 @@ switch page
   -moz-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
   left:0;
+}
+/**
+ * 为搜索框添加特别的样式
+ */
+md-input-container>.fa-search {
+    position: absolute;
+    top: 8px;
+    right: 0;
+    left: inherit;
+}
+
+.overlay-1{
+  height:50%;
+  width:100%;
+  position: absolute;
+  top:-50%;
+  background-color: #fff;
+  -webkit-transition:all 0.5s ease 0;
+  -moz-transition: all 0.5s ease 0;
+  transition: all 0.5s ease 0;
+  z-index: 40;
+}
+.overlay-2{
+  height:50%;
+  width: 100%;
+  position: absolute;
+  bottom:-50%;
+  background-color: #fff;
+  -webkit-transition:all 0.5s ease 0;
+  -moz-transition: all 0.5s ease 0;
+  transition: all 0.5s ease 0;
+  z-index: 40;
+}
+/*
+image big icon
+ */
+md-list md-list-item .md-button md-icon{
+  width:auto;
+  color: #444;
+}
+md-bottom-sheet{
+  z-index: 40;
+}
+md-backdrop.md-bottom-sheet-backdrop{
+  z-index: 39;
+}
+[md-no-pagination] md-tab-item{
+  max-width:inherit!important;
 }

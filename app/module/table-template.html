@@ -3,7 +3,7 @@
     <thead>
       <tr class="md-table-headers-row">
         <th  ng-if="isselect" class="md-table-header">
-          <md-checkbox ng-checked="allexists(content,selected,count)" ng-click="toggleall(content, selected,count)">
+          <md-checkbox aria-label="checkbox" ng-checked="allexists(content,selected,count)" ng-click="toggleall(content, selected,count)">
              <!-- <span ng-if="allexists(content,selected,count)">selected</span> -->
           </md-checkbox> 
         </th>
@@ -19,7 +19,7 @@
     <tbody>
       <tr ng-click="openview($event.target);" ng-repeat="c in content | filter:filters | startFrom:tablePage*count | limitTo: count" class="md-table-content-row">
         <td ng-if="isselect" class="md-table-content">
-          <md-checkbox ng-checked="exists(c, selected)" ng-click="toggle(c, selected)">
+          <md-checkbox  aria-label="checkbox" ng-checked="exists(c, selected)" ng-click="toggle(c, selected)">
              <!-- <span ng-if="exists(c, selected)">selected</span> -->
           </md-checkbox>
         </td>
