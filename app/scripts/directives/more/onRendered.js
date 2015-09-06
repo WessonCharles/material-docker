@@ -21,7 +21,6 @@ define(['angular'],function(angular){
         var orderBy = $filter('orderBy');
         $scope.tablePage = 0;
         $scope.nbOfPages = function () {
-          console.log($scope.content.length)
           return Math.ceil($scope.content.length / $scope.count);
         },
         $scope.handleSort = function (field) {

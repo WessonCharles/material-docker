@@ -36,63 +36,64 @@ define(['angular','modal'],function(angular,modal){
 	        $scope.toggleSearch = false;  
 	        var plat = restful.action("http://game.opstack.cc:8334/game/:type",{type:"@type"});
 	        var pl = plat.get({type:"openplat"},function(e){
-	        	console.log(pl.plats);
+	        	// console.log(pl.plats);
 		        $scope.headers = [
-		          // {
-		          //   name: 'Name', 
-		          //   field: 'name'
-		          // },{
-		          //   name:'Description', 
-		          //   field: 'description'
-		          // },{
-		          //   name: 'Last Modified', 
-		          //   field: 'last_modified'
-		          // }
+		          {
+		            name: 'Name', 
+		            field: 'name'
+		          },{
+		            name:'Description', 
+		            field: 'description'
+		          },{
+		            name: 'Last Modified', 
+		            field: 'last_modified'
+		          }
 		        ];
-		        var sort = [];
-		        for(var i in pl.plats[0]){
-		        	sort.push(i);
-		        	$scope.headers.push({
-		        		name:i,
-		        		field:i
-		        	})
-		        };
+		        // var sort = [];
+		        // for(var i in pl.plats[0]){
+		        // 	sort.push(i);
+		        // 	$scope.headers.push({
+		        // 		name:i,
+		        // 		field:i
+		        // 	})
+		        // };
 		        
-		        $scope.content = pl.plats;
-		        // $scope.content = [
-		        //   {
-		        //     // thumb:'https://lh3.googleusercontent.com/-5NfcdlvGQhs/AAAAAAAAAAI/AAAAAAAAABY/ibGrApGYTuQ/photo.jpg', 
-		        //     name: 'Bruno Mars', 
-		        //     description: 'Human',
-		        //     last_modified: 'Jun 5, 2014'
-		        //   },{
-		        //     // thumb:'http://www.otakia.com/wp-content/uploads/V_1/article_3573/7405.jpg', 
-		        //     name: 'AT-AT', 
-		        //     description: 'Robot',
-		        //     last_modified: 'Jun 5, 2014'
-		        //   },{
-		        //     // thumb:'https://speakerdata.s3.amazonaws.com/photo/image/774492/Mark-Ronson-r24.jpg', 
-		        //     name: 'Mark Ronson', 
-		        //     description: 'Human',
-		        //     last_modified: 'Jun 5, 2014'
-		        //   },{
-		        //     // thumb:'http://25.media.tumblr.com/61ebf04c3cc7a84944aa0246e902f2a7/tumblr_mm35b87dGz1qmwrnuo1_1280.jpg', 
-		        //     name: 'Daft Punk', 
-		        //     description: 'Human-Robot',
-		        //     last_modified: 'Jun 5, 2014'
-		        //   },{
-		        //     // thumb:'http://thatgrapejuice.net/wp-content/uploads/2014/03/lady-gaga-that-grape-juice-televisionjpg.jpg', 
-		        //     name: 'Lady Gaga', 
-		        //     description: 'Undefined',
-		        //     last_modified: 'Jun 5, 2014'
-		        //   }
-		        // ];
+		        // $scope.content = pl.plats;
+		        $scope.content = [
+		          {
+		            // thumb:'https://lh3.googleusercontent.com/-5NfcdlvGQhs/AAAAAAAAAAI/AAAAAAAAABY/ibGrApGYTuQ/photo.jpg', 
+		            name: 'Bruno Mars', 
+		            description: 'Human',
+		            last_modified: 'Jun 5, 2014'
+		          },{
+		            // thumb:'http://www.otakia.com/wp-content/uploads/V_1/article_3573/7405.jpg', 
+		            name: 'AT-AT', 
+		            description: 'Robot',
+		            last_modified: 'Jun 5, 2014'
+		          },{
+		            // thumb:'https://speakerdata.s3.amazonaws.com/photo/image/774492/Mark-Ronson-r24.jpg', 
+		            name: 'Mark Ronson', 
+		            description: 'Human',
+		            last_modified: 'Jun 5, 2014'
+		          },{
+		            // thumb:'http://25.media.tumblr.com/61ebf04c3cc7a84944aa0246e902f2a7/tumblr_mm35b87dGz1qmwrnuo1_1280.jpg', 
+		            name: 'Daft Punk', 
+		            description: 'Human-Robot',
+		            last_modified: 'Jun 5, 2014'
+		          },{
+		            // thumb:'http://thatgrapejuice.net/wp-content/uploads/2014/03/lady-gaga-that-grape-juice-televisionjpg.jpg', 
+		            name: 'Lady Gaga', 
+		            description: 'Undefined',
+		            last_modified: 'Jun 5, 2014'
+		          }
+		        ];
 		        
 
-		        // $scope.custom = {name: 'bold', description:'grey',last_modified: 'grey'};
-		        $scope.sortable = sort;
+		        $scope.custom = {name: 'bold', description:'grey',last_modified: 'grey'};
+		        $scope.sortable = ['name','description','last_modified'];
+		        // $scope.sortable = sort;
 		        $scope.count = 100;
-		        // $scope.links = '/projects';
+		        $scope.links = '/projects';
 		        $scope.selected = [];
 
 		        // $scope.loadtable = function(t){
