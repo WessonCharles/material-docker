@@ -149,7 +149,7 @@
         <HR align=center width="1" color="#EDF0F5" size="1">
         <div flex class="bl-main" ng-click="toggleSearch=false">
           <md-subheader class="md-primary">Container</md-subheader> 
-          <md-table headers="theaders" content="tcontent" sortable="tsortable" filters="search" custom-class="tcustom" thumbs="tthumbs" isselect="true" selected="tselected" count="tcount"></md-table>
+          <md-table headers="theaders" content="tcontent" sortable="tsortable" filters="search" custom-class="tcustom" thumbs="tthumbs" isselect="true" selected="tselected" modal="tmodal" count="tcount"></md-table>
         </div>
       </div>
     <!-- </div>   -->
@@ -213,4 +213,16 @@
         </a>
       </div>
   </div>
-</div>          
+</div>        
+<div id="container_detail" class="modal modal__bg" role="dialog" aria-hidden="true">
+  <div class="modal__dialog">
+    <div class="modal__content">
+      <h2>Container</h2>
+      <div class="modal_content_inner">
+      </div>
+    </div>
+    <a class="modal__close demo-close">
+        <i class="fa fa-times"></i>
+    </a>
+  </div>
+</div>                
