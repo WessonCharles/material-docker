@@ -220,7 +220,10 @@ md-menu-item{
   height:40px;
   position: relative;
   /*color:rgba(255,255,255,0.8);*/
-  margin: 2px 0px;
+  margin:2px 0px;
+}
+.minside .sidebar-ul>ul>li{
+  margin:2px 0;
 }
 .sidebar-ul>ul>li.active{
   /*background-color: #00677C;*/
@@ -456,7 +459,7 @@ button:hover,a.md-button:hover,.md-button.md-raised:not([disabled]):hover{
   box-shadow:0 0 20px 0 rgba(0,0,0,0.2),0 5px 5px 0 rgba(0,0,0,0.24)
 }
 .unshadow{
-  box-shadow: none;
+  box-shadow: none!important;
 }
 .noshadow:hover{
   box-shadow: none;
@@ -923,7 +926,9 @@ form .md-subheader {
   min-width: 100%;
   border-collapse: collapse;
 }
-
+.md-table tbody tr{
+  outline: 0;
+}
 .md-table tbody tr:hover, .md-table tbody tr:focus {
   cursor:pointer;
   background-color:#EDF0F5;

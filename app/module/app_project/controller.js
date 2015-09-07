@@ -126,7 +126,7 @@ define(['angular','modal'],function(angular,modal){
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams){
 			console.log("223423")
 			console.log($routeParams)
-			 $scope.toggleSearch = false;   
+			$scope.toggleSearch = false;   
 	        $scope.headers = [
 	          {
 	            name: 'Name', 
@@ -222,8 +222,9 @@ define(['angular','modal'],function(angular,modal){
 	          }
 	        ];
 	        $scope.tselected = [];
-	        $scope.tcustom = {name: 'bold', description:'grey',last_modified: 'grey'};
+	        $scope.tcustom = {name: 'bold modal__trigger', description:'grey',last_modified: 'grey'};
 	        $scope.tsortable = ['name', 'description', 'last_modified'];
+	        $scope.tmodal = "#container_detail";
 	        // $scope.thumbs = 'thumb';
 	        $scope.tcount = 5;
 

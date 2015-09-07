@@ -14,7 +14,8 @@ define(['angular'],function(angular){
         count: '=',
         links:'=',
         isselect:'@',
-        selected:'=' 
+        selected:'=' ,
+        modal:'='
       },
       link: function ($scope,$element,$attr) {
         console.log($scope.headers)

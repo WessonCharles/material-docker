@@ -28,7 +28,11 @@
             <div style="background-image:url({{c.thumb}})"></div>
           </div>
         </td> -->
-        <td ng-repeat="h in headers" ng-class="customClass[h.field]" ng-if="h.field != thumbs" class="md-table-content">
+        <td ng-repeat="h in headers" ng-class="customClass[h.field]" ng-if="h.field != thumbs&&!customClass[h.field].indexOf('modal__trigger')" class="md-table-content">
+            <a ng-if="links" href="{{links}}/111" viewload>{{(h.field.indexOf('date') > 0) ? $filter('date')(c[h.field]) : c[h.field];}}</a>
+            <span ng-if="!links">{{(h.field.indexOf('date') > 0) ? $filter('date')(c[h.field]) : c[h.field];}}</span>
+        </td>
+        <td ng-repeat="h in headers" ng-class="customClass[h.field]" ng-if="h.field != thumbs&&customClass[h.field].indexOf('modal__trigger')" style="margin-top: 5px;background-color:transparent;" class="md-table-content unshadow" data-modal="{{modal}}">
             <a ng-if="links" href="{{links}}/111" viewload>{{(h.field.indexOf('date') > 0) ? $filter('date')(c[h.field]) : c[h.field];}}</a>
             <span ng-if="!links">{{(h.field.indexOf('date') > 0) ? $filter('date')(c[h.field]) : c[h.field];}}</span>
         </td>

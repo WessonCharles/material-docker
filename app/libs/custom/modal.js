@@ -17,10 +17,13 @@ var Modal = (function($) {
     return document.querySelectorAll(el);
   }
 
+  var current_trigger;
+
   var getId = function(event) {
 
     event.preventDefault();
     var self = this;
+    current_trigger = self;
     // get the value of the data-modal attribute from the button
     var modalId = self.dataset.modal;
     var len = modalId.length;
@@ -136,21 +139,34 @@ var Modal = (function($) {
      * inside the modal and have it close.
      */
     var targetmodal;
-    var mos = [];
-    for(var i=0;i<$qsa('.modal--active').length;i++){
-      mos.push($qsa('.modal--active')[i]);
+    if($qsa('.modal--active').length>1){
+      var mos = [];
+      for(var i=0;i<$qsa('.modal--active').length;i++){
+        mos.push($qsa('.modal--active')[i]);
+      }
+      mos = mos.sort(function(a,b){
+        return parseInt($(a).css("z-index"))>parseInt($(b).css("z-index"))?-1:1;
+      })
+      targetmodal =$(mos[0]);
+    }else{
+      targetmodal = $($qsa('.modal--active')[0]);
     }
-    mos = mos.sort(function(a,b){
-      return parseInt($(a).css("z-index"))>parseInt($(b).css("z-index"))?-1:1;
-    })
-    targetmodal =$(mos[0]);
-
-    for (var i = 0; i < len; i++) {
-        if(trigger[i].dataset.modal==("#"+targetmodal.attr("id"))){
-            current_close = $(trigger[i]);
-        }
-    }
-    var div = current_close.find('#modal__temp')[0];
+    // console.log(targetmodal)
+    var div;
+    // if($qsa('.modal--active').length>1){
+      for (var i = 0; i < trigger.length; i++) {
+          if(trigger[i].classList.contains("modal__trigger--active")&&trigger[i].dataset.modal==("#"+targetmodal.attr("id"))){
+              current_close = $(trigger[i]);
+          }
+      }
+      // console.log(current_close)
+      div = current_close.find("#modal__temp")[0];
+    //   console.log(current_close)
+    // }else{
+    //   console.log(current_trigger)
+    //   div = $(current_trigger).find("#modal__temp")[0];
+    // }
+    
 
     if (isOpen["#"+targetmodal.attr("id")] && target.classList.contains('modal__bg') || target.classList.contains('modal__close')) {
 
@@ -166,17 +182,22 @@ var Modal = (function($) {
       targetmodal[0].classList.remove('modal--active');
       targetmodal.find(".modal__content")[0].classList.remove('modal__content--active');
 
-			for (var i = 0; i < len; i++) {
-			// 	modals[i].classList.remove('modal--active');
-			// 	content[i].classList.remove('modal__content--active');
-				if(trigger[i].dataset.modal==("#"+targetmodal.attr("id"))){
-            trigger[i].style.transform = 'none';
-            trigger[i].style.webkitTransform = 'none';
-            trigger[i].classList.remove('modal__trigger--active');
-        }
-        
-			}
 
+      if($qsa('.modal--active').length>1){
+        for (var i = 0; i < trigger.length; i++) {
+        //   modals[i].classList.remove('modal--active');
+        //   content[i].classList.remove('modal__content--active');
+         if(trigger[i].classList.contains("modal__trigger--active")&&trigger[i].dataset.modal==("#"+targetmodal.attr("id"))){
+              trigger[i].style.transform = 'none';
+              trigger[i].style.webkitTransform = 'none';
+              trigger[i].classList.remove('modal__trigger--active');
+          }
+        }
+      }else{
+        current_close[0].style.transform="none";
+        current_close[0].style.webkitTransform = "none"; 
+        current_close.removeClass("modal__trigger--active");
+      }
       // when the temporary div is opacity:1 again, we want to remove it from the dom
 			// if($qsa('.modal--active').length==1){
         div.addEventListener('transitionend', removeDiv, false);
@@ -190,7 +211,7 @@ var Modal = (function($) {
       setTimeout(function() {
         window.requestAnimationFrame(function() {
           // remove the temp div from the dom with a slight delay so the animation looks good
-          current_close.find("#modal__temp").remove();
+          div.remove()
           // if($qsa('.modal--active').length==0){
           //   div.remove();
           // }
@@ -202,26 +223,32 @@ var Modal = (function($) {
 
   var bindActions = function() {
     for (var i = 0; i < len; i++) {
-      trigger[i].addEventListener('click', getId, false);
       closers[i].addEventListener('click', close, false);
       modalsbg[i].addEventListener('click', close, false);
     }
+    trigger.click(getId);
+    // for(var i=0;i<trigger.length;i++){
+    //   trigger[i].addEventListener('click', getId, false);
+    // }
+
   };
 
   var init = function(a) {
-      trigger = $qsa('.modal__trigger'); // what you click to activate the modal
+      trigger = $('.modal__trigger'); // what you click to activate the modal
       modals = $qsa('.modal'); // the entire modal (takes up entire window)
       // modals = document.getElementsByClassName("modal");
       // var tabmodal = $("md-tabs-content-wrapper").find(".modal");
       // console.log(tabmodal)
-      console.log(modals)
+      // console.log(modals)
       modalsbg = $qsa('.modal__bg'); // the entire modal (takes up entire window)
       content = $qsa('.modal__content'); // the inner content of the modal
       closers = $qsa('.modal__close');
-      for(var i =0;i<trigger.length;i++){
+      // console.log(closers)
+      for(var i =0;i<modals.length;i++){
         if(typeof $(trigger[i])[0] == 'object')isOpen[$(trigger[i])[0].dataset.modal] = false;
       }
-      len = trigger.length; 
+      len = modals.length; 
+      // console.log(len)
       bindActions();
   };
 
