@@ -172,7 +172,7 @@ define(['angular'],function(angular){
       },
       link:function(s,e,a){
         $(e).click(function(ev){
-            var b = $(".inner_content [ng-controller]");
+            var b = $(".inner_content [return]");
             var bl = b[0].getBoundingClientRect().left,
                   bt = b[0].getBoundingClientRect().top,
                   bw = b[0].offsetWidth,

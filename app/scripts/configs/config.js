@@ -5,7 +5,7 @@
 		window.ThCofAngSeedConfig = angular.module('ThCofAngSeed.configs', ['ngMaterial']);
 		window.ThCofAngSeedConfig.config(['$mdThemingProvider',function($mdThemingProvider){
 			$mdThemingProvider.theme('default')
-		    .primaryPalette('cyan')
+		    .primaryPalette('blue')
 		    .accentPalette('red');
 		    // .backgroundPalette('grey');
 		 	// $mdThemingProvider.definePalette('amazingPaletteName', {

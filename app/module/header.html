@@ -27,7 +27,10 @@
                 </li>
             </ul>
             <form class="navbar-form navbar-left">
-                <input type="text" class="form-control col-lg-8" placeholder="Search">
+               <md-input-container md-no-float class="nopaddingbot">
+                  <md-icon class="fa fa-search"></md-icon>
+                  <input ng-model="imagectrl.search" type="text" placeholder="Search">
+                </md-input-container>
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="javascript:void(0)">Link</a></li>
