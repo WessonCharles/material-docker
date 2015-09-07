@@ -1,4 +1,4 @@
-<div>
+<div return>
   <div class="button-title">
     <div layout="row" layout-margin >
       <div flex flex-order="1" class="noshadow">
@@ -142,11 +142,12 @@
   <div class="content-table">
     <!-- <div style="width:150%;"> -->
       <div layout="row" class="switchdiv" layout-margin layout-padding>
-        <div flex class="bl-main border" ng-click="toggleSearch=false">
+        <div flex class="bl-main" ng-click="toggleSearch=false">
           <md-subheader class="md-primary">Service</md-subheader>
           <md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" isselect="true" selected="selected" count="count"></md-table>
         </div>
-        <div flex class="bl-main border" ng-click="toggleSearch=false">
+        <HR align=center width="1" color="#EDF0F5" size="1">
+        <div flex class="bl-main" ng-click="toggleSearch=false">
           <md-subheader class="md-primary">Container</md-subheader> 
           <md-table headers="theaders" content="tcontent" sortable="tsortable" filters="search" custom-class="tcustom" thumbs="tthumbs" isselect="true" selected="tselected" count="tcount"></md-table>
         </div>
