@@ -34,7 +34,7 @@ define(['angular','modal'],function(angular,modal){
 	        };
 
 	        $scope.toggleSearch = false;  
-	        var plat = restful.action("http://game.opstack.cc:8334/game/:type",{type:"@type"});
+	        var plat = restful.action({type:"@type"},"http://game.opstack.cc:8334/game/:type");
 	        var pl = plat.get({type:"openplat"},function(e){
 	        	// console.log(pl.plats);
 		        $scope.headers = [
