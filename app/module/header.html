@@ -33,8 +33,25 @@
                 </md-input-container>
             </form>
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a style="padding:6px;">
+                    <md-menu md-offset="0 -7">
+                      <md-button class="md-raised text-primary" aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">
+                        <md-icon md-menu-origin class="fa fa-caret-square-o-down"></md-icon>
+                        切换项目
+                      </md-button>
+                      <md-menu-content width="2">
+                        <md-menu-item ng-repeat="item in [1, 2, 3]">
+                          <md-button ng-click="ctrl.announceClick($index)">
+                            Option{{item}}
+                          </md-button>  
+                        </md-menu-item>
+                      </md-menu-content>
+                    </md-menu>
+                    </a>
+                </li>
                 <li><a href="javascript:void(0)">Link</a></li>
-                <li class="dropdown">
+                <!-- <li class="dropdown">
                     <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="javascript:void(0)">Action</a></li>
@@ -43,7 +60,7 @@
                         <li class="divider"></li>
                         <li><a href="javascript:void(0)">Separated link</a></li>
                     </ul>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>

@@ -215,10 +215,80 @@
   </div>
 </div>        
 <div id="container_detail" class="modal modal__bg" role="dialog" aria-hidden="true">
-  <div class="modal__dialog">
+  <div class="modal__dialog" style="max-width: 80%;">
     <div class="modal__content">
       <h2>Container</h2>
       <div class="modal_content_inner">
+        <div layout="row" class="unshadow">
+          <div flex class="noshadow bl-main">
+            <md-list>
+              <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" style="min-height:32px;" tabindex="-1">
+                <div class="md-no-style md-list-item-inner" style="padding:0;min-height:32px;">
+                  <label for="">Status:</label>
+                  <p class="ng-binding text-primary"> Running </p>
+                </div>
+              </md-list-item>
+              <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" style="min-height:32px;" tabindex="-1">
+                <div class="md-no-style md-list-item-inner" style="padding:0;min-height:32px;">
+                  <label for="">RestartPolicy:</label>
+                  <p class="ng-binding text-primary"> Never </p>
+                </div>
+              </md-list-item>
+             </md-list> 
+          </div>
+          <div flex class="noshadow bl-main">
+            <md-list>
+              <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" style="min-height:32px;" tabindex="-1">
+                <div class="md-no-style md-list-item-inner" style="padding:0;min-height:32px;">
+                  <label for="">Label:</label>
+                  <p class="ng-binding text-primary">  </p>
+                </div>
+              </md-list-item>
+              <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" style="min-height:32px;" tabindex="-1">
+                <div class="md-no-style md-list-item-inner" style="padding:0;min-height:32px;">
+                  <label for="">App:</label>
+                  <p class="ng-binding text-primary"> nginx </p>
+                </div>
+              </md-list-item>
+             </md-list>
+          </div>
+        </div>
+        <div layout class="unshadow">
+          <div flex class="noshadow bl-main">
+            <md-content>
+              <md-tabs md-selected="2" md-dynamic-height md-no-pagination="true" md-swipe-content="false">
+                <md-tab label="详情">
+                  <md-content class="md-padding">
+                  </md-content>
+                </md-tab>
+                <md-tab label="日志">
+                  <md-content class="md-padding">
+                  </md-content>
+                </md-tab>
+                <md-tab label="控制台">
+                  <md-content class="md-padding" layout="row">
+                    <div flex="85">
+                      <iframe width="100%" height="600" src="http://www.baidu.com" frameborder="0"></iframe>
+                    </div>
+                    <div flex="14" class="noshadow bl-main" style="text-align:center;">
+                      <md-list>
+                        <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" style="min-height:32px;" tabindex="-1">
+                          <div class="md-no-style" style="padding:0;min-height:32px;">
+                            <md-icon class="fa fa-arrows-h fa-4x" style="width:100%"></md-icon>
+                            <p class="ng-binding" style="margin-top:0;">80/TCP</p>
+                          </div>
+                        </md-list-item>
+                      </md-list>  
+                    </div>
+                  </md-content>
+                </md-tab>
+                <md-tab label="监控">
+                  <md-content class="md-padding">
+                  </md-content>
+                </md-tab>
+              </md-tabs>
+            </md-content>
+          </div>
       </div>
     </div>
     <a class="modal__close demo-close">

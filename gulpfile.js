@@ -69,12 +69,15 @@ gulp.task('build',['clean'] ,function(cb){//中间的字符串数组，是指当
       
       paths:{
         angular:'../libs/angular/angular.min',
-        jquery:'empty:',
+        jquery:'../libs/jquery/dist/jquery.min',
         angularRoute:'../libs/angular-route/angular-route.min',
         angularAnimate:'../libs/angular-animate/angular-animate.min',
         angularAria:'../libs/angular-aria/angular-aria.min',
         angularMaterial:'empty:',
-        angularResource:'../libs/angular-resource/angular-resource.min'
+        angularResource:'../libs/angular-resource/angular-resource.min',
+        modal:'../libs/custom/modal',
+        colresize:'../libs/colresize/colresize',
+        modernizr:'../libs/custom/modernizr.custom',
       },
       shim:{
         'angular' : {'exports' : 'angular'},
@@ -84,7 +87,14 @@ gulp.task('build',['clean'] ,function(cb){//中间的字符串数组，是指当
         'angularAnimate':['angular'],
         'angularAria':['angular'],
         'angularMaterial':['angular','angularAria'],
+        'modal':['jquery'],
+        'modernizr':{'exports':'modernizr'},
+        'colresize':['jquery']
       },
+      priority: [
+        'angular',
+        'jquery'
+      ],
 
       out: "app/min/coanseed.min.js",                 //输出的压缩文件
 

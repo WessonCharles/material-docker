@@ -1,6 +1,20 @@
 'use strict';
-define(['angular'],function(angular){
+define(['angular','colresize'],function(angular,colresize){
   return angular.module("ThCofAngSeed.directives.table",[])
+  .directive('mdColresize', ['$timeout',function ($timeout) {
+    return {
+      restrict: 'A',
+      link: function (scope, element, attrs) {
+        scope.$evalAsync(function () {
+          $timeout(function(){ $(element).colResizable({
+            liveDrag: true,
+            fixed: true
+            
+          });},100);
+        });
+      }
+    }
+  }])
   .directive('mdTable',["$filter",function ($filter) {
     return {
       restrict: 'E',
@@ -76,20 +90,6 @@ define(['angular'],function(angular){
       templateUrl:'module/table-template.html'// angular.element(document.querySelector('#md-table-template')).html()
     }
   }])
-  .directive('mdColresize', function ($timeout) {
-    return {
-      restrict: 'A',
-      link: function (scope, element, attrs) {
-        scope.$evalAsync(function () {
-          $timeout(function(){ $(element).colResizable({
-            liveDrag: true,
-            fixed: true
-            
-          });},100);
-        });
-      }
-    }
-  })
   .directive('viewload',['$location','$route','$timeout',function($location,$route,$timeout){
     return {
       restrict :'A',
