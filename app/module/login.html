@@ -1,0 +1,30 @@
+<div class="wrapper">
+	<div class="login_container">
+		<h1>Welcome to LightDocker</h1>
+		
+		<form class="loginform" ng-submit="login()">
+			<input flex name="username" type="text" placeholder="账号">
+			<p class="passp"><input flex name="password" type="password" placeholder="密码">
+				<i ng-if="ifupperkey" class="fa fa-arrow-up">
+					<md-tooltip md-visible="true">
+        			已开启大写锁定
+      				</md-tooltip>
+				</i>
+			</p>
+			<button type="submit" id="login-button">登陆</button>
+		</form>
+	</div>
+	
+	<ul class="bg-bubbles">
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+</div>

@@ -38,19 +38,53 @@
                     <md-menu md-offset="0 -7">
                       <md-button class="md-raised text-primary" aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">
                         <md-icon md-menu-origin class="fa fa-caret-square-o-down"></md-icon>
-                        切换项目
+                        {{current_tenant.name}}
                       </md-button>
                       <md-menu-content width="2">
-                        <md-menu-item ng-repeat="item in [1, 2, 3]">
-                          <md-button ng-click="ctrl.announceClick($index)">
-                            Option{{item}}
+                        <md-menu-item ng-repeat="t in tenants track by t.id">
+                          <md-button ng-click="selectcurtenant(t)">
+                            {{t.name}}
                           </md-button>  
                         </md-menu-item>
                       </md-menu-content>
                     </md-menu>
                     </a>
                 </li>
-                <li><a href="javascript:void(0)">Link</a></li>
+                <li>
+                    <a style="padding:6px;">
+                        <md-menu md-position-mode="target-right target" >
+                          <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                            <md-icon class="fa fa-2x fa-user"></md-icon>
+                          </md-button>
+                          <md-menu-content width="2" >
+                            <md-menu-item >
+                              <md-button >
+                                  <div layout="row">
+                                    <p flex class="noshadow">{{user.username}}</p>
+                                  </div>
+                              </md-button>
+                            </md-menu-item>
+                            <md-menu-item >
+                              <md-button >
+                                  <div layout="row">
+                                    <p flex class="noshadow">Option {{item}}</p>
+                                    <md-icon md-menu-align-target md-svg-icon="call:portable-wifi-off" style="margin: auto 3px auto 0;"></md-icon>
+                                  </div>
+                              </md-button>
+                            </md-menu-item>
+                            <md-menu-item >
+                              <md-button ng-click="logout()">
+                                  <div layout="row">
+                                    <p flex class="noshadow">退出</p>
+                                    <md-icon class="fa fa-sign-out"></md-icon>
+                                  </div>
+                              </md-button>
+                            </md-menu-item>
+                          </md-menu-content>
+                        </md-menu>
+                    </a>
+                </li>
+                <!-- <li><a href="javascript:void(0)">Link</a></li> -->
                 <!-- <li class="dropdown">
                     <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
                     <ul class="dropdown-menu">

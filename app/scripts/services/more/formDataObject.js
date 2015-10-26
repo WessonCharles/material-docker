@@ -2,7 +2,7 @@
 	'user strict';
   define(["angular"],function(angular){
 	/*formDataObject*/
-  	angular.module('ThCofAngSeed.services.formDataObject',['ngResource'])
+  	angular.module('ThCofAngSeed.services.formDataObject',['ngResource','ngMaterial'])
     .factory("formDataObject",function(){
       return function(data) {
         var fd = new FormData();
@@ -15,21 +15,20 @@
     .factory("restful",['$resource',function($resource){
       var restful = {};
       restful.action = function(obj,url){
-        var u = url||'http://42.51.161.236:8337/';
+        var u = url||'http://42.51.161.236:8337';
         return $resource(u,obj);
       }
       return restful;
     }])
     .factory('AuthService',['$rootScope','$http','$window','$location', function ($rootScope, $http, $window, $location) {
       var authService = {};
-      $rootScope.keystone_url = 'http://keystonedev.lightcloud.cn:5000/v2.0';
-      $rootScope.keystone_roleid = "16131b070578418b9c9b4c3b8f0518e9";
-      $rootScope.keystone_adminid = "e47c841a35c144169c45f3f38564445c";
-      $rootScope.keystone_url = 'http://console.lightcloud.cn:5000/v2.0';
-      $rootScope.keystone_roleid = "c8bd1ec564194a198a84795a522e9eb2";
-      $rootScope.keystone_adminid = "52562a38b5d347bab9d81be0aec6ea48";
+      // $rootScope.keystone_url = 'http://console.lightcloud.cn:5000/v2.0';
+      // $rootScope.keystone_roleid = "c8bd1ec564194a198a84795a522e9eb2";
+      // $rootScope.keystone_adminid = "52562a38b5d347bab9d81be0aec6ea48";
+      $rootScope.keystone_url = 'http://42.51.161.109:5000/v2.0';
       var keystone_url = $rootScope.keystone_url;
       authService.login = function (credentials,coo) {
+          console.log("credentials")
           return $http.post(keystone_url+'/tokens', credentials)
           .success(function(data){
             if(!data){
@@ -42,29 +41,31 @@
                   var tenantInfo = data;
                   $http.post(keystone_url+'/tokens', credentials)
                   .success(function(data){
-                    if(coo){
+                    // if(coo){
                       var name = credentials.auth.passwordCredentials.username;
                       var pass = credentials.auth.passwordCredentials.password;
-                      Opstack.setCookie("opstacklight",encodeURIComponent(name)+"&"+encodeURIComponent(pass));
-                    }
-                    var servis = data.access.serviceCatalog;
-                    var defalutapp,defaultdatas = [];
-                    var display_services = ['audit', 'image', 'base','object-store','identity'].join();
-                    for(var i=0,len=servis;i<len.length;i++){
-                        if(display_services.indexOf(len[i].type)==-1){
-                            defaultdatas.push(len[i].type);
-                        }
-                    };
-                    defalutapp = defaultdatas[0];
+                      window.setCookie("lightdocker",encodeURIComponent(name)+"&"+encodeURIComponent(pass));
+                    // }
+                    // var servis = data.access.serviceCatalog;
+                    // var defalutapp,defaultdatas = [];
+                    // var display_services = ['audit', 'image', 'base','object-store','identity'].join();
+                    // for(var i=0,len=servis;i<len.length;i++){
+                    //     if(display_services.indexOf(len[i].type)==-1){
+                    //         defaultdatas.push(len[i].type);
+                    //     }
+                    // };
+                    // defalutapp = defaultdatas[0];
                       data['access']['tenants'] = tenantInfo['tenants'];
+                      console.log(data)
                       $window.sessionStorage.setItem("userInfo", JSON.stringify(data));
-                      window.sessionStorage.setItem("islogin",JSON.stringify(data));
-                      $window.sessionStorage.setItem("currentApp", defalutapp);
-                      if(Opstack.getCookie("lc-history-path")&&Opstack.getCookie("lc-history-path")!="/login"){
-                        $window.location.href = Opstack.getCookie("lc-history-path");
-                      }else{
-                        $window.location.href = '/'+defalutapp;  
-                      }
+                      // $window.sessionStorage.setItem("islogin",JSON.stringify(data));
+                      // $window.sessionStorage.setItem("currentApp", defalutapp);
+                      $rootScope.islogin = true;
+                      // if(Opstack.getCookie("lc-history-path")&&Opstack.getCookie("lc-history-path")!="/login"){
+                      //   $window.location.href = Opstack.getCookie("lc-history-path");
+                      // }else{
+                      $location.path("/");  
+                      // }
                       
                   });
               });
@@ -96,6 +97,70 @@
       }
 
       return authService;
+    }])
+    .factory('Notify',['$rootScope','$mdToast','$document',function($rootScope,$mdToast,$document){
+      var Notify = {}
+          _t = this;
+      var last = {
+        bottom: false,
+        top: true,
+        left: false,
+        right: true
+      };
+      _t.toastPosition = angular.extend({},last);
+      _t.getToastPosition = function() {
+        sanitizePosition();
+        return Object.keys(_t.toastPosition)
+          .filter(function(pos) { return _t.toastPosition[pos]; })
+          .join(' ');
+      };
+      function sanitizePosition() {
+        var current = _t.toastPosition;
+        if ( current.bottom && last.top ) current.top = false;
+        if ( current.top && last.bottom ) current.bottom = false;
+        if ( current.right && last.left ) current.left = false;
+        if ( current.left && last.right ) current.right = false;
+        last = angular.extend({},current);
+      }
+      Notify.showCustomToast = function() {
+        $mdToast.show({
+          controller: 'ToastCtrl',
+          templateUrl: 'module/component_template/toast-template.html',
+          parent : $document[0].querySelector('#toastBounds'),
+          hideDelay: 6000,
+          position: _t.getToastPosition()
+        });
+      };
+      Notify.showSimpleToast = function(content) {
+        $mdToast.show(
+          $mdToast.simple()
+            .content(content)
+            .position(_t.getToastPosition())
+            .hideDelay(3000)
+        );
+      };
+      /**
+       * [参数1，为通知内容，参数2：动作名称，参数3为一个json对象，键：动作，值：回调]
+       * @param  {[type]} content  [description]
+       * @param  {[type]} jsonback [description]
+       * @return {[type]}          [description]
+       */
+      Notify.showActionToast = function(content,actionname,jsonback) {
+        var toast = $mdToast.simple()
+              .content(content)
+              .action(actionname)
+              .highlightAction(false)
+              .position(_t.getToastPosition());
+        $mdToast.show(toast).then(function(response) {
+          for(var j in jsonback){
+            if(response==j){
+              jsonback[j]();
+            }
+          }
+        });
+      };
+
+      return Notify;
     }])
   });  
 // }());

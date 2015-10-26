@@ -1,4 +1,4 @@
-<div class="main"> 
+<div class="main" ng-if="islogin"> 
       <div ng-include src="'module/sidebar.html'"></div>
       <div id="content">
         <div ng-include src="'module/header.html'"></div> 
@@ -11,4 +11,5 @@
 	        <p><span class="glyphicon glyphicon-heart"></span> Power By OPstack(LightCloud Team).</p>
 	      </div>
 	    </div>
-    </div> 
+    </div>
+<div ng-view ng-if="!islogin"></div>     

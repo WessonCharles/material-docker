@@ -7,7 +7,9 @@
 			   'self',
 			   /*允许跨域资源加载*/
 			   'http://libs.baidu.com/**',
-			   'http://libs.useso.com/**']);
+			   'http://libs.useso.com/**',
+			   'http://localhost:8080/**',
+			   'http://console.lightcloud.cn:5000']);
 			}
 	})
 	
