@@ -1,4 +1,4 @@
-<div id="md-table-template">
+<div id="md-table-template" style="min-height:245px;">
   <table md-colresize="md-colresize" class="md-table">
     <thead>
       <tr class="md-table-headers-row">
@@ -17,7 +17,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-click="openview($event.target);" ng-repeat="c in content | filter:filters | startFrom:tablePage*count | limitTo: count" class="md-table-content-row">
+      <tr ng-click="openview($event.target);" on-rendered ng-repeat="c in content | filter:filters | startFrom:tablePage*count | limitTo: count  track by c.name" class="md-table-content-row">
         <td ng-if="isselect" class="md-table-content">
           <md-checkbox  aria-label="checkbox" ng-checked="exists(c, selected)" ng-click="toggle(c, selected)">
              <!-- <span ng-if="exists(c, selected)">selected</span> -->
@@ -29,12 +29,12 @@
           </div>
         </td> -->
         <td ng-repeat="h in headers" ng-class="customClass[h.field]" ng-if="h.field != thumbs&&!customClass[h.field].indexOf('modal__trigger')" class="md-table-content">
-            <a ng-if="links" href="{{links}}/111" viewload>{{(h.field.indexOf('date') > 0) ? $filter('date')(c[h.field]) : c[h.field];}}</a>
-            <span ng-if="!links">{{(h.field.indexOf('date') > 0) ? $filter('date')(c[h.field]) : c[h.field];}}</span>
+            <a ng-if="links&&h.field=='name'" href="{{links}}/111" viewload>{{[h.field]}}</a>
+            <span ng-if="!links||h.field!='name'">{{c[h.field]}}</span>
         </td>
         <td ng-repeat="h in headers" ng-class="customClass[h.field]" ng-if="h.field != thumbs&&customClass[h.field].indexOf('modal__trigger')" style="margin-top: 5px;background-color:transparent;" class="md-table-content unshadow" data-modal="{{modal}}">
-            <a ng-if="links" href="{{links}}/111" viewload>{{(h.field.indexOf('date') > 0) ? $filter('date')(c[h.field]) : c[h.field];}}</a>
-            <span ng-if="!links">{{(h.field.indexOf('date') > 0) ? $filter('date')(c[h.field]) : c[h.field];}}</span>
+            <a ng-if="links&&h.field=='name'" href="{{links}}/111" viewload>{{c[h.field]}}</a>
+            <span ng-if="!links||h.field!='name'">{{ c[h.field]}}</span>
         </td>
         <td class="md-table-td-more">
           <md-button class="md-mini md-button md-icon-button" aria-label="Info"><i class="fa fa-ellipsis-v"></i></md-button>

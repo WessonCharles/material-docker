@@ -1,12 +1,10 @@
-// (function(){
-	'use strict';
-	define(["angular","services/more/formDataObject"],function(angular){
-		/*Some bits and pieces Service*//*À˘”–¡„ÀÈµƒservice*/
-		var depend = [
-			'ThCofAngSeed.services.formDataObject',
-			// 'services.formDataObject',
-			/*.....*/
-		];
-		return angular.module('ThCofAngSeed.services',depend);
-	});	
-// }());
+'use strict';
+  define(["angular","services/more/formDataObject"],function(angular){
+    /*Some bits and pieces Service*//*√ã√π√ì√ê√Å√£√ã√©¬µ√Ñservice*/
+    var depend = [
+      'ThCofAngSeed.services.formDataObject',
+      // 'services.formDataObject',
+      /*.....*/
+    ];
+    return angular.module('ThCofAngSeed.services',depend);
+  }); 

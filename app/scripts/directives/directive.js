@@ -1,10 +1,9 @@
 'use strict';
 define(["angular"],function(angular){
-	/*Some bits and pieces Directives*//*ËùÓĞÁãËéµÄdirective*/
-	var depend = [
-		'ThCofAngSeed.directives.table',
-		/*.....*/
-	];
-	return angular.module('ThCofAngSeed.directives',depend);
+  /*Some bits and pieces Directives*//*Ã‹Ã¹Ã“ÃÃÃ£Ã‹Ã©ÂµÃ„directive*/
+  var depend = [
+    'ThCofAngSeed.directives.table',
+    /*.....*/
+  ];
+  return angular.module('ThCofAngSeed.directives',depend);
 })
-

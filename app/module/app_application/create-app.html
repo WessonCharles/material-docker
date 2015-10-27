@@ -1,0 +1,134 @@
+<div return>
+<div class="content-table">
+  <div layout="row" layout-margin>
+    <div flex flex-order="1" class="noshadow bl-main">
+        <md-subheader class="md-primary">
+        <button  aria-label="returntolist" viewclose link="/applications" md-button class="md-raised md-icon-btn" ng-click="backlist();">
+          <md-icon class="fa fa-arrow-left fa-lg"></md-icon>
+        </button>
+        创建应用</md-subheader>
+       <md-content>
+        <md-tabs md-selected="createstep" md-dynamic-height md-border-bottom md-stretch-tabs="always">
+          <md-tab label="①镜像来源" id="image_source">
+            <md-content class="md-padding" >
+                <md-list ng-cloak>
+                  <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                    <div class="md-no-style md-list-item-inner">
+                      <p ng-init="$parent.image_tag='u'">选择镜像：
+                        <md-radio-group class="line" ng-modal="image_tag">
+                          <md-radio-button value="u" class="md-primary">常用</md-radio-button>
+                          <md-radio-button value="stack" class="md-primary">Stack</md-radio-button>
+                          <md-radio-button value="public" class="md-primary">公有</md-radio-button>
+                          <md-radio-button value="private" class="md-primary">私有</md-radio-button>
+                          <md-radio-button value="collection" class="md-primary">收藏夹</md-radio-button>
+                          <md-radio-button value="thrd" class="md-primary">Docker/第三方镜像</md-radio-button>
+                        </md-radio-group>
+                        
+                      </p>
+                    </div>
+                  </md-list-item>
+                  <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                    <div class="md-no-style md-list-item-inner">
+                      <p ng-init="$parent.image_type='u'">镜像类型：
+                        <md-radio-group class="line" ng-modal="image_type">
+                          <md-radio-button value="u" class="md-primary">SSH服务器</md-radio-button>
+                          <md-radio-button value="stack" class="md-primary">Web服务器</md-radio-button>
+                          <md-radio-button value="public" class="md-primary">数据库与缓存</md-radio-button>
+                          <md-radio-button value="private" class="md-primary">Library</md-radio-button>
+                          <md-radio-button value="collection" class="md-primary">其他</md-radio-button>
+                        </md-radio-group>
+                      </p>
+                    </div>
+                  </md-list-item>
+                  <md-divider></md-divider>
+                  <md-subheader class="md-no-sticky">镜像列表</md-subheader>
+                  <md-list-item ng-repeat="img in images">
+                    <md-checkbox ng-checked="exists(img, selected)" ng-click="toggle(img,selected)"></md-checkbox>
+                    <p>{{img.name}}</p>
+                    <md-icon class="md-secondary" aria-label="Chat" md-svg-icon="communication:message"></md-icon>
+                  </md-list-item>
+                </md-list>
+                <div  align="right">
+                  <md-button ng-click="gostep(1)" class="md-primary" layout layout-align="center end">下一步</md-button>
+                </div>
+            </md-content>
+          </md-tab>
+          <md-tab label="②容器配置" id="image_config" ng-disabled="tabs[1]">
+            <md-content class="md-padding">
+              <md-list>
+                <div flex style="margin-bottom:15px;" ng-repeat="imcfg in images_config track by $index">
+                  <md-subheader class="md-no-sticky  md-primary">{{imcfg.image}}</md-subheader>
+                  <md-list-item class="md-3-line md-long-text">
+                    <form name="myForm" style="width:100%;">
+                      <md-input-container >
+                        <label>镜像名称：</label>
+                        <input ng-model="imcfg.image" type="text" disabled="true">
+                      </md-input-container>
+                      <md-input-container>
+                        <label>镜像版本：</label>
+                        <md-select placeholder="镜像版本" name="ram" ng-init="gethashtag(imcfg.image)" ng-model="imcfg.tag" required>
+                          <md-option value="1">One</md-option>
+                          <md-option value="2">Two</md-option>
+                        </md-select>
+                        <div class="errors" ng-messages="myForm.project.$error" ng-if="myForm.$dirty">
+                          <div ng-message="required">Required</div>
+                        </div>
+                      </md-input-container>
+                      <md-input-container >
+                          <label>应用名称：</label>
+                          <input ng-model="imcfg.name" type="text" ng-required="true">
+                      </md-input-container>
+                      <md-input-container >
+                        <label>容器配置：</label>
+                        <input ng-model="project.name" type="text" ng-required="true">
+                      </md-input-container>
+                      <md-input-container >
+                        <label>服务类型：</label>
+                        <input ng-model="project.name" type="text" ng-required="true">
+                      </md-input-container>
+                      <a ng-click="imcfg.more_cfg = !imcfg.more_cfg">更多选项..</a>
+                        <div layout="" layout-sm="column" ng-hide="!imcfg.more_cfg">
+                          <md-input-container flex class="noshadow">
+                            <label for="">环境变量(name)</label>
+                            <input ng-model="imcfg.tempobj.name" type="text" ng-required="true" placeholder="name">
+                          </md-input-container>
+                          <md-input-container flex class="noshadow">
+                            <label for="">环境变量(value)</label>
+                            <input ng-model="imcfg.tempobj.value" type="text" ng-required="true" placeholder="value">
+                          </md-input-container>
+                          <a ng-click="imcfg.env.push({name:imcfg.tempobj.name,value:imcfg.tempobj.value});imcfg.tempobj = {};">添加</a>
+                        </div>
+                        <md-input-container ng-hide="!imcfg.more_cfg">
+                          <table class="md-table">
+                            <thead><tr class="md-table-headers-row"><th class="md-table-header">键</th><th class="md-table-header">值</th><th class="md-table-header">操作</th></tr></thead>
+                            <tbody>
+                              <tr class="md-table-content-row" ng-repeat="e in imcfg.env track by $index">
+                                <td class="md-table-content">{{e.name}}</td>
+                                <td class="md-table-content">{{e.value}}</td>
+                                <td class="md-table-content"><i class="fa fa-trash text-primary" ng-click="removeOneImcfgenv(e,imcfg.env)"></i></td>
+                              </tr>
+                            </tbody>
+                          </table> 
+                        </md-input-container>
+                         
+                    </form>
+                  </md-list-item>
+                  <md-divider></md-divider>
+                </div>
+              </md-list>
+              <div align="right">
+                <md-button ng-click="clearValue()" style="margin-right: 20px;">清除</md-button>
+                <md-button ng-click="gostep(2)" class="md-primary" layout layout-align="center end">保存</md-button>
+              </div>
+            </md-content>
+          </md-tab>
+          <md-tab label="③高级配置" id="hight_config" ng-disabled="tabs[2]">
+            <md-content class="md-padding">
+            </md-content>
+          </md-tab>
+        </md-tabs>   
+      </md-content>
+    </div>
+  </div>
+</div>
+</div>

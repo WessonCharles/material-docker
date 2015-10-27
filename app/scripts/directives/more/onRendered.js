@@ -1,5 +1,5 @@
 'use strict';
-define(['angular','colresize'],function(angular,colresize){
+define(['angular','colresize','socket'],function(angular,colresize,io){
   return angular.module("ThCofAngSeed.directives.table",[])
   .directive('mdColresize', ['$timeout',function ($timeout) {
     return {
@@ -14,6 +14,18 @@ define(['angular','colresize'],function(angular,colresize){
         });
       }
     }
+  }])
+  .directive('onRendered',['$timeout',function ($timeout) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attr) {
+                if (scope.$last === true) {
+                    $timeout(function() {
+                        scope.$emit('ngRepeatFinished');
+                    });
+                }
+            }
+        };
   }])
   .directive('mdTable',["$filter",function ($filter) {
     return {
@@ -32,7 +44,7 @@ define(['angular','colresize'],function(angular,colresize){
         modal:'='
       },
       link: function ($scope,$element,$attr) {
-        console.log($scope.headers)
+        // console.log($scope.headers)
         var orderBy = $filter('orderBy');
         $scope.tablePage = 0;
         $scope.nbOfPages = function () {
@@ -86,8 +98,11 @@ define(['angular','colresize'],function(angular,colresize){
           }
           return list.indexOf(item) > -1;
         };
+        $scope.$on('ngRepeatFinished',function(){
+          console.timeEnd("rendered table")
+        });
       },
-      templateUrl:'module/table-template.html'// angular.element(document.querySelector('#md-table-template')).html()
+      templateUrl:'module/component_template/table-template.html'// angular.element(document.querySelector('#md-table-template')).html()
     }
   }])
   .directive('viewload',['$location','$route','$timeout',function($location,$route,$timeout){
@@ -202,5 +217,56 @@ define(['angular','colresize'],function(angular,colresize){
       }
     }
   }])
+  .directive('terminal', function() {
+      return {
+          restrict: 'E',
+          scope: {
+              name: '@'
+          },
+          // template: '<span>Hello {{name}}<div class="term"></div></span>',
+          template:'<div class="term"></div>',
+          link: function(scope, elem, attrs) {
+              console.log("sdfsf")
+              var socket = io.connect("http://localhost:8080");
+              socket.on('connect', function() {
+                console.log("sdfasf")
+                var term = new Terminal({
+                    cols: 80,
+                    rows: 24,
+                    screenKeys: true
+                });
+              
+                term.on('data', function(data) {
+                  socket.emit('data', data);
+                });
+             
+                term.on('title', function(title) {
+                  document.title = title;
+                });
+             
+                term.open(elem.find("div")[0]);
+                // term.open(document.body);
+             
+                term.write('\x1b[31mWelcome to term.js!\x1b[m\r\n');
+             
+                socket.on('data', function(data) {
+                  term.write(data);
+                });
+             
+                socket.on('disconnect', function() {
+                  term.destroy();
+                });
+              });
+              // var term = new Terminal({
+              //     cols: 80,
+              //     rows: 24,
+              //     screenKeys: true
+              // });
+              // // window.w = elem;
+              // term.open(elem.find("div")[0]);
+              // term.write('\x1b[31mWelcome to term.js!\x1b[m\r\n');
+          }
+      }
+  })
 
 })
