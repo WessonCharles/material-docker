@@ -277,7 +277,7 @@ define(['angular','modal'],function(angular,modal){
 			$scope.gethashtag = function(name){
 				$http.get("http://42.51.161.236:8337/"+$rootScope.current_tenant.id+"/tags/"+name).success(function(data){
 					console.log(data)
-					$scope.hash_tags[name] = data;
+					$scope.hash_tags[name] = data["metadata"];
 				})
 			}
 			
