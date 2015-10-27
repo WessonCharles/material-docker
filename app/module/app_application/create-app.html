@@ -67,8 +67,7 @@
                       <md-input-container>
                         <label>镜像版本：</label>
                         <md-select placeholder="镜像版本" name="ram" ng-init="gethashtag(imcfg.image)" ng-model="imcfg.tag" required>
-                          <md-option value="1">One</md-option>
-                          <md-option value="2">Two</md-option>
+                          <md-option ng-repeat="t in hash_tags[imcfg.image] track by $index" value="{{t}}">{{t}}</md-option>
                         </md-select>
                         <div class="errors" ng-messages="myForm.project.$error" ng-if="myForm.$dirty">
                           <div ng-message="required">Required</div>

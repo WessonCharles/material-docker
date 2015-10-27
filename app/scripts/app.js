@@ -84,13 +84,14 @@ define([
         /**
          * 当前用户
          */
-        $rootScope.user = JSON.parse(AuthService.getInfo()).access.user;
+        console.log(AuthService.getInfo())
+        $rootScope.user = AuthService.getInfo()?JSON.parse(AuthService.getInfo()).access.user:{};
         /**
          * [所有项目，当前项目，以及选择项目方法
          * @type {[type]}
          */
         console.log(JSON.parse(AuthService.getInfo()))
-        $rootScope.tenants = JSON.parse(AuthService.getInfo()).access.tenants;
+        $rootScope.tenants = AuthService.getInfo()?JSON.parse(AuthService.getInfo()).access.tenants:[];
         if(!$rootScope.current_tenant) $rootScope.current_tenant = $rootScope.tenants[0];
 
         $scope.selectcurtenant = function(t){
