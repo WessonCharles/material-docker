@@ -16,8 +16,8 @@
         <th class="md-table-header">More Action</th>
       </tr>
     </thead>
-    <tbody>
-      <tr ng-click="openview($event.target);" on-rendered ng-repeat="c in content | filter:filters | startFrom:tablePage*count | limitTo: count  track by c.name" class="md-table-content-row">
+    <tbody on-rendered ng-repeat="c in content | filter:filters | startFrom:tablePage*count | limitTo: count  track by c.name" >
+      <tr ng-click="openview($event.target);" class="md-table-content-row">
         <td ng-if="isselect" class="md-table-content">
           <md-checkbox  aria-label="checkbox" ng-checked="exists(c, selected)" ng-click="toggle(c, selected)">
              <!-- <span ng-if="exists(c, selected)">selected</span> -->
@@ -29,16 +29,33 @@
           </div>
         </td> -->
         <td ng-repeat="h in headers" ng-class="customClass[h.field]" ng-if="h.field != thumbs&&!customClass[h.field].indexOf('modal__trigger')" class="md-table-content">
-            <a ng-if="links&&h.field=='name'" href="{{links}}/111" viewload>{{[h.field]}}</a>
-            <span ng-if="!links||h.field!='name'">{{c[h.field]}}</span>
+            <a ng-if="links&&h.field=='name'" href="{{links}}/111" viewload>{{c[h.field]}}</a>
+            <a ng-if="!links&&h.field=='name'" ng-click="c.subshow=!c.subshow">{{c[h.field]}}</a>
+            <span ng-if="h.field!='name'">{{c[h.field]||'空'}}</span>
         </td>
         <td ng-repeat="h in headers" ng-class="customClass[h.field]" ng-if="h.field != thumbs&&customClass[h.field].indexOf('modal__trigger')" style="margin-top: 5px;background-color:transparent;" class="md-table-content unshadow" data-modal="{{modal}}">
             <a ng-if="links&&h.field=='name'" href="{{links}}/111" viewload>{{c[h.field]}}</a>
-            <span ng-if="!links||h.field!='name'">{{ c[h.field]}}</span>
+            <a ng-if="!links&&h.field=='name'" ng-click="c.subshow=!c.subshow">{{c[h.field]}}</a>
+            <span ng-if="h.field!='name'">{{ c[h.field]||'空'}}</span>
         </td>
         <td class="md-table-td-more">
           <md-button class="md-mini md-button md-icon-button" aria-label="Info"><i class="fa fa-ellipsis-v"></i></md-button>
         </td>
+      </tr>
+      <tr ng-class="c.subshow?'animate-show':'animate-show hide'" data-uid="{{c.uid}}" ng-if="c.collections" ng-repeat="l in c.collections track by $index" class="md-table-content-sub-row">
+        <td></td>
+        <td><a ng-click="func($event)">{{l.name}}</a></td>
+        <td><span></span></td>
+        <td><span>{{l.image}}</span></td>
+        <td><span>{{l.terminationMessagePath}}</span></td>
+        <td><span>{{c['createtime']}}</span></td>
+          <!-- <ul>
+            <li><a ng-click="getbottomsheet($event)">{{l.name}}</a></li>
+            <li><span>{{l.image}}</span></li>
+            <li><span>{{l.imagePullPolicy}}</span></li>
+            <li><span>{{l.terminationMessagePath}}</span></li>
+          </ul> -->
+        <td>
       </tr>
     </tbody>
   </table>

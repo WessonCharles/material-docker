@@ -45,13 +45,17 @@ define(['angular','modal'],function(angular,modal){
 			    $scope.alert = '';
 			    $mdBottomSheet.show({
 			      templateUrl: 'module/app_image/image-detail.html',
-			      controller: 'imagesctrl',
+			      controller: 'imagedetailctrl',
 			      targetEvent: $event,
 			      parent:"#images"
 			    }).then(function(clickedItem) {
 			      // $scope.alert = clickedItem.name + ' clicked!';
 			    });
 			};   
+		}
+	])
+	.controller('imagedetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet){
 		}
 	])
 })

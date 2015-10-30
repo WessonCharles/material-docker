@@ -43,10 +43,28 @@ define([
         //   $http.defaults.headers.common['X-Auth-Token'] = $rootScope.userinfo['access']['token']['id'];
         //   $http.defaults.headers.common['Content-type'] = 'application/json';
         //  } 
+        console.log(window.getCookie("lightdocker")+"--"+AuthService.isAuthenticated())
         if(window.getCookie("lightdocker")&&AuthService.isAuthenticated()){
           $rootScope.islogin = true;
           $http.defaults.headers.common['X-Auth-Token'] = JSON.parse(AuthService.getInfo()).access['token']['id'];
           $http.defaults.headers.common['Content-Type'] = 'application/json';
+
+          /**
+           * 当前用户
+           */
+          console.log(AuthService.getInfo())
+          $rootScope.user = AuthService.getInfo()?JSON.parse(AuthService.getInfo()).access.user:{};
+          /**
+           * [所有项目，当前项目，以及选择项目方法
+           * @type {[type]}
+           */
+          console.log(JSON.parse(AuthService.getInfo()))
+          $rootScope.tenants = AuthService.getInfo()?JSON.parse(AuthService.getInfo()).access.tenants:[];
+          if(!$rootScope.current_tenant) $rootScope.current_tenant = $rootScope.tenants[0];
+
+          $scope.selectcurtenant = function(t){
+            $rootScope.current_tenant = t;
+          }
         }else{
           $rootScope.islogin = false;
           $location.path("/login");
@@ -81,22 +99,7 @@ define([
             $route.reload();
         });
 
-        /**
-         * 当前用户
-         */
-        console.log(AuthService.getInfo())
-        $rootScope.user = AuthService.getInfo()?JSON.parse(AuthService.getInfo()).access.user:{};
-        /**
-         * [所有项目，当前项目，以及选择项目方法
-         * @type {[type]}
-         */
-        console.log(JSON.parse(AuthService.getInfo()))
-        $rootScope.tenants = AuthService.getInfo()?JSON.parse(AuthService.getInfo()).access.tenants:[];
-        if(!$rootScope.current_tenant) $rootScope.current_tenant = $rootScope.tenants[0];
-
-        $scope.selectcurtenant = function(t){
-          $rootScope.current_tenant = t;
-        }
+        
         /**
          * [页面加载完成，初始化弹出框]
          * @param  {[type]} ){                       Modal.init();        } [description]
@@ -112,9 +115,7 @@ define([
          * @return {[type]} [description]
          */
         $scope.logout = function(){
-          $rootScope.islogin = false;
-          window.delCookie("lightdocker");
-          $location.path("/login")
+          AuthService.logout();
         }
         
   }])
