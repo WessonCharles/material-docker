@@ -11,6 +11,11 @@
         <md-tabs md-selected="createstep" md-dynamic-height md-border-bottom md-stretch-tabs="always">
           <md-tab label="①镜像来源" id="image_source">
             <md-content class="md-padding" >
+                <form name="nameForm">
+                <md-input-container ng-class="nameifmatchreg">
+                  <label for="">应用名称</label>
+                  <input type="text" ng-model="app_name" ng-required="true" ng-keydown="checkname()" ng-keyup="checkname()" md-autofocus>
+                </md-input-container>
                 <md-list ng-cloak>
                   <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
                     <div class="md-no-style md-list-item-inner">
@@ -49,8 +54,9 @@
                   </md-list-item>
                 </md-list>
                 <div  align="right">
-                  <md-button ng-click="gostep(1)" class="md-primary" layout layout-align="center end">下一步</md-button>
+                  <md-button ng-click="gostep(1)" ng-disabled="nameForm.$invalid||selected==0" class="md-primary" layout layout-align="center end">下一步</md-button>
                 </div>
+                </form>
             </md-content>
           </md-tab>
           <md-tab label="②容器配置" id="image_config" ng-disabled="tabs[1]">
@@ -69,46 +75,74 @@
                         <md-select placeholder="镜像版本" name="ram" ng-init="gethashtag(imcfg.image)" ng-model="imcfg.tag" required>
                           <md-option ng-repeat="t in hash_tags[imcfg.image] track by $index" value="{{t}}">{{t}}</md-option>
                         </md-select>
-                        <div class="errors" ng-messages="myForm.project.$error" ng-if="myForm.$dirty">
+                        <!-- <div class="errors" ng-messages="myForm.project.$error" ng-if="myForm.$dirty">
                           <div ng-message="required">Required</div>
-                        </div>
+                        </div> -->
                       </md-input-container>
-                      <md-input-container >
+                      <!-- <md-input-container >
                           <label>应用名称：</label>
                           <input ng-model="imcfg.name" type="text" ng-required="true">
-                      </md-input-container>
+                      </md-input-container> -->
                       <md-input-container >
                         <label>容器配置：</label>
-                        <input ng-model="project.name" type="text" ng-required="true">
+                        <input ng-model="project.name" type="text" >
                       </md-input-container>
                       <md-input-container >
                         <label>服务类型：</label>
-                        <input ng-model="project.name" type="text" ng-required="true">
+                        <input ng-model="project.name" type="text" >
                       </md-input-container>
                       <a ng-click="imcfg.more_cfg = !imcfg.more_cfg">更多选项..</a>
                         <div layout="" layout-sm="column" ng-hide="!imcfg.more_cfg">
                           <md-input-container flex class="noshadow">
                             <label for="">环境变量(name)</label>
-                            <input ng-model="imcfg.tempobj.name" type="text" ng-required="true" placeholder="name">
+                            <input ng-model="imcfg.tempobj.name" type="text" placeholder="name">
                           </md-input-container>
                           <md-input-container flex class="noshadow">
                             <label for="">环境变量(value)</label>
-                            <input ng-model="imcfg.tempobj.value" type="text" ng-required="true" placeholder="value">
+                            <input ng-model="imcfg.tempobj.value" type="text" placeholder="value">
                           </md-input-container>
                           <a ng-click="imcfg.env.push({name:imcfg.tempobj.name,value:imcfg.tempobj.value});imcfg.tempobj = {};">添加</a>
                         </div>
                         <md-input-container ng-hide="!imcfg.more_cfg">
                           <table class="md-table">
-                            <thead><tr class="md-table-headers-row"><th class="md-table-header">键</th><th class="md-table-header">值</th><th class="md-table-header">操作</th></tr></thead>
+                            <thead class="thead-back"><tr class="md-table-headers-row"><th class="md-table-header">键</th><th class="md-table-header">值</th><th class="md-table-header">操作</th></tr></thead>
                             <tbody>
                               <tr class="md-table-content-row" ng-repeat="e in imcfg.env track by $index">
                                 <td class="md-table-content">{{e.name}}</td>
                                 <td class="md-table-content">{{e.value}}</td>
-                                <td class="md-table-content"><i class="fa fa-trash text-primary" ng-click="removeOneImcfgenv(e,imcfg.env)"></i></td>
+                                <td class="md-table-content"><i class="fa fa-trash text-primary" ng-click="removeOneImcfgpro(e,imcfg.env)"></i></td>
                               </tr>
                             </tbody>
                           </table> 
                         </md-input-container>
+                        <div layout="" layout-sm="column" ng-hide="!imcfg.more_cfg">
+                          <md-input-container flex class="noshadow">
+                            <label for="">容器端口</label>
+                            <input ng-model="imcfg.portobj.port" type="text" placeholder="port">
+                          </md-input-container>
+                          <md-input-container flex class="noshadow left-label">
+                            <label for="">协议</label>
+                            <md-radio-group class="line-radio" ng-model="imcfg.portobj.protocol" ng-init="imcfg.portobj.protocol=='TCP'">
+                              <md-radio-button value="TCP" class="md-primary">TCP</md-radio-button>
+                              <md-radio-button value="HTTP"> HTTP </md-radio-button>
+                            </md-radio-group>
+                          </md-input-container>
+                          <a ng-click="imcfg.ports.push({port:imcfg.portobj.port,protocol:imcfg.portobj.protocol});imcfg.portobj = {};">添加</a>
+                        </div>
+                        <md-input-container  ng-hide="!imcfg.more_cfg">
+                          <!-- <label for="">端口配置</label> -->
+                          <table class="md-table">
+                            <thead class="thead-back"><tr class="md-table-headers-row"><th class="md-table-header">容器端口</th><th class="md-table-header">协议</th><th class="md-table-header">映射端口</th><th class="md-table-header">操作</th></tr></thead>
+                            <tbody>
+                              <tr class="md-table-content-row" ng-repeat="p in imcfg.ports track by $index">
+                                <td class="md-table-content">{{p.port}}</td>
+                                <td class="md-table-content">{{p.protocol}}</td>
+                                <td class="md-table-content"><em>动态生成</em></td>
+                                <td class="md-table-content"><i class="fa fa-trash text-primary" ng-click="removeOneImcfgpro(p,imcfg.ports)"></i></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                      </md-input-container>
                          
                     </form>
                   </md-list-item>
@@ -117,7 +151,7 @@
               </md-list>
               <div align="right">
                 <md-button ng-click="clearValue()" style="margin-right: 20px;">清除</md-button>
-                <md-button ng-click="gostep(2)" class="md-primary" layout layout-align="center end">保存</md-button>
+                <md-button ng-click="gostep(2)" ng-disabled="myForm.$invalid" class="md-primary" layout layout-align="center end">保存</md-button>
               </div>
             </md-content>
           </md-tab>

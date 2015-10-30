@@ -64,7 +64,8 @@
                       // if(Opstack.getCookie("lc-history-path")&&Opstack.getCookie("lc-history-path")!="/login"){
                       //   $window.location.href = Opstack.getCookie("lc-history-path");
                       // }else{
-                      $location.path("/");  
+                      $window.location.href = "/";
+                      // $location.path("/");  
                       // }
                       
                   });
@@ -91,9 +92,10 @@
       authService.logout = function(){
         $window.sessionStorage.removeItem("userInfo");
         window.sessionStorage.removeItem("islogin");
-        Opstack.delCookie("lc-history-path");
-        $("#big_shade").remove();
-        return $window.location.href = '/login';
+        $rootScope.islogin = false;
+        window.delCookie("lightdocker");
+        $location.path("/login")
+        // return $window.location.href = '/login';
       }
 
       return authService;

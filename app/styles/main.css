@@ -30,6 +30,7 @@ body {
 .primary-text-color    { color: #212121; }
 .secondary-text-color  { color: #727272; }
 .divider-color         { border-color: #B6B6B6; }
+.thead-back{background-color:#EDF0F5;}
 
 [ng-cloak]{
   display: none;
@@ -269,33 +270,39 @@ md-menu-item{
   width:0;
 }
 #content{
-  padding:0 0 30px 180px;
+  padding:0 0 0px 180px;
   transition:all;
   transition-duration:300ms;
 }
 .minside #content{
   padding:0 0 30px 50px;
 }
-.inner_content{
+/*.inner_content{
   padding:15px;
   margin:0 auto;
 }
+*/
+.inner_content {
+    padding: 15px;
+    margin: 0 auto;
 
+    /*overflow: auto;
+    position: fixed;
+    bottom: 55px;
+    top: 45px;
+    left: 180px;
+    right: 0;
+    transition: all;
+    transition-duration: 300ms;*/
+}
 /* Custom page footer */
 .footer {
   padding-left: 180px!important;
   color: #777;
   text-align: center;
-  /*
-  padding-left: 180px!important;
-    color: #777;
-    border-top: 1px solid #e5e5e5;
-    text-align: center;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    z-index:-1;
-   */
+  /*position: fixed;
+  width: 100%;
+  bottom: 0;*/
 }
 .minside .footer{
   padding-left:50px!important;
@@ -975,6 +982,37 @@ form .md-subheader {
   padding: 8px 8px 8px 0;
   /*height: 72px;*/
 }
+.md-table-content-sub-row{
+  background-color: #EDF0F5;
+  /*display: none;*/
+}
+.animate-show{
+  -webkit-transition:opacity ease 0.2s;
+  transition:opacity ease 0.2s;
+  -webkit-transition:display ease 0.5s;
+  transition:display ease 0.5s;
+  line-height:20px;
+  opacity:1;
+  padding:10px;
+}
+.animate-show.hide{
+  line-height:0;
+  opacity:0;
+  padding:0 10px;
+  display:none;
+}
+.md-table-content-sub-row td{
+  white-space: nowrap;
+  font-size: 0.8em;
+  padding: 4px 4px 4px 20px;
+}
+.md-table-content-sub-row td ul{
+  list-style: none;
+}
+.md-table-content-sub-row td ul li{
+  float:left;
+  margin:0 10px;
+}
 
 .md-table-td-more {
   max-width:72px;
@@ -1043,6 +1081,21 @@ md-checkbox{
   margin-top: 24px;
 }
 */
+.left-label{
+  padding-left:100px;
+}
+.left-label label{
+    float: left;
+    display: inline;
+    margin-left: -50px;
+    top: -7px;
+    margin-top: 8px;
+    order:0!important;
+}
+.line-radio md-radio-button{
+  float: left;
+  margin:0 10px;
+}
 /*
 switch page
  */

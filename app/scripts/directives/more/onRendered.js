@@ -39,6 +39,7 @@ define(['angular','colresize','socket'],function(angular,colresize,io){
         thumbs:'=', 
         count: '=',
         links:'=',
+        func:'=',
         isselect:'@',
         selected:'=' ,
         modal:'='

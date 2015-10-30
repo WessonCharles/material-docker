@@ -2,8 +2,8 @@
 
 define(['angular','modal'],function(angular,modal){
 	return angular.module("ThCofAngSeed.pod_ctrl",['ThCofAngSeed.services.formDataObject'])
-	.controller('podctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$compile','restful','Notify',
-		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$compile,restful,Notify){
+	.controller('podctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$compile','restful','Notify','$mdBottomSheet',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$compile,restful,Notify,$mdBottomSheet){
 			/**
 	         * buttondown example
 	         */
@@ -35,7 +35,7 @@ define(['angular','modal'],function(angular,modal){
 
 	        $scope.toggleSearch = false;
 	        	console.time("restful game");
-	        var plat = restful.action({type:"@id"},"http://42.51.161.236:8337/:id/rc");
+	        var plat = restful.action({type:"@id"},"http://42.51.161.236:8337/:id/app");
 	        console.log($rootScope.current_tenant)
 	        var pl = plat.get({id:$rootScope.current_tenant.id},function(e){
 	        	console.timeEnd("restful game");
@@ -46,12 +46,18 @@ define(['angular','modal'],function(angular,modal){
 		        $scope.headers = [{
 		        	name:'名称',
 		        	field:'name'
-		        },{
-		        	name:'源版本',
-		        	field:'resourceVersion'
+		        // },{
+		        // 	name:'源版本',
+		        // 	field:'resourceVersion'
 		        },{
 		        	name:'状态',
 		        	field:'status'
+		        },{
+		        	name:'镜像',
+		        	field:'images'
+		        },{
+		        	name:'服务地址',
+		        	field:'selfLink'
 		        },{
 		        	name:'创建时间',
 		        	field:'createtime'
@@ -74,8 +80,11 @@ define(['angular','modal'],function(angular,modal){
 		        		"name":s.name,
 		        		"resourceVersion":s.resourceVersion,
 		        		"status":s.status.observedGeneration,
+		        		"images":s.images||"",
+		        		"selfLink":s.selfLink,
 		        		"createtime":time,
-		        		"collections":s.spec.template.spec.containers
+		        		"collections":s.spec.template.spec.containers,
+		        		"subshow":false
 		        	};
 		        	$scope.content.push(obj);
 		        }
@@ -113,15 +122,25 @@ define(['angular','modal'],function(angular,modal){
 		         * [请确保 custom，sortable,和headers中的field一一对应，并且拼写相同]
 		         * @type {Object}
 		         */
-		        $scope.custom = {name: 'bold', resourceVersion:'grey',status: 'grey',createtime:'grey'};
-		        $scope.sortable = ['name','resourceVersion','status','createtime'];
+		        $scope.custom = {name: 'bold', status:'grey',images: 'grey',selfLink:'grey',createtime:'grey'};
+		        $scope.sortable = ['name','status','images','selfLink','createtime'];
 		        $scope.count = 100;
-		        $scope.links = '/applications';
+		        // $scope.links = '/applications';
 		        $scope.selected = [];
+		       	//如果不是links 就是func方法
+		       	$scope.func = function($event){
+		       		$mdBottomSheet.show({
+				      templateUrl: 'module/app_application/app-bottom-detail.html',
+				      controller: 'appdetailctrl',
+				      targetEvent: $event,
+				      parent:".inner_content"
+				    }).then(function(clickedItem) {
+				    });
+		       	}
 
 		        // $scope.loadtable = function(t){
 		        	// console.log(t);
-	        	var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count" isselect="true" selected="selected" links="links"></md-table>')($scope);
+	        	var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count" isselect="true" selected="selected" links="links" func="func"></md-table>')($scope);
 	        	$("#prolist").html(code);
 		        // }
 		       	$scope.showselected = function(){
@@ -129,7 +148,11 @@ define(['angular','modal'],function(angular,modal){
 		       	}
 	        });
 	        $scope.$on("$viewContentLoaded",function(){
-		        	// Modal.init("aaa");
+	        	$(".inner_content").css("height",$window.innerHeight-120).css("position","relative");
+
+	        	$(window).resize(function(){
+	        		$(".inner_content").css("height",$window.innerHeight-120).css("position","relative");
+	        	})
 	        })
 
 
@@ -263,6 +286,11 @@ define(['angular','modal'],function(angular,modal){
 	        }
 		}
 	])
+	.controller('appdetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams){
+			
+		}
+	])
 	.controller('createappctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams,restful){
 			/**
@@ -281,6 +309,20 @@ define(['angular','modal'],function(angular,modal){
 				})
 			}
 			
+			/**
+			 * [创建应用的restful]
+			 * @type {Array}
+			 */
+			var App = restful.action({type:"@id"},"http://42.51.161.236:8337/:id/app");
+			$scope.checkname = function(){
+				var reg =/^[A-Za-z\d-.]+$/;
+				if(new RegExp(reg).test($scope.app_name)){
+					$scope.nameifmatchreg = "";
+				}else{
+					$scope.nameifmatchreg = "md-input-invalid";
+				}
+				console.log($scope.nameifmatchreg)
+			}
 
 			$scope.selected = [];
 		    $scope.toggle = function (item, list) {
@@ -303,29 +345,50 @@ define(['angular','modal'],function(angular,modal){
 						var obj = {
 							image:im.name,
 							tag:(im.name.indexOf(":")>-1?im.name.split(":")[1]:''),
-							name:"",//应用名称
+							// name:"",//应用名称
 							more_cfg:false,//控制高级选项是否显示
 							env:[],//环境配置
+							ports:[],//端口配置
 							tempobj:{},
+							portobj:{}
 						}
 						$scope.images_config.push(obj);
 					}
+				}else if(n==2){
+					var reqdata = [];
+					for(var i=0;i<$scope.images_config.length;i++){
+						var im = $scope.images_config[i];
+						var obj = {
+							// name:im.name,
+							image:im.image+":"+im.tag,
+						};
+						console.log(obj.image)
+						obj.image = obj.image.replace(/\s+/g, "");
+						console.log(obj.image)
+						if(im.env.length>0)obj.env = im.env;
+						if(im.ports.length>0)obj.ports  = im.ports;
+						delete obj.ports;
+						reqdata.push(obj);
+					}
+					var ap = App.save({id:$rootScope.current_tenant.id},{name:$scope.app_name,containers:reqdata},function(){
+						console.log(ap)
+						// ap.name = $scope.app_name;
+						// ap.containers = reqdata;
+						// ap.$save();
+					});
+					
+					// App.save({name:$scope.app_name,containers:reqdata},function())
+
 				}
 			}
-			$scope.removeOneImcfgenv = function(one,list){
-				for(var i = 0;i<list.length;i++){
-					if(one.name==list[i].name&&one.value==list[i].value){
-						list.splice(i,1);
-						break;
-					}
-				}
+			$scope.removeOneImcfgpro = function(one,list){
+				list.splice(list.indexOf(one),1);
 			}
 
 
 			var image = restful.action({type:"@id"},"http://42.51.161.236:8337/:id/images");
 	        var im = image.get({id:$rootScope.current_tenant.id},function(e){
-	        	console.log(JSON.parse(im.metadata))
-	        	$scope.images = JSON.parse(im.metadata);
+	        	$scope.images = im.metadata?JSON.parse(im.metadata):[];
 	        });
 
 		}
