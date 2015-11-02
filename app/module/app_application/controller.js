@@ -41,7 +41,7 @@ define(['angular','modal'],function(angular,modal){
 	        	console.timeEnd("restful game");
 
 	        	console.time("rendered table")
-		        Notify.showSimpleToast("应用列表请求成功");
+		        Notify.showSimpleToast("应用列表请求成功",1);
 		        console.log(pl.metadata)
 		        $scope.headers = [{
 		        	name:'名称',
@@ -133,7 +133,7 @@ define(['angular','modal'],function(angular,modal){
 				      templateUrl: 'module/app_application/app-bottom-detail.html',
 				      controller: 'appdetailctrl',
 				      targetEvent: $event,
-				      parent:".inner_content"
+				      parent:"#content"
 				    }).then(function(clickedItem) {
 				    });
 		       	}

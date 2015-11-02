@@ -116,6 +116,13 @@
           .filter(function(pos) { return _t.toastPosition[pos]; })
           .join(' ');
       };
+      _t.getTheme = function(code){
+        var theme = "";
+        if(code==1)theme="teal";
+        if(code==0)theme="default";
+        if(code==-1)theme="deep orange";
+        return theme;
+      }
       function sanitizePosition() {
         var current = _t.toastPosition;
         if ( current.bottom && last.top ) current.top = false;
@@ -133,11 +140,13 @@
           position: _t.getToastPosition()
         });
       };
-      Notify.showSimpleToast = function(content) {
+      Notify.showSimpleToast = function(content,code) {
+        if(code==null)code=1;
         $mdToast.show(
           $mdToast.simple()
             .content(content)
             .position(_t.getToastPosition())
+            .theme(_t.getTheme(code))
             .hideDelay(3000)
         );
       };

@@ -271,12 +271,13 @@ md-menu-item{
   width:0;
 }
 #content{
-  padding:0 0 0px 180px;
+  margin:0 0 0px 180px;
+  position:relative;
   transition:all;
   transition-duration:300ms;
 }
 .minside #content{
-  padding:0 0 30px 50px;
+  margin:0 0 30px 50px;
 }
 /*.inner_content{
   padding:15px;
@@ -1533,4 +1534,22 @@ p md-radio-group{
 }
 md-list-item.md-3-line.md-long-text, md-list-item.md-3-line>.md-no-style.md-long-text {
     margin: 1.6em;
+}
+/**
+ * 通知背景色
+ */
+md-toast.md-cyan-theme{
+  background-color: #00BCD4;
+}
+md-toast.md-deep.orange-theme{
+  background-color: #FF5722;
+}
+md-toast.md-default-theme{
+  background-color: #9E9E9E;
+}
+md-toast.md-teal-theme{
+  background-color:#009688;
+}
+md-toast.md-green-theme{
+  background-color: #4CAF50;
 }
