@@ -164,5 +164,33 @@
 
       return Notify;
     }])
+    .factory('allres',['$q','$rootScope','$location','$window',function ($q,$rootScope,$location,$window) {
+      /**
+       * 监控所有请求并针对部分返回做特殊操作
+       * @param  {[type]} $q        [description]
+       * @param  {[type]} $window)  {                             return {                request: function (config)           {                if(config.method [description]
+       * @param  {[type]} response: function      (response) {                      return response ||       $q.when(response);            }                      };              } [description]
+       * @return {[type]}           [description]
+       */
+      return {
+          request: function (config) {
+              if(config.method=="POST"||config.method=="PUT"||config.method=="DELETE"){
+                
+              }
+              return config;
+          },
+
+          response: function (response) {
+              if(response.data.code==10010){
+                $window.sessionStorage.removeItem("userInfo");
+                $window.sessionStorage.removeItem("islogin");
+                $rootScope.islogin = false;
+                window.delCookie("lightdocker");
+                $location.path("/login")
+              }
+              return response || $q.when(response);
+          }
+      };
+    }])
   });  
 // }());

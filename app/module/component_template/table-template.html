@@ -18,8 +18,8 @@
     </thead>
     <tbody on-rendered ng-repeat="c in content | filter:filters | startFrom:tablePage*count | limitTo: count  track by c.name" >
       <tr ng-click="openview($event.target);" class="md-table-content-row">
-        <td ng-if="isselect" class="md-table-content">
-          <md-checkbox  aria-label="checkbox" ng-checked="exists(c, selected)" ng-click="toggle(c, selected)">
+        <td ng-if="isselect" class="md-table-content" width="50px">
+          <md-checkbox style="width:50px" aria-label="checkbox" ng-checked="exists(c, selected)" ng-click="toggle(c, selected)">
              <!-- <span ng-if="exists(c, selected)">selected</span> -->
           </md-checkbox>
         </td>

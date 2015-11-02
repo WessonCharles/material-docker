@@ -155,6 +155,10 @@ define(['angular','modal'],function(angular,modal){
 	        	})
 	        })
 
+	        $http.get("http://42.51.161.236:8337/"+$rootScope.current_tenant.id+"/app/app-name").success(function(data){
+	        	console.log(data)
+	        })
+
 
 	        /**
 	         * tables
