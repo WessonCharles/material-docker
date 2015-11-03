@@ -7,6 +7,10 @@ define(['angular','app'], function(angular,app) {
             templateUrl: 'module/app_image/images.html',
             controller: 'imagesctrl'
         })
+        route.when('/image/create-image',{
+            templateUrl:'module/app_image/create-image.html',
+            controller:'createimagectrl'
+        })
         // route.when('/projects/:id',{
         //     templateUrl:'module/app_project/projects-detail.html',
         //     controller:'prodetailctrl'

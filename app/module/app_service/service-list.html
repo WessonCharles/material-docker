@@ -9,6 +9,9 @@
           <md-icon class="fa fa-trash-o fa-lg"></md-icon>
           添加Service
         </button>
+        <button md-button class="md-raised md-button" href="/image/create-image">
+          创建一个
+        </button>
         <div id="modal" class="modal modal__bg" role="dialog" aria-hidden="true">
           <div class="modal__dialog">
             <div class="modal__content">
@@ -36,7 +39,12 @@
                             </div>
                           </md-input-container>
                           <div flex class="noshadow" initmodal style="padding: 29px 0px 29px 20px;">
-                              <span>还没有镜像？</span><a class="md-raised md-button modal__trigger" data-modal="#imageform">创建一个</a>
+                              <span>还没有镜像？</span>
+                              <button md-button class="md-raised md-button" href="/image/create-image">
+                                创建一个
+                              </button>
+                              <!-- <a md-button href="/image/create-image" class="md-raised md-button">创建一个</a> -->
+                              <!--<a class="md-raised md-button modal__trigger" data-modal="#imageform">创建一个</a>-->
                           </div>
                         </div> 
                       </md-content>
@@ -155,62 +163,5 @@
     <!-- </div>   -->
   </div>
 
-  <div id="imageform" class="modal modal__bg" role="dialog" aria-hidden="true">
-      <div class="modal__dialog">
-        <div class="modal__content">
-          <h2>创建Image</h2>
-          <form>
-            <md-input-container>
-              <label>Image Name</label>
-              <input ng-model="image.name" type="text" ng-required="true">
-            </md-input-container>
-            <md-content class="md-padding">
-              <label>代码源</label>
-              <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="URL">
-                  <md-content class="md-padding">
-                  </md-content>
-                </md-tab>
-                <md-tab label="Github">
-                  <md-content class="md-padding">
-                  </md-content>
-                </md-tab>
-                <md-tab label="GitCafe">
-                  <md-content class="md-padding">
-                  </md-content>
-                </md-tab>
-                <md-tab label="GitLabe">
-                  <md-content class="md-padding">
-                  </md-content>
-                </md-tab> 
-              </md-tabs>   
-            </md-content>
-            <md-subheader class="md-primary">构建位置</md-subheader>
-              <div layout="" layout-sm="column">
-                <md-input-container flex class="noshadow">
-                  <label>路径</label>
-                  <input ng-model="image.name" type="text" ng-required="true">
-                </md-input-container>
-                <md-input-container flex class="noshadow">
-                  <label>Dockerfile</label>
-                  <input ng-model="image.name" type="text" ng-required="true">
-                </md-input-container>
-              </div>
-            <md-subheader class="md-primary">发布镜像</md-subheader>
-              <md-radio-group layout="" layout-sm="column" ng-model="image.group">
-                <md-radio-button flex class="noshadow" value="Apple" class="md-primary">仓库</md-radio-button>
-                <md-radio-button flex class="noshadow" value="Banana"> Docker Hub </md-radio-button>
-                <md-radio-button flex class="noshadow" value="Mango">私有仓库</md-radio-button>
-              </md-radio-group>
-              <div layout="row">
-                  <md-button ng-click="clearValue()" ng-disabled="!project" style="margin-right: 20px;">清除</md-button>
-                  <md-button ng-click="save()" ng-disabled="myForm.$invalid" class="md-primary" layout layout-align="center end">保存</md-button>
-              </div>
-          </form>
-        </div>
-        <a class="modal__close demo-close">
-          <i class="fa fa-times"></i>
-        </a>
-      </div>
-  </div>
+ 
 </div> 

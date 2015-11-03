@@ -94,6 +94,7 @@
         window.sessionStorage.removeItem("islogin");
         $rootScope.islogin = false;
         window.delCookie("lightdocker");
+        delete $http.defaults.headers.common['X-Auth-Token']
         $location.path("/login")
         // return $window.location.href = '/login';
       }
@@ -116,6 +117,13 @@
           .filter(function(pos) { return _t.toastPosition[pos]; })
           .join(' ');
       };
+      _t.getTheme = function(code){
+        var theme = "";
+        if(code==1)theme="green";
+        if(code==0)theme="default";
+        if(code==-1)theme="deep orange";
+        return theme;
+      }
       function sanitizePosition() {
         var current = _t.toastPosition;
         if ( current.bottom && last.top ) current.top = false;
@@ -133,11 +141,13 @@
           position: _t.getToastPosition()
         });
       };
-      Notify.showSimpleToast = function(content) {
+      Notify.showSimpleToast = function(content,code) {
+        if(code==null)code=1;
         $mdToast.show(
           $mdToast.simple()
             .content(content)
             .position(_t.getToastPosition())
+            .theme(_t.getTheme(code))
             .hideDelay(3000)
         );
       };
@@ -164,5 +174,40 @@
 
       return Notify;
     }])
+    .factory('allres',['$q','$rootScope','$location','$window',function ($q,$rootScope,$location,$window) {
+      /**
+       * 监控所有请求并针对部分返回做特殊操作
+       * @param  {[type]} $q        [description]
+       * @param  {[type]} $window)  {                             return {                request: function (config)           {                if(config.method [description]
+       * @param  {[type]} response: function      (response) {                      return response ||       $q.when(response);            }                      };              } [description]
+       * @return {[type]}           [description]
+       */
+      return {
+          request: function (config) {
+              if(config.method=="POST"||config.method=="PUT"||config.method=="DELETE"){
+                
+              }
+              return config;
+          },
+
+          response: function (response) {
+              if(response.data.code==10010){
+                $window.sessionStorage.removeItem("userInfo");
+                $window.sessionStorage.removeItem("islogin");
+                $rootScope.islogin = false;
+                window.delCookie("lightdocker");
+                // delete $http.defaults.headers.common['X-Auth-Token'];
+                $location.path("/login")
+              }
+              return response || $q.when(response);
+          }
+      };
+    }])
+    .factory('instance',function(){
+      /**
+       * 这是一个兄弟controller间传值的简单服务
+       */
+      return {};
+    })
   });  
 // }());

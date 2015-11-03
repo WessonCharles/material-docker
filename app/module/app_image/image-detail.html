@@ -2,8 +2,8 @@
     <div layout="row"  class="unshadow">
       <div flex  class="noshadow">
         <md-button class="md-grid-item-content">
-          <md-icon style="width:auto;" class="fa fa-3x fa-database"></md-icon>
-          <div class="md-grid-text"> mysql </div>
+          <md-icon style="width:auto;" class="fa fa-3x fa-{{current_image.icon||'image'}}"></md-icon>
+          <div class="md-grid-text"> {{current_image.name}} </div>
         </md-button>
       </div>
     </div>
@@ -12,8 +12,20 @@
         <md-content>
           <md-tabs md-dynamic-height md-no-pagination="true" md-swipe-content="false">
             <md-tab label="简介">
-              <!-- <md-content class="md-padding"> -->
-                <md-list>
+              <md-content class="md-padding" onview data-content="{{current_image.readme}}">
+                
+              </md-content>
+            </md-tab>
+            <md-tab label="服务接口">
+              <md-content class="md-padding">
+              </md-content>
+            </md-tab>
+            <md-tab label="Dockfile">
+              <md-content class="md-padding" onview data-content="{{current_image.dockerfile}}">
+              </md-content>
+            </md-tab>
+            <md-tab label="版本">
+              <md-list>
                   <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
                     <div class="md-no-style md-list-item-inner">
                       <md-icon class="fa fa-tags"></md-icon>
@@ -39,19 +51,6 @@
                     </div>
                   </md-list-item>
                 </md-list>
-              <!-- </md-content> -->
-            </md-tab>
-            <md-tab label="服务接口">
-              <md-content class="md-padding">
-              </md-content>
-            </md-tab>
-            <md-tab label="Dockfile">
-              <md-content class="md-padding">
-              </md-content>
-            </md-tab>
-            <md-tab label="版本">
-              <md-content class="md-padding">
-              </md-content>
             </md-tab>
           </md-tabs>
         </md-content>
