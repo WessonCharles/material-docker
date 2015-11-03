@@ -20,6 +20,7 @@ define([
       'ngRoute',
       'ngResource',
       'ngMaterial',
+      'ngImgCrop',
       'ThCofAngSeed.configs',
       'ThCofAngSeed.services.formDataObject',
       'ThCofAngSeed.services',
@@ -33,6 +34,8 @@ define([
       
       function($scope,$http,$rootScope,$location,$timeout,$filter,$window,$route,AuthService){
         $scope.go = 1;
+
+        $scope.baseurl = "http://42.51.161.236:8337/";
         /**
          * [判断是否登陆，然后选择跳转不同的view]
          * @param  {[type]} window.getCookie("lightdocker") [description]
@@ -68,6 +71,7 @@ define([
         }else{
           $rootScope.islogin = false;
           $location.path("/login");
+          delete $http.defaults.headers.common['X-Auth-Token'];
         }
         $scope.toggleside = function(){
           $("body .main").toggleClass("minside");

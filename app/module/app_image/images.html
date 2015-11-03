@@ -2,7 +2,7 @@
   <div class="button-title">
     <div layout="row" layout-margin >
       <div flex="80" class="noshadow">
-        <button class="md-raised md-button modal__trigger" data-modal="#modal">
+        <button  md-button class="md-raised md-button" href="/image/create-image">
           <md-icon class="fa fa-cog fa-lg"></md-icon>
           制作镜像
         </button>
@@ -52,7 +52,7 @@
                   <md-bottom-sheet class="md-grid" style="position:relative;border:none;z-index:0">
                     <md-list>
                       <md-list-item ng-repeat="item in items">
-                        <md-button class="md-grid-item-content" ng-click="listItemClick($index)">
+                        <md-button class="md-grid-item-content" ng-click="listItemClick($index,item.id)">
                           <md-icon class="fa fa-3x fa-{{item.icon}}"></md-icon>
                           <div class="md-grid-text"> {{ item.name }} </div>
                         </md-button>

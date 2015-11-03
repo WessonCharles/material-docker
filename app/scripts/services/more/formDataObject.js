@@ -94,6 +94,7 @@
         window.sessionStorage.removeItem("islogin");
         $rootScope.islogin = false;
         window.delCookie("lightdocker");
+        delete $http.defaults.headers.common['X-Auth-Token']
         $location.path("/login")
         // return $window.location.href = '/login';
       }
@@ -118,7 +119,7 @@
       };
       _t.getTheme = function(code){
         var theme = "";
-        if(code==1)theme="teal";
+        if(code==1)theme="green";
         if(code==0)theme="default";
         if(code==-1)theme="deep orange";
         return theme;
@@ -195,11 +196,18 @@
                 $window.sessionStorage.removeItem("islogin");
                 $rootScope.islogin = false;
                 window.delCookie("lightdocker");
+                // delete $http.defaults.headers.common['X-Auth-Token'];
                 $location.path("/login")
               }
               return response || $q.when(response);
           }
       };
     }])
+    .factory('instance',function(){
+      /**
+       * 这是一个兄弟controller间传值的简单服务
+       */
+      return {};
+    })
   });  
 // }());

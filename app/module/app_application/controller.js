@@ -35,7 +35,7 @@ define(['angular','modal'],function(angular,modal){
 
 	        $scope.toggleSearch = false;
 	        	console.time("restful game");
-	        var plat = restful.action({type:"@id"},"http://42.51.161.236:8337/:id/app");
+	        var plat = restful.action({type:"@id"},$scope.baseurl+":id/app");
 	        console.log($rootScope.current_tenant)
 	        var pl = plat.get({id:$rootScope.current_tenant.id},function(e){
 	        	console.timeEnd("restful game");
@@ -155,7 +155,7 @@ define(['angular','modal'],function(angular,modal){
 	        	})
 	        })
 
-	        $http.get("http://42.51.161.236:8337/"+$rootScope.current_tenant.id+"/app/app-name").success(function(data){
+	        $http.get($scope.baseurl+$rootScope.current_tenant.id+"/app/app-name").success(function(data){
 	        	console.log(data)
 	        })
 
@@ -307,7 +307,7 @@ define(['angular','modal'],function(angular,modal){
 
 			$scope.hash_tags = {};//镜像对应的tags
 			$scope.gethashtag = function(name){
-				$http.get("http://42.51.161.236:8337/"+$rootScope.current_tenant.id+"/tags/"+name).success(function(data){
+				$http.get($scope.baseurl+$rootScope.current_tenant.id+"/tags/"+name).success(function(data){
 					console.log(data)
 					$scope.hash_tags[name] = data["metadata"];
 				})
@@ -317,7 +317,7 @@ define(['angular','modal'],function(angular,modal){
 			 * [创建应用的restful]
 			 * @type {Array}
 			 */
-			var App = restful.action({type:"@id"},"http://42.51.161.236:8337/:id/app");
+			var App = restful.action({type:"@id"},$scope.baseurl+":id/app");
 			$scope.checkname = function(){
 				var reg =/^[A-Za-z\d-.]+$/;
 				if(new RegExp(reg).test($scope.app_name)){
@@ -390,9 +390,9 @@ define(['angular','modal'],function(angular,modal){
 			}
 
 
-			var image = restful.action({type:"@id"},"http://42.51.161.236:8337/:id/images");
+			var image = restful.action({type:"@id"},$scope.baseurl+":id/images");
 	        var im = image.get({id:$rootScope.current_tenant.id},function(e){
-	        	$scope.images = im.metadata?JSON.parse(im.metadata):[];
+	        	$scope.images = im.metadata||[];
 	        });
 
 		}

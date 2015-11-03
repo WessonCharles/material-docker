@@ -36,7 +36,9 @@ require.config({
 		colresize:'../libs/colresize/colresize',
 		modernizr:'../libs/custom/modernizr.custom',
 		socket:'../libs/term.js-master/src/socket.io',
-		term:'../libs/term.js-master/src/term'
+		term:'../libs/term.js-master/src/term',
+		markdown:'../libs/markdown/markdown',
+		imgcrop:'../libs/ngImgCrop/ng-img-crop'
 	},
 	shim:{
 		'angular' : {'exports' : 'angular'},
@@ -50,7 +52,9 @@ require.config({
         'modernizr':{'exports':'modernizr'},
         'colresize':['jquery'],
         'socket':{'exports':'socket'},
-        'term':{'exports':'term'}
+        'term':{'exports':'term'},
+        'markdown':{'exports':'markdown'},
+        'imgcrop':['angular']
 	},
 	priority: [
         'angular',
@@ -71,6 +75,8 @@ require([
 	'colresize',
 	'socket',
 	'term',
+	'markdown',
+	'imgcrop',
 	'../module/routers',
 	'../module/app_application/router',
 	'../module/app_service/router',

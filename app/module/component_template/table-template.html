@@ -13,7 +13,7 @@
             <i ng-show="!reverse && h.field == predicate" class="fa fa-unsorted"></i>
           </a>
           <span ng-if="!handleSort(h.field)">{{h.name}}</span></th>
-        <th class="md-table-header">More Action</th>
+        <th class="md-table-header">操作</th>
       </tr>
     </thead>
     <tbody on-rendered ng-repeat="c in content | filter:filters | startFrom:tablePage*count | limitTo: count  track by c.name" >
