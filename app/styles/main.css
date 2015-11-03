@@ -22,7 +22,8 @@ body {
     color: #556A74;
     -webkit-font-smoothing: antialiased;
     /*font-family: 'sans-serif',arial;*/
-    font-family: "Microsoft JhengHei",arial;
+    /*font-family: "Microsoft JhengHei",arial;*/
+    font-family: "Helvetica Neue",Helvetica,"Microsoft YaHei",Arial,"宋体","Hiragino Sans GB",STHeiti,"WenQuanYi Micro Hei",SimSun,sans-serif;
     font-weight: 900;
 }
 
@@ -186,7 +187,7 @@ md-menu-item{
   width:50px;
 }
 .navbar-logo{
-  height: 50px;
+  height: 51px;
   text-align: center;
   /*background-color: #2196F3;*/
   background-color: #EDF0F5;
@@ -194,6 +195,7 @@ md-menu-item{
   font-size: 24px;
   /*color:#fff;*/
   color:#1680DF;
+  font-weight: 600;
 }
 .header {
   position: fixed;
@@ -627,7 +629,9 @@ button:hover,a.md-button:hover,.md-button.md-raised:not([disabled]):hover{
 .nav>li>a {
     position: relative;
     display: inline-block;
-    padding: 10px 15px;
+    padding: 0 15px;
+    height: 39px;
+    line-height: 39px;
 }
 .nav>li>a:focus, .nav>li>a:hover {
     /*text-decoration: none;*/
