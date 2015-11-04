@@ -52,6 +52,7 @@ define(['angular','modal'],function(angular,modal){
 	        $scope.selected = [];
 	        $scope.custom = {name: 'bold', description:'grey',last_modified: 'grey'};
 	        $scope.sortable = ['name', 'description', 'last_modified'];
+	        $scope.links = "/service";
 	        // $scope.thumbs = 'thumb';
 	        $scope.count = 5;
 
@@ -66,6 +67,11 @@ define(['angular','modal'],function(angular,modal){
 	        		$(t).parents(".switchdiv").addClass("right");
 	        	}
 	        }
+		}
+	])
+	.controller('servicedetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams){
+			
 		}
 	])		
 })

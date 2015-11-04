@@ -7,10 +7,10 @@ define(['angular','app'], function(angular,app) {
             templateUrl: 'module/app_service/service-list.html',
             controller: 'servicectrl'
         })
-        // route.when('/projects/:id',{
-        //     templateUrl:'module/app_project/projects-detail.html',
-        //     controller:'prodetailctrl'
-        // })
+        route.when('/service/:id',{
+            templateUrl:'module/app_service/service-detail.html',
+            controller:'servicedetailctrl'
+        })
         
     }]);
 });

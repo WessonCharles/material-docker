@@ -84,6 +84,12 @@ a:focus,input,textarea,button,md-button,md-table:focus {
      -moz-outline:none;
      outline: 0;
 }
+md-input-container label span{
+  position: absolute;
+  right: 20px;
+  top: 1px;
+  font-size: 30px;
+}
 button{
   -moz-user-select: none;
     align-items: center;
@@ -338,7 +344,7 @@ md-menu-item{
 }
 /* Custom page footer */
 .footer {
-  padding-left: 180px!important;
+  /*padding-left: 180px!important;*/
   color: #777;
   text-align: center;
   /*position: fixed;
@@ -1613,3 +1619,44 @@ md-toast.md-danger-theme{
   width:100%;
   height:250px;
 }
+/**
+ * 页面切换前后的动画
+ */
+.animated {
+    -webkit-animation-duration:0.3s;
+    animation-duration:0.3s;
+    -webkit-animation-fill-mode:both;
+    animation-fill-mode:both
+}
+@-webkit-keyframes fadeInUpBig {
+    0% {
+        opacity:0;
+        -webkit-transform:translate3d(0, 2000px, 0);
+        transform:translate3d(0, 2000px, 0)
+    }
+    100% {
+        opacity:1;
+        -webkit-transform:none;
+        transform:none
+    }
+}
+@keyframes fadeInUpBig {
+    0% {
+        opacity:0;
+        -webkit-transform:translate3d(0, 2000px, 0);
+        transform:translate3d(0, 2000px, 0)
+    }
+    100% {
+        opacity:1;
+        -webkit-transform:none;
+        transform:none
+    }
+}
+.fadeInUpBig {
+    -webkit-animation-name:fadeInUpBig;
+    animation-name:fadeInUpBig
+}
+.hide{
+  opacity: 0;
+}
+

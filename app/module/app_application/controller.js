@@ -35,7 +35,7 @@ define(['angular','modal'],function(angular,modal){
 
 	        $scope.toggleSearch = false;
 	        	console.time("restful game");
-	        var plat = restful.action({type:"@id"},$scope.baseurl+":id/app");
+	        var plat = restful.action({type:"@id",name:"@name"},$scope.baseurl+":id/app/:name");
 	        console.log($rootScope.current_tenant)
 	        var pl = plat.get({id:$rootScope.current_tenant.id},function(e){
 	        	console.timeEnd("restful game");
@@ -143,10 +143,27 @@ define(['angular','modal'],function(angular,modal){
 	        	var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count" isselect="true" selected="selected" links="links" func="func"></md-table>')($scope);
 	        	$("#prolist").html(code);
 		        // }
-		       	$scope.showselected = function(){
-		       		console.log($scope.selected)
-		       	}
 	        });
+			$scope.deleteapp = function(){
+	       		var selects= $scope.selected;
+	       		console.log(selects)
+	       		for(var i=0;i<selects.length;i++){
+	       			(function(c){
+	       				$scope.content.forEach(function(app, index) {
+						    if (c.name === app.name) {
+						    	console.log("22")
+						      plat.delete({id:$rootScope.current_tenant.id,name:app.name}, function() {
+						        $scope.content.splice(index, 1);
+						        Notify.showSimpleToast("应用删除成功",1);
+						      });
+						    }
+						  });
+	       			})(selects[i]);	
+	       		}
+	       		
+	       		
+	       		
+	       	}
 	        $scope.$on("$viewContentLoaded",function(){
 	        	$(".inner_content").css("height",$window.innerHeight-120).css("position","relative");
 
@@ -376,9 +393,7 @@ define(['angular','modal'],function(angular,modal){
 					}
 					var ap = App.save({id:$rootScope.current_tenant.id},{name:$scope.app_name,containers:reqdata},function(){
 						console.log(ap)
-						// ap.name = $scope.app_name;
-						// ap.containers = reqdata;
-						// ap.$save();
+						$location.path("/applications")
 					});
 					
 					// App.save({name:$scope.app_name,containers:reqdata},function())
