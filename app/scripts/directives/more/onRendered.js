@@ -92,6 +92,8 @@ define(['angular','colresize','socket','imgcrop'],function(angular,colresize,io,
           var idx = list.indexOf(item);
           if (idx > -1) list.splice(idx, 1);
           else list.push(item);
+
+          $scope.selected = list;
         };
         $scope.exists = function (item, list) {
           if($scope.checkall){
@@ -113,19 +115,20 @@ define(['angular','colresize','socket','imgcrop'],function(angular,colresize,io,
         $(e).on("click",function(ev){
           ev.preventDefault();
           var links = $(this).attr("href");
-          var t = $(this).parents("tr"),
-          l = t[0].getBoundingClientRect().left,
-          to = t[0].getBoundingClientRect().top,
+          var istr = $(this).parents("tr").length>0;
+          var t = istr?$(this).parents("tr"):$(this).parent(),
+          l = istr?t[0].getBoundingClientRect().left-180:t[0].offsetLeft,//,
+          to = istr?t[0].getBoundingClientRect().top-50:t[0].offsetTop,//,
           w = t[0].offsetWidth,
           h = t[0].offsetHeight;
           t.addClass("bl-expand-tr");
-          var se = $('<section style="left:'+l+'px;top:'+to+'px;width:'+w+'px;height:'+h+'px">'
+          var se = $('<section style="left:'+l+'px;top:'+to+'px;width:'+w+'px;height:'+h+'px;position:absolute;">'
               +'<md-progress-circular md-mode="indeterminate" aria-valuemin="0" aria-valuemax="100" role="progressbar" class="md-default-theme" style="transform: scale(1);"><div class="md-spinner-wrapper"><div class="md-inner"><div class="md-gap"></div><div class="md-left"><div class="md-half-circle"></div></div><div class="md-right"><div class="md-half-circle"></div></div></div></div></md-progress-circular>'
             +'</section>');
           t.append(se);
           // setTimeout(function(){
-              var bl = $(".inner_content")[0].getBoundingClientRect().left,
-                  bt = $(".inner_content")[0].getBoundingClientRect().top,
+              var bl = $(".inner_content")[0].offsetLeft,//$(".inner_content")[0].getBoundingClientRect().left,
+                  bt = $(".inner_content")[0].offsetTop-50,//$(".inner_content")[0].getBoundingClientRect().top,
                   bw = $(".inner_content")[0].offsetWidth,
                   bh = $(".inner_content")[0].offsetHeight;
               if( !se.data( 'open' ) ) {
@@ -137,6 +140,7 @@ define(['angular','colresize','socket','imgcrop'],function(angular,colresize,io,
                   height:bh+'px'
                 })
                 se.data( 'open', true ).addClass( 'bl-expand bl-expand-top' );
+                // return;
                 setTimeout(function(){
                   console.log(links)
                   $location.path(links);
@@ -215,6 +219,14 @@ define(['angular','colresize','socket','imgcrop'],function(angular,colresize,io,
                * ]
                */
               setTimeout(function(){
+                // var its = window.location.pathname.split("/");
+                // var newlink = "";
+                // for(var i =0;i<its.length-1;i++){
+                //   var s = i==0?"":"/";
+                //   newlink+=s+its[i];
+                // }
+                // console.log(newlink)
+                // $location.path(newlink)
                 $window.history.back();
                 s.$apply()
               },500);

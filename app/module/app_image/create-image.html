@@ -10,14 +10,14 @@
        <md-content id="imageform" class="md-padding">
           <form name="myForm">
             <md-input-container>
-              <label>镜像名称</label>
+              <label>镜像名称<span>*</span></label>
               <input ng-model="image.name" type="text" ng-required="true">
             </md-input-container>
             <md-content>
               <label for="">镜像图标</label>
               <div layout="row" layout-margin layout-padding >
                 <div flex class="md-raised md-pink md-button md-default-theme">
-                    <label>选择图片: <input type="file" id="fileInput" /></label>
+                    <label>选择图片: <button type="button" style="margin-left:20px;width:100px;" class="md-raised md-icon-btn" ng-click="triggerfile()"><md-icon class="fa fa-upload"></md-icon></button><input type="file" id="fileInput" style="opacity:0;"/></label>
                     <div class="cropArea">
                       <img-crop area-type="square" result-image-size="90" image="myImage" result-image="myCroppedImage"></img-crop>
                     </div>
@@ -30,11 +30,19 @@
                 </div>
               </div>
             </md-content>
+            <md-input-container>
+              <label for="">分类</label>
+              <input type="text" ng-model="image.category">
+            </md-input-container>
             <md-content>
               <label>代码源</label>
               <md-tabs md-dynamic-height md-border-bottom>
                 <md-tab label="URL">
                   <md-content class="md-padding">
+                    <md-input-container ng-class="urlifmatchreg">
+                      <label for="">URL地址<span>*</span></label>
+                      <input type="text" ng-model="image.url" ng-keydown="checkurl()" ng-keyup="checkurl()">
+                    </md-input-container>
                   </md-content>
                 </md-tab>
                 <md-tab label="Github">
@@ -45,7 +53,7 @@
                   <md-content class="md-padding">
                   </md-content>
                 </md-tab>
-                <md-tab label="GitLabel">
+                <md-tab label="GitLabe">
                   <md-content class="md-padding">
                   </md-content>
                 </md-tab> 
@@ -54,23 +62,23 @@
             <md-subheader class="md-primary">构建位置</md-subheader>
               <div layout="" layout-sm="column">
                 <md-input-container flex class="noshadow">
-                  <label>路径</label>
-                  <input ng-model="image.name" type="text" ng-required="true">
+                  <label>路径<span>*</span></label>
+                  <input ng-model="image.dockerfile_dir" type="text" ng-required="true">
                 </md-input-container>
                 <md-input-container flex class="noshadow">
-                  <label>Dockerfile</label>
-                  <input ng-model="image.name" type="text" ng-required="true">
+                  <label>Dockerfile<span>*</span></label>
+                  <input ng-model="image.dockerfile_name" type="text" ng-required="true">
                 </md-input-container>
               </div>
-            <md-subheader class="md-primary">发布镜像</md-subheader>
+            <!-- <md-subheader class="md-primary">发布镜像</md-subheader>
               <md-radio-group layout="" layout-sm="column" ng-model="image.group">
                 <md-radio-button flex class="noshadow" value="Apple" class="md-primary">仓库</md-radio-button>
                 <md-radio-button flex class="noshadow" value="Banana"> Docker Hub </md-radio-button>
                 <md-radio-button flex class="noshadow" value="Mango">私有仓库</md-radio-button>
-              </md-radio-group>
+              </md-radio-group> -->
               <div align="right">
                 <md-button ng-click="clearValue()" style="margin-right: 20px;">清除</md-button>
-                <md-button ng-click="gostep(2)" ng-disabled="myForm.$invalid" class="md-primary" layout layout-align="center end">保存</md-button>
+                <md-button ng-click="createimage()" ng-disabled="myForm.$invalid" class="md-primary" layout layout-align="center end">保存</md-button>
               </div>
           </form>
       </md-content>

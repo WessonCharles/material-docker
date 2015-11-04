@@ -102,8 +102,24 @@ define([
             console.log(window.location.pathname)
             $route.reload();
         });
-
-        
+        /**
+         * [路由变化时，即页面变化时增加方法]
+         * @function 1 [页面转换动画
+         *           1）由一级页面向二级页面转换时的动画
+         *           和 一级页面向表单创建页面的转换
+         *           增加viewload 最外层可看到边框的div增加bl-main类
+         *           
+         * ]
+         * @param  {[type]} ){                     } [description]
+         * @return {[type]}     [description]
+         */
+        $rootScope.$on('$routeChangeSuccess',function(){
+            // 2）同样是一级页面之间的转换
+            if(window.location.pathname.split("/").length<3){
+              $("#content .inner_content").removeClass("fadeInUpBig").addClass("hide");
+              setTimeout(function(){$("#content .inner_content").addClass("fadeInUpBig");},10)
+            }
+        });
         /**
          * [页面加载完成，初始化弹出框]
          * @param  {[type]} ){                       Modal.init();        } [description]

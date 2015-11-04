@@ -83,7 +83,7 @@
 
       $httpProvider.interceptors.push(interceptor);
     }])
-    .provider('securityInterceptor', function(){
+    .provider('securityInterceptor',function(){
       /**
        * 监控返回错误的请求
        * @param  {[type]} ){                     this.$get [description]
@@ -94,8 +94,10 @@
             return promise.then(null, function(response) {
               console.log(response)
               if(response&&response.data&&response.data.error&&response.data.error.message=="Invalid user / password"){
-                  Opstack.showStatus("登录名或密码错误",3);
+                  
               }else if(response.status === 403 || response.status === 401) {//token过期或无效的token
+                console.log("I Dont know why")
+                window.location.href="/";
               }else if(response.status===500 || response.status===503){
               }
               return $q.reject(response);
