@@ -254,11 +254,16 @@ md-menu-item{
   color: #aeb9c2;
   text-align: center;
   line-height: 30px !important;
-  font-size: 12px;
+  font-size: 17px;
+  padding-top:5px;
   user-select: none;
   cursor: pointer;
   outline:none;
   -webkit-user-select: none;
+}
+.sidebar-set .fa-bars{
+  transform: rotate(90deg);
+  -webkit-transform:rotate(90deg);
 }
 .sidebar-ul{
   width:100%;
