@@ -19,9 +19,9 @@
                 <md-list ng-cloak>
                   <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
                     <div class="md-no-style md-list-item-inner">
-                      <p ng-init="$parent.image_tag='u'">选择镜像：
-                        <md-radio-group class="line" ng-modal="image_tag">
-                          <md-radio-button value="u" class="md-primary">常用</md-radio-button>
+                      <p>选择镜像：
+                        <md-radio-group class="line" ng-model="image_tag">
+                          <md-radio-button value="usually" class="md-primary">常用</md-radio-button>
                           <md-radio-button value="stack" class="md-primary">Stack</md-radio-button>
                           <md-radio-button value="public" class="md-primary">公有</md-radio-button>
                           <md-radio-button value="private" class="md-primary">私有</md-radio-button>
@@ -46,11 +46,33 @@
                     </div>
                   </md-list-item>
                   <md-divider></md-divider>
+                  <md-list-item role="listitem" ng-if="image_tag=='thrd'" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                    <md-input-container md-no-float class="nopaddingbot" style="width:50%;">
+                      <md-icon class="fa fa-search" ng-click="searchimage(search_image)"></md-icon>
+                      <input ng-model="search_image" type="text" style="margin:0;" placeholder="搜索镜像">
+                    </md-input-container>
+                  </md-list-item>
                   <md-subheader class="md-no-sticky">镜像列表</md-subheader>
-                  <md-list-item ng-repeat="img in images">
+                  <div ng-if="!images">
+                    <md-progress-circular md-mode="indeterminate" aria-valuemin="0" aria-valuemax="100" role="progressbar" class="md-default-theme" style="transform: scale(1);margin: 0 auto;">
+                      <div class="md-spinner-wrapper">
+                        <div class="md-inner">
+                          <div class="md-gap"></div>
+                          <div class="md-left">
+                            <div class="md-half-circle"></div>
+                          </div>
+                          <div class="md-right">
+                            <div class="md-half-circle"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </md-progress-circular>
+                  </div>
+                  <md-list-item ng-repeat="img in images | orderBy : '-star_number'">
                     <md-checkbox ng-checked="exists(img, selected)" ng-click="toggle(img,selected)"></md-checkbox>
-                    <p>{{img.name}}</p>
-                    <md-icon class="md-secondary" aria-label="Chat" md-svg-icon="communication:message"></md-icon>
+                    <label>{{img.name}}</label>
+                    <p ng-if="img.description">{{img.description}}</p>
+                    <md-icon style="position: absolute;top: 25px;right: 100px;color:#FFC107;" class="fa fa-star" aria-label="Chat" ><span style="color:#666;margin-left:5px;">{{img.star_number||0}}</span></md-icon>
                   </md-list-item>
                 </md-list>
                 <div  align="right">

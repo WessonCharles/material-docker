@@ -196,6 +196,7 @@
                 $window.sessionStorage.removeItem("islogin");
                 $rootScope.islogin = false;
                 window.delCookie("lightdocker");
+                $rootScope.deletoken()
                 // delete $http.defaults.headers.common['X-Auth-Token'];
                 $location.path("/login")
               }

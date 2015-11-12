@@ -2,8 +2,8 @@
 
 define(['angular','modal'],function(angular,modal){
 	return angular.module("ThCofAngSeed.pod_ctrl",['ThCofAngSeed.services.formDataObject'])
-	.controller('podctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$compile','restful','Notify','$mdBottomSheet',
-		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$compile,restful,Notify,$mdBottomSheet){
+	.controller('podctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$compile','restful','Notify','$mdBottomSheet','instance',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$compile,restful,Notify,$mdBottomSheet,instance){
 			/**
 	         * buttondown example
 	         */
@@ -81,9 +81,9 @@ define(['angular','modal'],function(angular,modal){
 		        		"resourceVersion":s.resourceVersion,
 		        		"status":s.status.observedGeneration,
 		        		"images":s.images||"",
-		        		"selfLink":s.selfLink,
+		        		"selfLink":"",
 		        		"createtime":time,
-		        		"collections":s.spec.template.spec.containers,
+		        		"collections":s.containers,
 		        		"subshow":false
 		        	};
 		        	$scope.content.push(obj);
@@ -128,7 +128,8 @@ define(['angular','modal'],function(angular,modal){
 		        // $scope.links = '/applications';
 		        $scope.selected = [];
 		       	//如果不是links 就是func方法
-		       	$scope.func = function($event){
+		       	$scope.func = function($event,c){
+		       		instance.current_container = c;
 		       		$mdBottomSheet.show({
 				      templateUrl: 'module/app_application/app-bottom-detail.html',
 				      controller: 'appdetailctrl',
@@ -172,9 +173,6 @@ define(['angular','modal'],function(angular,modal){
 	        	})
 	        })
 
-	        $http.get($scope.baseurl+$rootScope.current_tenant.id+"/app/app-name").success(function(data){
-	        	console.log(data)
-	        })
 
 
 	        /**
@@ -307,9 +305,23 @@ define(['angular','modal'],function(angular,modal){
 	        }
 		}
 	])
-	.controller('appdetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams',
-		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams){
-			
+	.controller('appdetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','instance',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams,instance){
+			$scope.container = instance.current_container;
+			$scope.getstatus = function(c){
+				var it = [];
+				for(var i in c){
+					it.push(i);
+				}
+				return it[0]?it[0]:'';
+			}
+			$scope.gettime = function(c){
+				if(JSON.stringify(c)!="{}"){
+					return $filter('date')(c[$scope.getstatus(c)].startedAt,"MM-dd-yyyy h:mma");
+				}else{
+					return '';
+				}
+			}
 		}
 	])
 	.controller('createappctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful',
@@ -324,12 +336,21 @@ define(['angular','modal'],function(angular,modal){
 
 			$scope.hash_tags = {};//镜像对应的tags
 			$scope.gethashtag = function(name){
-				$http.get($scope.baseurl+$rootScope.current_tenant.id+"/tags/"+name).success(function(data){
+				var it= name;
+				var url = "";
+				if(name.indexOf("index.docker.io")>-1){
+					url = "docker-hub/tags"+name.split("index.docker.io/")[1];
+				}else{
+					url = $rootScope.current_tenant.id+"/tags/"+name.split("/")[name.split("/").length-1];
+				}
+				$http.get($scope.baseurl+url).success(function(data){
 					console.log(data)
-					$scope.hash_tags[name] = data["metadata"];
+					$scope.hash_tags[it] = data["metadata"];
 				})
 			}
 			
+			$scope.image_tag='usually';
+
 			/**
 			 * [创建应用的restful]
 			 * @type {Array}
@@ -364,15 +385,17 @@ define(['angular','modal'],function(angular,modal){
 					for(var i = 0;i<$scope.selected.length;i++){
 						var im = $scope.selected[i];
 						var obj = {
-							image:im.name,
+							image:!im.is_official?(im.url+"/"+im.tenant_name+"/"+im.name):(im.url+"/"+im.name),
 							tag:(im.name.indexOf(":")>-1?im.name.split(":")[1]:''),
 							// name:"",//应用名称
 							more_cfg:false,//控制高级选项是否显示
 							env:[],//环境配置
 							ports:[],//端口配置
 							tempobj:{},
-							portobj:{}
+							portobj:{},
 						}
+						var reg = /\s+/g;
+						obj.image = obj.image.replace(reg, "");
 						$scope.images_config.push(obj);
 					}
 				}else if(n==2){
@@ -409,6 +432,15 @@ define(['angular','modal'],function(angular,modal){
 	        var im = image.get({id:$rootScope.current_tenant.id},function(e){
 	        	$scope.images = im.metadata||[];
 	        });
+
+	        $scope.searchimage = function(name){
+	        	$scope.images_config = [];
+	        	$scope.images = null;
+	        	var searchapi = restful.action({name:"@name"},$scope.baseurl+"docker-hub/search?name=:name");
+	        	var sa = searchapi.get({name:name},function(){
+	        		$scope.images = sa["metadata"];
+	        	})
+	        }
 
 		}
 	])			

@@ -13,6 +13,7 @@ define([
   "directives/directive",
   "filters",
   "../module/app_application/controller",
+  "../module/app_columns/controller",
   "../module/app_service/controller",
   "../module/app_image/controller",
   ],function(angular){
@@ -28,11 +29,12 @@ define([
       'ThCofAngSeed.directives',
       'ThCofAngSeed.filters',
       'ThCofAngSeed.pod_ctrl',
+      'ThCofAngSeed.columns_ctrl',
       'ThCofAngSeed.service_ctrl',
       'ThCofAngSeed.images_ctrl'
-  ]).controller("baseCtrl",["$scope", "$http","$rootScope", "$location","$timeout", "$filter","$window",'$route','AuthService',
+  ]).controller("baseCtrl",["$scope", "$http","$rootScope", "$location","$timeout", "$filter","$window",'$route','AuthService','$mdBottomSheet',
       
-      function($scope,$http,$rootScope,$location,$timeout,$filter,$window,$route,AuthService){
+      function($scope,$http,$rootScope,$location,$timeout,$filter,$window,$route,AuthService,$mdBottomSheet){
         $scope.go = 1;
 
         $scope.baseurl = "http://42.51.161.236:8337/";
@@ -102,6 +104,10 @@ define([
             console.log(window.location.pathname)
             $route.reload();
         });
+
+        $rootScope.$on('$routeChangeSuccess',function(){
+            $mdBottomSheet.hide();
+        });
         /**
          * [路由变化时，即页面变化时增加方法]
          * @function 1 [页面转换动画
@@ -115,10 +121,10 @@ define([
          */
         $rootScope.$on('$routeChangeSuccess',function(){
             // 2）同样是一级页面之间的转换
-            if(window.location.pathname.split("/").length<3){
+            // if(window.location.pathname.split("/").length<3){
               $("#content .inner_content").removeClass("fadeInUpBig").addClass("hide");
               setTimeout(function(){$("#content .inner_content").addClass("fadeInUpBig");},10)
-            }
+            // }
         });
         /**
          * [页面加载完成，初始化弹出框]
@@ -129,6 +135,13 @@ define([
           Modal.init();
         })
 
+        /**
+         * [deletoken 删除过期头]
+         * @return {[type]} [description]
+         */
+        $rootScope.deletoken = function(){
+          delete $http.defaults.headers.common['X-Auth-Token'];
+        }
 
         /**
          * [退出登陆，清除cookie以及登陆状态，并跳转到登陆页面]

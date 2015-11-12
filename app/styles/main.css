@@ -1664,4 +1664,17 @@ md-toast.md-danger-theme{
 .hide{
   opacity: 0;
 }
-
+.images_list{
+  position: absolute;
+    border: none;
+    z-index: 0;
+    transform: translate3d(0,8px,0);
+    top: 0;
+    background-color: #fff;
+}
+.md-list-item-text p{
+  margin: 5px 0;
+}
+md-bottom-sheet .md-subheader{
+  line-height:15px;
+}
