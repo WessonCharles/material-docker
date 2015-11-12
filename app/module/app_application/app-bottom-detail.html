@@ -1,64 +1,12 @@
 <md-bottom-sheet>
-    <div layout="row"  class="unshadow">
-      <div flex  class="noshadow">
-        <md-button class="md-grid-item-content">
-          <md-icon style="width:auto;" class="fa fa-3x fa-database"></md-icon>
-          <div class="md-grid-text"> mysql </div>
-        </md-button>
-      </div>
-    </div>
     <div layout="row" class="unshadow">
-      <div flex="60" class="noshadow bl-main">
+      <div flex='35'  class="noshadow">
         <md-content>
-          <md-tabs md-dynamic-height md-no-pagination="true" md-swipe-content="false">
-            <md-tab label="简介">
-              <!-- <md-content class="md-padding"> -->
-                <md-list>
-                  <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
-                    <div class="md-no-style md-list-item-inner">
-                      <md-icon class="fa fa-tags"></md-icon>
-                      <p class="ng-binding"> Latest </p>
-                    </div>
-                  </md-list-item>
-                  <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
-                    <div class="md-no-style md-list-item-inner">
-                      <md-icon class="fa fa-tags"></md-icon>
-                      <p class="ng-binding"> 5.6 </p>
-                    </div>
-                  </md-list-item>
-                  <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
-                    <div class="md-no-style md-list-item-inner">
-                      <md-icon class="fa fa-tags"></md-icon>
-                      <p class="ng-binding"> 5.4 </p>
-                    </div>
-                  </md-list-item>
-                  <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
-                    <div class="md-no-style md-list-item-inner">
-                      <md-icon class="fa fa-tags"></md-icon>
-                      <p class="ng-binding"> 5.3 </p>
-                    </div>
-                  </md-list-item>
-                </md-list>
-              <!-- </md-content> -->
-            </md-tab>
-            <md-tab label="服务接口">
-              <md-content class="md-padding">
-              </md-content>
-            </md-tab>
-            <md-tab label="Dockfile">
-              <md-content class="md-padding">
-              </md-content>
-            </md-tab>
-            <md-tab label="版本">
-              <md-content class="md-padding">
-              </md-content>
-            </md-tab>
-          </md-tabs>
-        </md-content>
-      </div>
-      <div flex='40'  class="noshadow">
-        <md-content>
-          <md-tabs md-dynamic-height md-border-bottom md-no-pagination="true" md-swipe-content="false">
+          <md-button class="md-grid-item-content">
+            <md-icon style="width:auto;" class="fa fa-3x fa-database"></md-icon>
+            <div class="md-grid-text"> {{container.name}} </div>
+          </md-button>
+          <!-- <md-tabs md-dynamic-height md-border-bottom md-no-pagination="true" md-swipe-content="false">
             <md-tab label="镜像信息">
                 <md-list>
                   <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
@@ -86,6 +34,93 @@
                     </div>
                   </md-list-item>
                 </md-list>
+            </md-tab> 
+          </md-tabs>-->
+        </md-content>
+      </div>
+      <div flex="65" class="noshadow bl-main">
+        <md-content>
+          <md-tabs md-dynamic-height md-no-pagination="true" md-swipe-content="false">
+            <md-tab label="组件">
+              <!-- <md-content class="md-padding"> -->
+              <div layout="row" layout-fill layout-padding >
+                <md-subheader class="md-primary">简介</md-subheader>
+                <div class="noshadow" flex>
+                    <md-list>
+                      <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                        <div class="md-list-item-text">
+                          <p class="ng-binding"> 名称： <label for="">{{container.name}}</label></p>
+                        </div>
+                      </md-list-item>
+                      <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                        <div class="md-list-item-text">
+                          <p class="ng-binding"> 镜像： <label for="">{{container.image}}</label></p>
+                        </div>
+                      </md-list-item>
+                      <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                        <div class="md-list-item-text">
+                          <p class="ng-binding"> 外网地址： <label for="">{{container.public_ip}}</label></p>
+                        </div>
+                      </md-list-item>
+                    </md-list>
+                </div>
+                <div class="noshadow" flex>
+                    <md-list>
+                      <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                        <div class="md-list-item-text">
+                          <p class="ng-binding"> 运行状态： <label for="">{{getstatus(container.state)}}</label></p>
+                        </div>
+                      </md-list-item>
+                      <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                        <div class="md-list-item-text">
+                          <p class="ng-binding"> 创建时间： <label for="">{{gettime(container.state)}}</label></p>
+                        </div>
+                      </md-list-item>
+                      <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                        <div class="md-list-item-text">
+                          <p class="ng-binding"> 内网地址：<label for="">{{container.private_ip}}</label> </p>
+                        </div>
+                      </md-list-item>
+                    </md-list>
+                </div>
+              </div>
+              <md-content class="md-padding">
+                <md-subheader class="md-primary">环境变量</md-subheader>
+                <table md-colresize="md-colresize" class="md-table">
+                <thead>
+                  <tr class="md-table-headers-row">
+                    <th class="md-table-header">
+                       <span>变量名</span>
+                    </th>
+                    <th class="md-table-header">
+                      <span >变量值</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody >
+                  <tr class="md-table-content-row"  ng-repeat="e in container.env track by $index">
+                    <td  class="md-table-content">
+                      <span>{{e.name}}</span>
+                    </td> 
+                    <td class="md-table-content">
+                      <span>{{e.value}}</span>
+                    </td>
+                   </tr>
+                </tbody>
+                </table>    
+              </md-content>
+            </md-tab>
+            <md-tab label="实例监控">
+              <md-content class="md-padding">
+              </md-content>
+            </md-tab>
+            <md-tab label="日志">
+              <md-content class="md-padding">
+              </md-content>
+            </md-tab>
+            <md-tab label="事件">
+              <md-content class="md-padding">
+              </md-content>
             </md-tab>
           </md-tabs>
         </md-content>

@@ -79,6 +79,7 @@ require([
 	'imgcrop',
 	'../module/routers',
 	'../module/app_application/router',
+	'../module/app_columns/router',
 	'../module/app_service/router',
 	'../module/app_image/router',
 	'app',
