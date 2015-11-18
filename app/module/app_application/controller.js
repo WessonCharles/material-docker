@@ -79,7 +79,7 @@ define(['angular','modal'],function(angular,modal){
 		        	var obj = {
 		        		"name":s.name,
 		        		"resourceVersion":s.resourceVersion,
-		        		"status":s.status.observedGeneration,
+		        		"status":"",
 		        		"images":s.images||"",
 		        		"selfLink":"",
 		        		"createtime":time,
@@ -339,7 +339,7 @@ define(['angular','modal'],function(angular,modal){
 				var it= name;
 				var url = "";
 				if(name.indexOf("index.docker.io")>-1){
-					url = "docker-hub/tags"+name.split("index.docker.io/")[1];
+					url = "docker-hub/tags/"+name.split("index.docker.io/")[1];
 				}else{
 					url = $rootScope.current_tenant.id+"/tags/"+name.split("/")[name.split("/").length-1];
 				}
@@ -348,7 +348,7 @@ define(['angular','modal'],function(angular,modal){
 					$scope.hash_tags[it] = data["metadata"];
 				})
 			}
-			
+
 			$scope.image_tag='usually';
 
 			/**
@@ -375,45 +375,74 @@ define(['angular','modal'],function(angular,modal){
 		    $scope.exists = function (item, list) {
 		        return list.indexOf(item) > -1;
 		    };
+		    $http.get($scope.baseurl+"flavors/").success(function(data){
+				$scope.flavors = data["metadata"];
+			})
+		    // gethashtag(imcfg.image)
+		    $scope.getdata = function(img){
+		    	img.image = !img.is_official?(img.url+"/"+img.tenant_name+"/"+img.name):(img.url+"/"+img.name);
+		    	$scope.gethashtag(img.image);
+
+		    }
+		    $scope.images_config = [];
+		    $scope.savetobox = function(img){
+		    	if(!img.tag)Notify.showSimpleToast("请选择版本",-1);
+		    	if(!img.flavor)Notify.showSimpleToast("请选择配置",-1);
+		    	img.issave = !img.issave;
+		    	$scope.images_config.push({
+		    		name:img.name,
+		    		id:img.uuid,
+		    		image:img.image,
+		    		tag:img.tag,
+		    		flavor:img.flavor,
+		    		more_cfg:false,//控制高级选项是否显示
+					env:[],//环境配置
+					ports:[],//端口配置
+					tempobj:{},
+					portobj:{},
+		    	})
+		    }
 
 			$scope.gostep = function(n){
 				$scope.tabs[n] = !$scope.tabs[n];
 				$scope.createstep = n;
 				if(n==1){
-					// $scope.selected_images = ;//已选中的镜像，多个
-					$scope.images_config = [];
-					for(var i = 0;i<$scope.selected.length;i++){
-						var im = $scope.selected[i];
-						var obj = {
-							image:!im.is_official?(im.url+"/"+im.tenant_name+"/"+im.name):(im.url+"/"+im.name),
-							tag:(im.name.indexOf(":")>-1?im.name.split(":")[1]:''),
-							// name:"",//应用名称
-							more_cfg:false,//控制高级选项是否显示
-							env:[],//环境配置
-							ports:[],//端口配置
-							tempobj:{},
-							portobj:{},
-						}
-						var reg = /\s+/g;
-						obj.image = obj.image.replace(reg, "");
-						$scope.images_config.push(obj);
-					}
+					// for(var i = 0;i<$scope.selected.length;i++){
+					// 	var im = $scope.selected[i];
+					// 	var obj = {
+					// 		// image:!im.is_official?(im.url+"/"+im.tenant_name+"/"+im.name):(im.url+"/"+im.name),
+					// 		// tag:(im.name.indexOf(":")>-1?im.name.split(":")[1]:''),
+					// 		more_cfg:false,//控制高级选项是否显示
+					// 		// flavor:"",
+					// 		env:[],//环境配置
+					// 		ports:[],//端口配置
+					// 		tempobj:{},
+					// 		portobj:{},
+					// 	}
+					// 	var reg = /\s+/g;
+					// 	obj.image = obj.image.replace(reg, "");
+					// 	$scope.images_config.push(obj);
+					// }
 				}else if(n==2){
+
 					var reqdata = [];
 					for(var i=0;i<$scope.images_config.length;i++){
 						var im = $scope.images_config[i];
 						var obj = {
-							// name:im.name,
+							name:im.name,
 							image:im.image+":"+im.tag,
+							flavor_id:im.flavor
 						};
 						console.log(obj.image)
 						obj.image = obj.image.replace(/\s+/g, "");
 						console.log(obj.image)
 						if(im.env.length>0)obj.env = im.env;
 						if(im.ports.length>0)obj.ports  = im.ports;
-						delete obj.ports;
+						// delete obj.ports;
 						reqdata.push(obj);
 					}
+					console.log(reqdata);
+					// return false;
 					var ap = App.save({id:$rootScope.current_tenant.id},{name:$scope.app_name,containers:reqdata},function(){
 						console.log(ap)
 						$location.path("/applications")
@@ -431,10 +460,20 @@ define(['angular','modal'],function(angular,modal){
 			var image = restful.action({type:"@id"},$scope.baseurl+":id/images");
 	        var im = image.get({id:$rootScope.current_tenant.id},function(e){
 	        	$scope.images = im.metadata||[];
+	        	$scope.temp_image = JSON.parse(JSON.stringify($scope.images));
 	        });
 
+	        $scope.$watch('image_tag',function(){
+	        	console.log($scope.image_tag)
+	        	if($scope.image_tag=="thrd"){
+	        		$scope.images = [];
+	        	}else{
+	        		$scope.images = $scope.temp_image;
+	        		console.log($scope.images)
+	        	}
+	        })
+
 	        $scope.searchimage = function(name){
-	        	$scope.images_config = [];
 	        	$scope.images = null;
 	        	var searchapi = restful.action({name:"@name"},$scope.baseurl+"docker-hub/search?name=:name");
 	        	var sa = searchapi.get({name:name},function(){

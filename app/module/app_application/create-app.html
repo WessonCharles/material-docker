@@ -21,11 +21,11 @@
                     <div class="md-no-style md-list-item-inner">
                       <p>选择镜像：
                         <md-radio-group class="line" ng-model="image_tag">
-                          <md-radio-button value="usually" class="md-primary">常用</md-radio-button>
-                          <md-radio-button value="stack" class="md-primary">Stack</md-radio-button>
+                          <!-- <md-radio-button value="usually" class="md-primary">常用</md-radio-button> -->
+                          <!-- <md-radio-button value="stack" class="md-primary">Stack</md-radio-button> -->
                           <md-radio-button value="public" class="md-primary">公有</md-radio-button>
                           <md-radio-button value="private" class="md-primary">私有</md-radio-button>
-                          <md-radio-button value="collection" class="md-primary">收藏夹</md-radio-button>
+                          <!-- <md-radio-button value="collection" class="md-primary">收藏夹</md-radio-button> -->
                           <md-radio-button value="thrd" class="md-primary">Docker/第三方镜像</md-radio-button>
                         </md-radio-group>
                         
@@ -68,12 +68,54 @@
                       </div>
                     </md-progress-circular>
                   </div>
-                  <md-list-item ng-repeat="img in images | orderBy : '-star_number'">
-                    <md-checkbox ng-checked="exists(img, selected)" ng-click="toggle(img,selected)"></md-checkbox>
-                    <label>{{img.name}}</label>
-                    <p ng-if="img.description">{{img.description}}</p>
-                    <md-icon style="position: absolute;top: 25px;right: 100px;color:#FFC107;" class="fa fa-star" aria-label="Chat" ><span style="color:#666;margin-left:5px;">{{img.star_number||0}}</span></md-icon>
-                  </md-list-item>
+                  <div ng-repeat="img in images|orderBy:'-star_number'">
+                      <md-list-item ng-click="img.isopen = !img.isopen;getdata(img);toggle(img,selected)">
+                        <md-checkbox ng-checked="exists(img, selected)" ng-click="toggle(img,selected)"></md-checkbox>
+                        <label>{{img.name}}</label>
+                        <p ng-if="img.description">{{img.description}}</p>
+                        <md-icon style="position: absolute;top: 25px;right: 100px;color:#FFC107;" class="fa fa-star" aria-label="Chat" ><span style="color:#666;margin-left:5px;">{{img.star_number||0}}</span></md-icon>
+                      </md-list-item>
+                      <div ng-if="img.isopen">
+                          <div class="unshadow" layout="row" layout-fill layout-padding>
+                            <div class="unshadow" flex>
+                              <md-input-container class="nopaddingbot">
+                                <label>镜像名称：</label>
+                                <input ng-model="img.image" type="text" disabled="true">
+                              </md-input-container>
+                            </div>
+                            <div class="unshadow" flex>
+                              <md-input-container class="nopaddingbot">
+                                <label>镜像版本：</label>
+                                <md-select placeholder="镜像版本" name="ram" ng-model="img.tag" required>
+                                  <md-option ng-repeat="t in hash_tags[img.image] track by $index" value="{{t}}">{{t}}</md-option>
+                                </md-select>
+                              </md-input-container>
+                            </div>
+                          </div>
+                          <div class="unshadow" layout="row" layout-fill layout-padding>
+                            <div class="unshadow" flex>  
+                              <md-subheader class="md-no-sticky">容器配置</md-subheader>
+                              <div layout layout-sm-column>
+                                <md-radio-group class="line" ng-model="img.flavor">
+                                  <!-- <md-radio-button value="usually" class="md-primary">常用</md-radio-button> -->
+                                  <!-- <md-radio-button value="stack" class="md-primary">Stack</md-radio-button> -->
+                                  <md-radio-button value="{{f.uuid}}" ng-repeat="f in flavors track by $index" class="md-primary flavo">
+                                      <div class="md-label flavor">
+                                        <img src="../images/flavor{{$index+1}}x.png" alt="{{$index+1}}x flavor">
+                                        <div class="des">
+                                            <p>内存：{{f.memory}}</p>
+                                            <p>硬盘：{{f.disk}}</p>
+                                        </div>
+                                      </div>
+                                  </md-radio-button>
+                                </md-radio-group>
+                              </div>
+                              <md-button ng-if="!img.issave" type="button" ng-click="savetobox(img)" class="md-primary" layout layout-align="center end">保存</md-button>
+                            </div>  
+                          </div>
+                      </div>
+                  </div>
+                  
                 </md-list>
                 <div  align="right">
                   <md-button ng-click="gostep(1)" ng-disabled="nameForm.$invalid||selected==0" class="md-primary" layout layout-align="center end">下一步</md-button>
@@ -88,33 +130,12 @@
                   <md-subheader class="md-no-sticky  md-primary">{{imcfg.image}}</md-subheader>
                   <md-list-item class="md-3-line md-long-text">
                     <form name="myForm" style="width:100%;">
-                      <md-input-container >
-                        <label>镜像名称：</label>
-                        <input ng-model="imcfg.image" type="text" disabled="true">
-                      </md-input-container>
-                      <md-input-container>
-                        <label>镜像版本：</label>
-                        <md-select placeholder="镜像版本" name="ram" ng-init="gethashtag(imcfg.image)" ng-model="imcfg.tag" required>
-                          <md-option ng-repeat="t in hash_tags[imcfg.image] track by $index" value="{{t}}">{{t}}</md-option>
-                        </md-select>
-                        <!-- <div class="errors" ng-messages="myForm.project.$error" ng-if="myForm.$dirty">
-                          <div ng-message="required">Required</div>
-                        </div> -->
-                      </md-input-container>
                       <!-- <md-input-container >
                           <label>应用名称：</label>
                           <input ng-model="imcfg.name" type="text" ng-required="true">
                       </md-input-container> -->
-                      <md-input-container >
-                        <label>容器配置：</label>
-                        <input ng-model="project.name" type="text" >
-                      </md-input-container>
-                      <md-input-container >
-                        <label>服务类型：</label>
-                        <input ng-model="project.name" type="text" >
-                      </md-input-container>
-                      <a ng-click="imcfg.more_cfg = !imcfg.more_cfg">更多选项..</a>
-                        <div layout="" layout-sm="column" ng-hide="!imcfg.more_cfg">
+                      <!-- <a ng-click="imcfg.more_cfg = !imcfg.more_cfg">更多选项..</a> -->
+                        <div layout="" layout-sm="column"><!-- ng-hide="!imcfg.more_cfg">-->
                           <md-input-container flex class="noshadow">
                             <label for="">环境变量(name)</label>
                             <input ng-model="imcfg.tempobj.name" type="text" placeholder="name">
@@ -125,7 +146,7 @@
                           </md-input-container>
                           <a ng-click="imcfg.env.push({name:imcfg.tempobj.name,value:imcfg.tempobj.value});imcfg.tempobj = {};">添加</a>
                         </div>
-                        <md-input-container ng-hide="!imcfg.more_cfg">
+                        <md-input-container> <!--ng-hide="!imcfg.more_cfg">-->
                           <table class="md-table">
                             <thead class="thead-back"><tr class="md-table-headers-row"><th class="md-table-header">键</th><th class="md-table-header">值</th><th class="md-table-header">操作</th></tr></thead>
                             <tbody>
@@ -137,7 +158,7 @@
                             </tbody>
                           </table> 
                         </md-input-container>
-                        <div layout="" layout-sm="column" ng-hide="!imcfg.more_cfg">
+                        <div layout="" layout-sm="column"><!-- ng-hide="!imcfg.more_cfg">-->
                           <md-input-container flex class="noshadow">
                             <label for="">容器端口</label>
                             <input ng-model="imcfg.portobj.port" type="text" placeholder="port">
@@ -151,7 +172,7 @@
                           </md-input-container>
                           <a ng-click="imcfg.ports.push({port:imcfg.portobj.port,protocol:imcfg.portobj.protocol});imcfg.portobj = {};">添加</a>
                         </div>
-                        <md-input-container  ng-hide="!imcfg.more_cfg">
+                        <md-input-container><!--  ng-hide="!imcfg.more_cfg">-->
                           <!-- <label for="">端口配置</label> -->
                           <table class="md-table">
                             <thead class="thead-back"><tr class="md-table-headers-row"><th class="md-table-header">容器端口</th><th class="md-table-header">协议</th><th class="md-table-header">映射端口</th><th class="md-table-header">操作</th></tr></thead>
