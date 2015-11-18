@@ -7,12 +7,12 @@ define(['angular','app'], function(angular,app) {
             templateUrl: 'module/app_columns/column-list.html',
             controller: 'columnctrl'
         })
-        route.when('/columns/create-app',{
+        route.when('/columns/create-column',{
             templateUrl:'module/app_columns/create-column.html',
             controller:'createcolumnsctrl'
         })
-        route.when('/columns/:id',{
-            templateUrl:'module/app_columns/columns-detail.html',
+        route.when('/columns/:name',{
+            templateUrl:'module/app_columns/column-detail.html',
             controller:'columnsdetailctrl'
         })
         

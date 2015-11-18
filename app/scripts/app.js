@@ -38,6 +38,7 @@ define([
         $scope.go = 1;
 
         $scope.baseurl = "http://42.51.161.236:8337/";
+        $scope.storageurl = "http://42.51.131.4/";
         /**
          * [判断是否登陆，然后选择跳转不同的view]
          * @param  {[type]} window.getCookie("lightdocker") [description]
