@@ -71,6 +71,7 @@ define(['angular','modal','markdown'],function(angular,modal,markdown){
 	.controller('imagedetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','instance',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,instance){
 			$scope.current_image = instance.current_image;
+			console.log(instance.current_image)
 			if($scope.current_image.readme&&!$scope.current_image.convert_rm){
 	    		$scope.current_image.readme = markdown.toHTML($scope.current_image.readme);
 	    		$scope.current_image.convert_rm = true;

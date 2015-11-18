@@ -325,7 +325,7 @@ define(['angular','colresize','socket','imgcrop'],function(angular,colresize,io,
             /*对video进行处理结束*/
             // console.log(ncon)
           $timeout(function(){
-            if(a.content)$(e).html(ncon);
+            if(a.content)$(e).html('<pre>'+ncon+'</pre>');
           })
         }
       }

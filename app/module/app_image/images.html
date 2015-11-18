@@ -51,10 +51,10 @@
                 <md-content class="md-padding"  id="images" style="min-height:500px">
                   <md-bottom-sheet class="md-grid images_list">
                     <md-list>
-                      <md-list-item ng-repeat="item in columns">
-                        <md-button class="md-grid-item-content" ng-click="listItemClick($index,item)">
+                      <md-list-item ng-repeat="item in items">
+                        <md-button class="md-grid-item-content" ng-click="listItemClick($index,item.id)">
                           <md-icon class="fa fa-3x fa-{{item.icon}}"></md-icon>
-                          <div class="md-grid-text"> {{ item }} </div>
+                          <div class="md-grid-text"> {{ item.name }} </div>
                         </md-button>
                       </md-list-item>
                     </md-list>
