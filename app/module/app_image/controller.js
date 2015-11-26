@@ -9,6 +9,7 @@ define(['angular','modal','markdown'],function(angular,modal,markdown){
 	        var im = image.get({id:$rootScope.current_tenant.id},function(e){
 	        	// $scope.images = im.metadata;
 	        	console.log(im.metadata)
+	        	if(typeof im.metadata=="string")im.metadata = JSON.parse(im.metadata);
 	        	$scope.imageshash = {};
 	        	$scope.items = [];
 	        	for(var i =0;i<im.metadata.length;i++){
