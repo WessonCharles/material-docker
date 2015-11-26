@@ -1,9 +1,9 @@
 'use strict';
 
 define(['angular','modal'],function(angular,modal){
-	return angular.module("ThCofAngSeed.columns_ctrl",['ThCofAngSeed.services.formDataObject'])
-	.controller('columnctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$compile','restful','Notify','$mdBottomSheet','instance',
-		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$compile,restful,Notify,$mdBottomSheet,instance){
+	return angular.module("ThCofAngSeed.columns_ctrl",['ThCofAngSeed.services.formDataObject','ngMaterial'])
+	.controller('columnctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$compile','restful','Notify','$mdBottomSheet','$mdDialog','instance',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$compile,restful,Notify,$mdBottomSheet,$mdDialog,instance){
 			/**
 	         * buttondown example
 	         */
@@ -35,22 +35,22 @@ define(['angular','modal'],function(angular,modal){
 
 	        $scope.toggleSearch = false;
 	        	console.time("restful game");
-	        $http.get($scope.storageurl+$rootScope.current_tenant.id+"/volumes/pool/").success(function(data){
-	        	$scope.pool = data.metadata[0];
-	        })
-	        var vol = restful.action({type:"@id",name:"@name"},$scope.storageurl+":id/volumes/image/:name");
+	        // $http.get($scope.baseurl+$rootScope.current_tenant.id+"/volumes/pool/").success(function(data){
+	        // 	$scope.pool = data.metadata[0];
+	        // })
+	        var vol = restful.action({type:"@id",name:"@name"},$scope.baseurl+":id/volume/:name");
 	        console.log($rootScope.current_tenant)
 	        var pl = vol.get({id:$rootScope.current_tenant.id},function(e){
 	        	console.timeEnd("restful game");
 
 		        Notify.showSimpleToast("存储卷列表请求成功",1);
-		        $scope.columns = pl.metadata[0];
+		        $scope.columns = pl.metadata;
 	        });
 
 	        $scope.listItemClick = function($event,it) {
 	        	console.log(it)
 				instance.current_column = it;
-				instance.storageurl = $scope.storageurl;
+				instance.baseurl = $scope.baseurl;
 		    	// $timeout(function(){
 		    	// 	$mdBottomSheet.show({
 				   //    templateUrl: 'module/app_columns/column-detail.html',
@@ -63,7 +63,52 @@ define(['angular','modal'],function(angular,modal){
 				   //  });
 		    	// });
 			    
-			};   
+			};  
+			$scope.selected = [];
+			$scope.toggle = function (item, list) {
+	          var idx = list.indexOf(item);
+	          if (idx > -1) list.splice(idx, 1);
+	          else list.push(item);
+
+	          $scope.selected = list;
+	          console.log($scope.selected)
+	        };
+	        $scope.exists = function (item, list) {
+	          if($scope.checkall){
+	             return $scope.checkall;
+	          }
+	          return list.indexOf(item) > -1;
+	        }; 
+
+	        $scope.deletecolumns = function(ev){
+			    // Appending dialog to document.body to cover sidenav in docs app
+			    var confirm = $mdDialog.confirm()
+			    .title('删除确认')
+			    .content('你确定要删除所选存储卷吗？')
+			    .ariaLabel('Lucky day')
+			    .targetEvent(ev)
+			    .ok('确定')
+			    .cancel('取消');
+			    $mdDialog.show(confirm).then(function() {
+			      var selects= $scope.selected;
+		       		console.log(selects)
+		       		for(var i=0;i<selects.length;i++){
+		       			(function(c){
+		       				$scope.columns.forEach(function(app, index) {
+							    if (c.name === app.name) {
+							    	console.log("22")
+							      vol.delete({id:$rootScope.current_tenant.id,name:app.name}, function() {
+							        $scope.columns.splice(index, 1);
+							        Notify.showSimpleToast("应用删除成功",1);
+							      });
+							    }
+							  });
+		       			})(selects[i]);	
+		       		}
+			    }, function() {
+			      $scope.selected = [];
+			    });
+	        }
 
 	        $scope.$on("$viewContentLoaded",function(){
 	        	$(".inner_content").css("height",$window.innerHeight-120).css("position","relative");
@@ -79,13 +124,17 @@ define(['angular','modal'],function(angular,modal){
 	.controller('columnsdetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','instance','restful','$compile',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,instance,restful,$compile){
 			console.log(instance.current_column)
-			$scope.column = instance.current_column;
-			var col = restful.action({id:"@id",name:"@name"},instance.storageurl+":id/volumes/image/:name");
-			var co = col.get({id:$rootScope.current_tenant.id,name:instance.current_column},function(e){
+			console.log($window.location)
+			var current_column = instance.current_column?instance.current_column:$window.location.pathname.split('/').pop();
+			$scope.column = current_column.name||current_column;
+			console.log(current_column)
+			console.log($scope.column)
+			var col = restful.action({id:"@id",name:"@name"},$scope.baseurl+":id/volume/:name");
+			var co = col.get({id:$rootScope.current_tenant.id,name:$scope.column},function(e){
 				$scope.base = co.metadata[0];
 			})
-			var snap = restful.action({id:"@id",name:"@name"},instance.storageurl+":id/volumes/snap/:name");
-			var sn = snap.get({id:$rootScope.current_tenant.id,name:instance.current_column},function(e){
+			var snap = restful.action({id:"@id",name:"@name"},$scope.baseurl+":id/volume/snap/:name");
+			var sn = snap.get({id:$rootScope.current_tenant.id,name:$scope.column},function(e){
 				console.log(sn.metadata);
 				$scope.headers = [{
 		        	name:'名称',
@@ -134,7 +183,13 @@ define(['angular','modal'],function(angular,modal){
 	])
 	.controller('createcolumnsctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','instance','restful','$compile',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,instance,restful,$compile){
-			
+			$scope.col  = {};
+			var col = restful.action({type:'@id'},$scope.baseurl+":id/volume");
+			$scope.createimage = function(){
+				var co = col.save({id:$rootScope.current_tenant.id},{name:$scope.col.name,size:parseInt($scope.col.size)},function(){
+					$location.path("/columns")
+				})
+			}
 		}
 	])
 });

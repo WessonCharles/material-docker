@@ -1,9 +1,9 @@
 'use strict';
 
 define(['angular','modal'],function(angular,modal){
-	return angular.module("ThCofAngSeed.pod_ctrl",['ThCofAngSeed.services.formDataObject'])
-	.controller('podctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$compile','restful','Notify','$mdBottomSheet','instance',
-		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$compile,restful,Notify,$mdBottomSheet,instance){
+	return angular.module("ThCofAngSeed.pod_ctrl",['ThCofAngSeed.services.formDataObject','ngMaterial'])
+	.controller('podctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$compile','restful','Notify','$mdBottomSheet','$mdDialog','instance',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$compile,restful,Notify,$mdBottomSheet,$mdDialog,instance){
 			/**
 	         * buttondown example
 	         */
@@ -146,23 +146,32 @@ define(['angular','modal'],function(angular,modal){
 		        // }
 	        });
 			$scope.deleteapp = function(){
-	       		var selects= $scope.selected;
-	       		console.log(selects)
-	       		for(var i=0;i<selects.length;i++){
-	       			(function(c){
-	       				$scope.content.forEach(function(app, index) {
-						    if (c.name === app.name) {
-						    	console.log("22")
-						      plat.delete({id:$rootScope.current_tenant.id,name:app.name}, function() {
-						        $scope.content.splice(index, 1);
-						        Notify.showSimpleToast("应用删除成功",1);
-						      });
-						    }
-						  });
-	       			})(selects[i]);	
-	       		}
-	       		
-	       		
+				var confirm = $mdDialog.confirm()
+			    .title('删除确认')
+			    .content('你确定要删除所选应用吗？')
+			    .ariaLabel('Lucky day')
+			    .targetEvent(ev)
+			    .ok('确定')
+			    .cancel('取消');
+			    $mdDialog.show(confirm).then(function() {
+			      var selects= $scope.selected;
+		       		console.log(selects)
+		       		for(var i=0;i<selects.length;i++){
+		       			(function(c){
+		       				$scope.content.forEach(function(app, index) {
+							    if (c.name === app.name) {
+							    	console.log("22")
+							      plat.delete({id:$rootScope.current_tenant.id,name:app.name}, function() {
+							        $scope.content.splice(index, 1);
+							        Notify.showSimpleToast("应用删除成功",1);
+							      });
+							    }
+							  });
+		       			})(selects[i]);	
+		       		}
+			    }, function() {
+			      $scope.selected = [];
+			    });
 	       		
 	       	}
 	        $scope.$on("$viewContentLoaded",function(){

@@ -6,7 +6,7 @@
           <md-icon class="fa fa-cog fa-lg"></md-icon>
           创建存储卷
         </button>
-        <button md-button class="md-raised md-warn" ng-click="deletecolumns();">
+        <button md-button class="md-raised md-warn" ng-click="deletecolumns($event);">
           <md-icon class="fa fa-trash-o fa-lg"></md-icon>
           删除
         </button>
@@ -61,11 +61,13 @@
                   </div>
                 </md-progress-circular>
               </div>
-              <md-grid-item ng-repeat="item in columns">
-                <md-button class="md-grid-item-content" viewload href="/columns/{{item}}" ng-click="listItemClick($event,item)"><!--ng-click="listItemClick($event,item)"-->
+              <md-grid-item ng-repeat="item in columns" style="position:relative;">
+                <md-button class="md-grid-item-content" viewload href="/columns/{{item.name}}" ng-click="listItemClick($event,item)"><!--ng-click="listItemClick($event,item)"-->
                   <md-icon class="fa fa-3x fa-hdd-o" style="width:48px"></md-icon>
-                  <div class="md-grid-text"> {{ item }} </div>
+                  <div class="md-grid-text"> {{ item.name }} </div>
                 </md-button>
+                <md-checkbox aria-label="checkbox" style="display:inline;position:absolute;left:0" ng-checked="exists(item, selected)" ng-click="toggle(item, selected)">
+                </md-checkbox>
               </md-grid-item>
             </md-grid>
             <div style="clear:both"></div>
