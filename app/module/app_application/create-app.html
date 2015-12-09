@@ -8,24 +8,34 @@
         </button>
         创建应用</md-subheader>
        <md-content>
-        <md-tabs md-selected="createstep" md-dynamic-height md-border-bottom md-stretch-tabs="always">
+        <form name="nameForm">
+                <div class="form-input" ng-class="nameifmatchreg">
+                  <label for="">应用名称</label>
+                  <input type="text" ng-model="app_name" ng-required="true" ng-keydown="checkname()" ng-keyup="checkname()" md-autofocus>
+                </div>
+                <div class="form-input">
+                  <label for="">应用简介</label>
+                  <textarea ng-model="app_desc"></textarea>
+                </div>
+                <div align="right">
+                  <md-button ng-click="createapps()" class="md-primary" layout layout-align="center end">创建</md-button>
+                </div>
+              </form>
+        <!-- <md-tabs md-selected="createstep" md-dynamic-height md-border-bottom md-stretch-tabs="always">
           <md-tab label="①镜像来源" id="image_source">
             <md-content class="md-padding" >
                 <form name="nameForm">
-                <md-input-container ng-class="nameifmatchreg">
+                <div ng-class="nameifmatchreg">
                   <label for="">应用名称</label>
                   <input type="text" ng-model="app_name" ng-required="true" ng-keydown="checkname()" ng-keyup="checkname()" md-autofocus>
-                </md-input-container>
+                </div>
                 <md-list ng-cloak>
                   <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
                     <div class="md-no-style md-list-item-inner">
                       <p>选择镜像：
                         <md-radio-group class="line" ng-model="image_tag">
-                          <!-- <md-radio-button value="usually" class="md-primary">常用</md-radio-button> -->
-                          <!-- <md-radio-button value="stack" class="md-primary">Stack</md-radio-button> -->
                           <md-radio-button value="public" class="md-primary">公有</md-radio-button>
                           <md-radio-button value="private" class="md-primary">私有</md-radio-button>
-                          <!-- <md-radio-button value="collection" class="md-primary">收藏夹</md-radio-button> -->
                           <md-radio-button value="thrd" class="md-primary">Docker/第三方镜像</md-radio-button>
                         </md-radio-group>
                         
@@ -46,11 +56,11 @@
                     </div>
                   </md-list-item>
                   <md-divider></md-divider>
-                  <md-list-item role="listitem" ng-if="image_tag=='thrd'" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
-                    <md-input-container md-no-float class="nopaddingbot" style="width:50%;">
+                  <md-list-item role="listitem" ng-if="image_tag=='thrd'" style="margin-left:16px;" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                    <div md-no-float class="nopaddingbot" style="width:50%;">
                       <md-icon class="fa fa-search" ng-click="searchimage(search_image)"></md-icon>
                       <input ng-model="search_image" type="text" style="margin:0;" placeholder="搜索镜像">
-                    </md-input-container>
+                    </div>
                   </md-list-item>
                   <md-subheader class="md-no-sticky">镜像列表</md-subheader>
                   <div ng-if="!images">
@@ -78,27 +88,24 @@
                       <div ng-if="img.isopen">
                           <div class="unshadow" layout="row" layout-fill layout-padding>
                             <div class="unshadow" flex>
-                              <md-input-container class="nopaddingbot">
+                              <div class="nopaddingbot">
                                 <label>镜像名称：</label>
                                 <input ng-model="img.image" type="text" disabled="true">
-                              </md-input-container>
+                              </div>
                             </div>
                             <div class="unshadow" flex>
-                              <md-input-container class="nopaddingbot">
+                              <div class="nopaddingbot">
                                 <label>镜像版本：</label>
                                 <md-select placeholder="镜像版本" name="ram" ng-model="img.tag" required>
                                   <md-option ng-repeat="t in hash_tags[img.image] track by $index" value="{{t}}">{{t}}</md-option>
                                 </md-select>
-                              </md-input-container>
+                              </div>
                             </div>
                           </div>
-                          <div class="unshadow" layout="row" layout-fill layout-padding>
-                            <div class="unshadow" flex>  
-                              <md-subheader class="md-no-sticky">容器配置</md-subheader>
-                              <div layout layout-sm-column>
+                          <div class="unshadow" style="padding-top:0px;" layout="row" layout-fill layout-padding>
+                              <md-subheader class="md-no-sticky md-sticky-no-effect">容器配置</md-subheader>
+                              <div layout="row" layout-sm-column>
                                 <md-radio-group class="line" ng-model="img.flavor">
-                                  <!-- <md-radio-button value="usually" class="md-primary">常用</md-radio-button> -->
-                                  <!-- <md-radio-button value="stack" class="md-primary">Stack</md-radio-button> -->
                                   <md-radio-button value="{{f.uuid}}" ng-repeat="f in flavors track by $index" class="md-primary flavo">
                                       <div class="md-label flavor">
                                         <img src="../images/flavor{{$index+1}}x.png" alt="{{$index+1}}x flavor">
@@ -111,7 +118,6 @@
                                 </md-radio-group>
                               </div>
                               <md-button ng-if="!img.issave" type="button" ng-click="savetobox(img)" class="md-primary" layout layout-align="center end">保存</md-button>
-                            </div>  
                           </div>
                       </div>
                   </div>
@@ -130,23 +136,18 @@
                   <md-subheader class="md-no-sticky  md-primary">{{imcfg.image}}</md-subheader>
                   <md-list-item class="md-3-line md-long-text">
                     <form name="myForm" style="width:100%;">
-                      <!-- <md-input-container >
-                          <label>应用名称：</label>
-                          <input ng-model="imcfg.name" type="text" ng-required="true">
-                      </md-input-container> -->
-                      <!-- <a ng-click="imcfg.more_cfg = !imcfg.more_cfg">更多选项..</a> -->
-                        <div layout="" layout-sm="column"><!-- ng-hide="!imcfg.more_cfg">-->
-                          <md-input-container flex class="noshadow">
+                        <div layout="" layout-sm="column">
+                          <div flex class="noshadow">
                             <label for="">环境变量(name)</label>
                             <input ng-model="imcfg.tempobj.name" type="text" placeholder="name">
-                          </md-input-container>
-                          <md-input-container flex class="noshadow">
+                          </div>
+                          <div flex class="noshadow">
                             <label for="">环境变量(value)</label>
                             <input ng-model="imcfg.tempobj.value" type="text" placeholder="value">
-                          </md-input-container>
+                          </div>
                           <a ng-click="imcfg.env.push({name:imcfg.tempobj.name,value:imcfg.tempobj.value});imcfg.tempobj = {};">添加</a>
                         </div>
-                        <md-input-container> <!--ng-hide="!imcfg.more_cfg">-->
+                        <div> 
                           <table class="md-table">
                             <thead class="thead-back"><tr class="md-table-headers-row"><th class="md-table-header">键</th><th class="md-table-header">值</th><th class="md-table-header">操作</th></tr></thead>
                             <tbody>
@@ -157,23 +158,22 @@
                               </tr>
                             </tbody>
                           </table> 
-                        </md-input-container>
-                        <div layout="" layout-sm="column"><!-- ng-hide="!imcfg.more_cfg">-->
-                          <md-input-container flex class="noshadow">
+                        </div>
+                        <div layout="" layout-sm="column">
+                          <div flex class="noshadow">
                             <label for="">容器端口</label>
                             <input ng-model="imcfg.portobj.port" type="text" placeholder="port">
-                          </md-input-container>
-                          <md-input-container flex class="noshadow left-label">
+                          </div>
+                          <div flex class="noshadow left-label">
                             <label for="">协议</label>
                             <md-radio-group class="line-radio" ng-model="imcfg.portobj.protocol" ng-init="imcfg.portobj.protocol=='TCP'">
                               <md-radio-button value="TCP" class="md-primary">TCP</md-radio-button>
                               <md-radio-button value="HTTP"> HTTP </md-radio-button>
                             </md-radio-group>
-                          </md-input-container>
+                          </div>
                           <a ng-click="imcfg.ports.push({port:imcfg.portobj.port,protocol:imcfg.portobj.protocol});imcfg.portobj = {};">添加</a>
                         </div>
-                        <md-input-container><!--  ng-hide="!imcfg.more_cfg">-->
-                          <!-- <label for="">端口配置</label> -->
+                        <div>
                           <table class="md-table">
                             <thead class="thead-back"><tr class="md-table-headers-row"><th class="md-table-header">容器端口</th><th class="md-table-header">协议</th><th class="md-table-header">映射端口</th><th class="md-table-header">操作</th></tr></thead>
                             <tbody>
@@ -185,7 +185,7 @@
                               </tr>
                             </tbody>
                           </table>
-                      </md-input-container>
+                      </div>
                          
                     </form>
                   </md-list-item>
@@ -202,7 +202,7 @@
             <md-content class="md-padding">
             </md-content>
           </md-tab>
-        </md-tabs>   
+        </md-tabs>   --> 
       </md-content>
     </div>
   </div>

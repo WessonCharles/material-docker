@@ -9,10 +9,10 @@
         创建镜像</md-subheader>
        <md-content id="imageform" class="md-padding">
           <form name="myForm">
-            <md-input-container>
+            <div>
               <label>镜像名称<span>*</span></label>
               <input ng-model="image.name" type="text" ng-required="true">
-            </md-input-container>
+            </div>
             <md-content>
               <label for="">镜像图标</label>
               <div layout="row" layout-margin layout-padding >
@@ -30,19 +30,19 @@
                 </div>
               </div>
             </md-content>
-            <md-input-container>
+            <div>
               <label for="">分类</label>
               <input type="text" ng-model="image.category">
-            </md-input-container>
+            </div>
             <md-content>
               <label>代码源</label>
               <md-tabs md-dynamic-height md-border-bottom>
                 <md-tab label="URL">
                   <md-content class="md-padding">
-                    <md-input-container ng-class="urlifmatchreg">
+                    <div ng-class="urlifmatchreg">
                       <label for="">URL地址<span>*</span></label>
                       <input type="text" ng-model="image.url" ng-keydown="checkurl()" ng-keyup="checkurl()">
-                    </md-input-container>
+                    </div>
                   </md-content>
                 </md-tab>
                 <md-tab label="Github">
@@ -61,14 +61,14 @@
             </md-content>
             <md-subheader class="md-primary">构建位置</md-subheader>
               <div layout="" layout-sm="column">
-                <md-input-container flex class="noshadow">
+                <div flex class="noshadow">
                   <label>路径<span>*</span></label>
                   <input ng-model="image.dockerfile_dir" type="text" ng-required="true">
-                </md-input-container>
-                <md-input-container flex class="noshadow">
+                </div>
+                <div flex class="noshadow">
                   <label>Dockerfile<span>*</span></label>
                   <input ng-model="image.dockerfile_name" type="text" ng-required="true">
-                </md-input-container>
+                </div>
               </div>
             <!-- <md-subheader class="md-primary">发布镜像</md-subheader>
               <md-radio-group layout="" layout-sm="column" ng-model="image.group">
@@ -91,10 +91,10 @@
         <div class="modal__content">
           <h2>创建Image</h2>
           <form>
-            <md-input-container>
+            <div>
               <label>Image Name</label>
               <input ng-model="image.name" type="text" ng-required="true">
-            </md-input-container>
+            </div>
             <md-content class="md-padding">
               <label>代码源</label>
               <md-tabs md-dynamic-height md-border-bottom>
@@ -118,14 +118,14 @@
             </md-content>
             <md-subheader class="md-primary">构建位置</md-subheader>
               <div layout="" layout-sm="column">
-                <md-input-container flex class="noshadow">
+                <div flex class="noshadow">
                   <label>路径</label>
                   <input ng-model="image.name" type="text" ng-required="true">
-                </md-input-container>
-                <md-input-container flex class="noshadow">
+                </div>
+                <div flex class="noshadow">
                   <label>Dockerfile</label>
                   <input ng-model="image.name" type="text" ng-required="true">
-                </md-input-container>
+                </div>
               </div>
             <md-subheader class="md-primary">发布镜像</md-subheader>
               <md-radio-group layout="" layout-sm="column" ng-model="image.group">
