@@ -23,12 +23,12 @@
                     <md-tab label="基本设置">
                       <md-content class="md-padding">
                         <!-- <h1 class="md-display-2"></h1> -->
-                        <md-input-container >
+                        <div >
                           <label>Service Name</label>
                           <input ng-model="service.name" type="text" ng-required="true">
-                        </md-input-container>
+                        </div>
                         <div layout="" layout-sm="column">
-                          <md-input-container flex class="noshadow">
+                          <div flex class="noshadow">
                             <label>Image</label>
                             <md-select placeholder="内存" name="ram" ng-model="service.ram" required>
                               <md-option value="1">One</md-option>
@@ -37,7 +37,7 @@
                             <div class="errors" ng-messages="myForm.service.$error" ng-if="myForm.$dirty">
                               <div ng-message="required">Required</div>
                             </div>
-                          </md-input-container>
+                          </div>
                           <div flex class="noshadow" initmodal style="padding: 29px 0px 29px 20px;">
                               <span>还没有镜像？</span>
                               <button md-button class="md-raised md-button" href="/image/create-image">
@@ -53,21 +53,21 @@
                       <md-content class="md-padding">
                         <!-- <h1 class="md-display-2"></h1> -->
                         <div layout="" layout-sm="column">
-                          <md-input-container flex class="noshadow">
+                          <div flex class="noshadow">
                             <label for="input_25">ENV</label>
                             <input ng-model="service.env" class="ng-pristine ng-valid md-input ng-touched" id="input_25" tabindex="0" aria-invalid="false" style="">
-                          </md-input-container>
-                          <md-input-container flex class="noshadow">
+                          </div>
+                          <div flex class="noshadow">
                             <label for="input_26"></label>
                             <input ng-model="user.state" class="ng-pristine ng-valid md-input ng-touched" id="input_26" tabindex="0" aria-invalid="false" style="">
-                          </md-input-container>
+                          </div>
                         </div>
                       </md-content>
                     </md-tab>
                     <md-tab label="高级设置">
                       <md-content class="md-padding">
                         <!-- <h1 class="md-display-2"></h1> -->
-                        <md-input-container>
+                        <div>
                           <label>内存</label>
                           <md-select placeholder="内存" name="ram" ng-model="service.ram" required>
                             <md-option value="1">One</md-option>
@@ -76,8 +76,8 @@
                           <div class="errors" ng-messages="myForm.service.$error" ng-if="myForm.$dirty">
                             <div ng-message="required">Required</div>
                           </div>
-                        </md-input-container>
-                        <md-input-container>
+                        </div>
+                        <div>
                           <label>存储</label>
                           <md-select placeholder="存储" name="ram" ng-model="service.rom" required>
                             <md-option value="1">One</md-option>
@@ -86,14 +86,14 @@
                           <div class="errors" ng-messages="myForm.service.$error" ng-if="myForm.$dirty">
                             <div ng-message="required">Required</div>
                           </div>
-                        </md-input-container>
-                        <md-input-container>
+                        </div>
+                        <div>
                           <label>启动个数</label>
                           <input type="number">
                           <div class="errors" ng-messages="myForm.service.$error" ng-if="myForm.$dirty">
                             <div ng-message="required">Required</div>
                           </div>
-                        </md-input-container>
+                        </div>
                       </md-content>
                     </md-tab>
                     <md-tab label="对外服务">

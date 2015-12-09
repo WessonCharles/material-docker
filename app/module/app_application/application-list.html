@@ -12,11 +12,11 @@
               <h2>创建应用</h2>
               <form name="myForm">
               <p>Note that invalid styling only applies if invalid and dirty</p>
-              <md-input-container >
+              <div >
                 <label>应用名 (必填)</label>
                 <input ng-model="project.name" type="text" ng-required="true">
-              </md-input-container>
-              <md-input-container>
+              </div>
+              <div>
                 <label>项目配额</label>
                 <md-select placeholder="内存" name="ram" ng-model="project.ram" required>
                   <md-option value="1">One</md-option>
@@ -25,8 +25,8 @@
                 <div class="errors" ng-messages="myForm.project.$error" ng-if="myForm.$dirty">
                   <div ng-message="required">Required</div>
                 </div>
-              </md-input-container>
-              <md-input-container>
+              </div>
+              <div>
                 <md-select placeholder="存储" name="rom" ng-model="project.rom" required>
                   <md-option value="1">One</md-option>
                   <md-option value="2">Two</md-option>
@@ -34,7 +34,7 @@
                 <div class="errors" ng-messages="myForm.project.$error" ng-if="myForm.$dirty">
                   <div ng-message="required">Required</div>
                 </div>
-              </md-input-container>
+              </div>
               <div layout="row">
                 <md-button ng-click="clearValue()" ng-disabled="!project" style="margin-right: 20px;">清除</md-button>
                 <md-button ng-click="save()" ng-disabled="myForm.$invalid" class="md-primary" layout layout-align="center end">保存</md-button>
