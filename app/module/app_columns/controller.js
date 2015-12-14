@@ -111,11 +111,11 @@ define(['angular','modal'],function(angular,modal){
 	        }
 
 	        $scope.$on("$viewContentLoaded",function(){
-	        	$(".inner_content").css("height",$window.innerHeight-120).css("position","relative");
+	        	// $(".inner_content").css("height",$window.innerHeight-120).css("position","relative");
 
-	        	$(window).resize(function(){
-	        		$(".inner_content").css("height",$window.innerHeight-120).css("position","relative");
-	        	})
+	        	// $(window).resize(function(){
+	        	// 	$(".inner_content").css("height",$window.innerHeight-120).css("position","relative");
+	        	// })
 	        })
 
 

@@ -12,7 +12,55 @@
         <button md-button class="md-raised md-button" href="/image/create-image">
           创建一个
         </button>
-        <div id="modal" class="modal modal__bg" role="dialog" aria-hidden="true">
+        <md-menu>
+          <md-button class="md-raised" aria-label="Open phone interactions menu" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
+            <md-icon md-menu-origin class="fa fa-caret-square-o-down"></md-icon>
+            更多操作
+          </md-button>
+          <md-menu-content width="2">
+            <md-menu-item>
+              <md-button ng-click="ctrl.redial($event)">
+                <md-icon md-menu-align-target></md-icon>
+                Redial
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="ctrl.checkVoicemail()">
+                <md-icon></md-icon>
+                Check voicemail
+              </md-button>
+            </md-menu-item>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item>
+              <md-button ng-click="ctrl.toggleNotifications()">
+                <md-icon></md-icon>
+                {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </div>
+    </div>
+  </div>
+  <div class="content-table">
+    <!-- <div style="width:150%;"> -->
+      <div layout="row" class="switchdiv" layout-margin layout-padding>
+        <div flex class="bl-main" ng-click="toggleSearch=false">
+          <md-subheader class="md-primary">Service</md-subheader>
+          <md-table headers="headers" links="links" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" isselect="true" selected="selected" count="count"></md-table>
+        </div>
+        <!-- <HR align=center width="1" color="#EDF0F5" size="1">
+        <div flex class="bl-main" ng-click="toggleSearch=false">
+          <md-subheader class="md-primary">Pod</md-subheader> 
+          <md-table headers="theaders" content="tcontent" sortable="tsortable" filters="search" custom-class="tcustom" thumbs="tthumbs" isselect="true" selected="tselected" modal="tmodal" count="tcount"></md-table>
+        </div> -->
+      </div>
+    <!-- </div>   -->
+  </div>
+
+ 
+</div> 
+<div id="modal" class="modal modal__bg" role="dialog" aria-hidden="true">
           <div class="modal__dialog">
             <div class="modal__content">
               <h2>创建Service</h2>
@@ -117,51 +165,3 @@
             </div>
           </div>
         </div> 
-        <md-menu>
-          <md-button class="md-raised" aria-label="Open phone interactions menu" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
-            <md-icon md-menu-origin class="fa fa-caret-square-o-down"></md-icon>
-            更多操作
-          </md-button>
-          <md-menu-content width="2">
-            <md-menu-item>
-              <md-button ng-click="ctrl.redial($event)">
-                <md-icon md-menu-align-target></md-icon>
-                Redial
-              </md-button>
-            </md-menu-item>
-            <md-menu-item>
-              <md-button ng-click="ctrl.checkVoicemail()">
-                <md-icon></md-icon>
-                Check voicemail
-              </md-button>
-            </md-menu-item>
-            <md-menu-divider></md-menu-divider>
-            <md-menu-item>
-              <md-button ng-click="ctrl.toggleNotifications()">
-                <md-icon></md-icon>
-                {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
-              </md-button>
-            </md-menu-item>
-          </md-menu-content>
-        </md-menu>
-      </div>
-    </div>
-  </div>
-  <div class="content-table">
-    <!-- <div style="width:150%;"> -->
-      <div layout="row" class="switchdiv" layout-margin layout-padding>
-        <div flex class="bl-main" ng-click="toggleSearch=false">
-          <md-subheader class="md-primary">Service</md-subheader>
-          <md-table headers="headers" links="links" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" isselect="true" selected="selected" count="count"></md-table>
-        </div>
-        <!-- <HR align=center width="1" color="#EDF0F5" size="1">
-        <div flex class="bl-main" ng-click="toggleSearch=false">
-          <md-subheader class="md-primary">Pod</md-subheader> 
-          <md-table headers="theaders" content="tcontent" sortable="tsortable" filters="search" custom-class="tcustom" thumbs="tthumbs" isselect="true" selected="tselected" modal="tmodal" count="tcount"></md-table>
-        </div> -->
-      </div>
-    <!-- </div>   -->
-  </div>
-
- 
-</div> 
