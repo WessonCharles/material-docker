@@ -55,6 +55,9 @@ define(['angular','colresize','socket','imgcrop'],function(angular,colresize,io,
             if ($scope.sortable.indexOf(field) > -1) { return true; } else { return false; }
         };
         $scope.order = function(predicate, reverse) {
+            if(!$scope.handleSort(predicate)){
+              return false;
+            }
             $scope.content = orderBy($scope.content, predicate, reverse);
             $scope.predicate = predicate;
         };

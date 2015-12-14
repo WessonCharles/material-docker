@@ -2,7 +2,7 @@
   <div class="button-title">
     <div layout="row" layout-margin >
       <div flex flex-order="1" class="noshadow  bl-main">
-        <button md-button class="md-raised md-button" viewload href="/applications/create-app">
+        <button md-button class="md-raised md-button modal__trigger" data-modal="#modal"> <!--viewload href="/applications/create-app">-->
           <md-icon class="fa fa-cog fa-lg"></md-icon>
           创建应用
         </button>
@@ -46,7 +46,7 @@
             </div>
           </div>
         </div>  -->
-        <button md-button class="md-raised md-warn" ng-click="deleteapp();">
+        <button md-button class="md-raised md-warn" ng-click="deleteapp($event);">
           <md-icon class="fa fa-trash-o fa-lg"></md-icon>
           删除
         </button>
@@ -115,7 +115,32 @@
     </div>
   </div>
 </div>          
-          
+<div id="modal" class="modal modal__bg" role="dialog" aria-hidden="true">
+          <div class="modal__dialog">
+            <div class="modal__content">
+              <h2>创建应用</h2>
+              <div class="modal_content_inner">
+              <form name="nameForm">
+                <div class="form-input" ng-class="nameifmatchreg">
+                  <label for="">应用名称</label>
+                  <input type="text" ng-model="app_name" ng-required="true" ng-keydown="checkname()" ng-keyup="checkname()" md-autofocus>
+                </div>
+                <div class="form-input">
+                  <label for="">应用简介</label>
+                  <textarea ng-model="app_desc"></textarea>
+                </div>
+                <div align="right">
+                  <md-button ng-click="createapps($event.target)" class="md-primary" layout layout-align="center end">创建</md-button>
+                </div>
+              </form>
+              </div>
+              <!-- modal close button -->
+              <a class="modal__close demo-close">
+                <i class="fa fa-times"></i>
+              </a>
+            </div>
+          </div>
+        </div>         
         
 <!-- <div layout="row" layout-margin layout-fill layout-padding >
   <div flex class="md-raised md-pink md-button md-default-theme">I'm on the left, and there's an empty area around me.</div>
