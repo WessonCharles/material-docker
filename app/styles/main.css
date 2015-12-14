@@ -416,9 +416,24 @@ md-menu-item{
   }
 }
 a.md-button.md-raised, .md-button.md-raised{
-  color: #fff;
-  font-weight: 600;
-  background-color: #383c4a!important;
+    /*padding: 7px 16px;*/
+    margin: 0 3px 0 0;
+    font-size: 12px;
+    text-align: center;
+    height:30px;
+    line-height: 30px;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #3b3f4e!important;
+    color: #fff;
+    border: 0;
+    border-bottom: 2px solid #353946;
+    -webkit-appearance: none;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    font-weight: 600;
+    -webkit-transition: all .1s ease-in;
 }
 a.md-button.md-raised:hover, .md-button.md-raised:hover{
   background-color:#2B2B38!important;
@@ -1003,6 +1018,10 @@ form h2 {
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
   border-top: 1px solid #ddd;
 }
+table thead tr th{
+  cursor:pointer;
+  outline: none;
+}
 
 .md-table {
   min-width: 100%;
@@ -1155,6 +1174,9 @@ label {
     float: left;
     line-height: 32px;
 }
+md-content label{
+  float: none;
+}
 md-list-item, md-list-item .md-list-item-inner{
   min-height:50px;
 }
@@ -1186,6 +1208,10 @@ form {
     margin: 0 auto;
     padding: 40px 20px;
     border-radius: 5px;
+}
+.modal_content_inner form{
+  width:100%;
+  padding:0;
 }
 .left-label{
   padding-left:100px;

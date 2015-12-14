@@ -150,7 +150,7 @@ define(['angular','modal'],function(angular,modal){
 	        	$("#prolist").html(code);
 		        // }
 	        });
-			$scope.deleteapp = function(){
+			$scope.deleteapp = function(ev){
 				var confirm = $mdDialog.confirm()
 			    .title('删除确认')
 			    .content('你确定要删除所选应用吗？')
@@ -199,6 +199,38 @@ define(['angular','modal'],function(angular,modal){
 	        // $("md-table").delegate("table tbody tr", 'click', function() {
 	          
 	        // })
+	        // 
+	        
+
+	        /*
+	        弹出框形式的创建应用
+	         */
+	        /**
+			 * [创建应用的restful]
+			 * @type {Array}
+			 */
+			var App = restful.action({type:"@id"},$scope.baseurl+":id/apps");
+			$scope.checkname = function(){
+				var reg =/^[A-Za-z\d-.]+$/;
+				if(new RegExp(reg).test($scope.app_name)){
+					$scope.nameifmatchreg = "";
+				}else{
+					$scope.nameifmatchreg = "md-input-invalid";
+				}
+				console.log($scope.nameifmatchreg)
+			}
+
+			$scope.createapps = function(t){
+				var data = {name:$scope.app_name};
+				if($scope.app_desc){
+					data["describe"] = $scope.app_desc;
+				}
+				var ap = App.save({id:$rootScope.current_tenant.id},data,function(){
+					console.log(ap)
+					$location.path("/applications");
+					$(t).parents(".modal").find(".modal__close").trigger("click");
+				});
+			};
 		}
 	])
 	.controller('prodetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile',

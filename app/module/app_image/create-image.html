@@ -9,20 +9,20 @@
         创建镜像</md-subheader>
        <md-content id="imageform" class="md-padding">
           <form name="myForm">
-            <div>
+            <div  class="form-input">
               <label>镜像名称<span>*</span></label>
               <input ng-model="image.name" type="text" ng-required="true">
             </div>
-            <md-content>
+            <md-content  class="form-input">
               <label for="">镜像图标</label>
               <div layout="row" layout-margin layout-padding >
-                <div flex class="md-raised md-pink md-button md-default-theme">
+                <div flex style="background-color:#EDF0F5" class="md-raised md-pink md-default-theme">
                     <label>选择图片: <button type="button" style="margin-left:20px;width:100px;" class="md-raised md-icon-btn" ng-click="triggerfile()"><md-icon class="fa fa-upload"></md-icon></button><input type="file" id="fileInput" style="opacity:0;"/></label>
                     <div class="cropArea">
                       <img-crop area-type="square" result-image-size="90" image="myImage" result-image="myCroppedImage"></img-crop>
                     </div>
                 </div>    
-                <div flex class="md-raised md-grey md-button md-default-theme">
+                <div flex style="background-color:#EDF0F5" class="md-raised md-grey md-default-theme">
                     <label for="">剪裁后图片预览</label>
                     <div style="margin-top:55px;">
                       <img ng-src="{{myCroppedImage}}" style="border:2px solid #556A74;padding:5px;background-color:#fff;">
@@ -30,13 +30,13 @@
                 </div>
               </div>
             </md-content>
-            <div>
+            <div  class="form-input">
               <label for="">分类</label>
               <input type="text" ng-model="image.category">
             </div>
-            <md-content>
+            <md-content class="form-input">
               <label>代码源</label>
-              <md-tabs md-dynamic-height md-border-bottom>
+              <md-tabs md-dynamic-height md-border-bottom style="padding-left:20px;">
                 <md-tab label="URL">
                   <md-content class="md-padding">
                     <div ng-class="urlifmatchreg">

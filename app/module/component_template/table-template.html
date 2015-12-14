@@ -7,8 +7,8 @@
              <!-- <span ng-if="allexists(content,selected,count)">selected</span> -->
           </md-checkbox> 
         </th>
-        <th ng-repeat="h in headers" class="md-table-header">
-          <a href="#" ng-if="handleSort(h.field)" ng-click="reverse=!reverse;order(h.field,reverse)">{{h.name}} 
+        <th ng-repeat="h in headers" ng-click="reverse=!reverse;order(h.field,reverse)" class="md-table-header">
+          <a href="#" ng-if="handleSort(h.field)" >{{h.name}} 
             <i ng-show="reverse && h.field == predicate"  class="fa fa-sort-desc"></i>
             <i ng-show="!reverse && h.field == predicate" class="fa fa-unsorted"></i>
           </a>
@@ -16,7 +16,7 @@
         <th class="md-table-header">操作</th>
       </tr>
     </thead>
-    <tbody on-rendered ng-repeat="c in content | filter:filters | startFrom:tablePage*count | limitTo: count  track by c.name" >
+    <tbody on-rendered ng-repeat="c in content | filter:filters | startFrom:tablePage*count | limitTo: count  track by $index" >
       <tr ng-click="openview($event.target);" class="md-table-content-row">
         <td ng-if="isselect" class="md-table-content" width="35px">
           <md-checkbox aria-label="checkbox" ng-checked="exists(c, selected)" ng-click="toggle(c, selected)">
