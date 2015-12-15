@@ -50,8 +50,8 @@ define(['angular','modal'],function(angular,modal){
 		        // 	name:'源版本',
 		        // 	field:'resourceVersion'
 		        },{
-		        	name:'描述',
-		        	field:'describe'
+		        	name:'创建人',
+		        	field:'create_user'
 		        // },{
 		        // 	name:'镜像',
 		        // 	field:'images'
@@ -60,7 +60,7 @@ define(['angular','modal'],function(angular,modal){
 		        // 	field:'selfLink'
 		        },{
 		        	name:'创建时间',
-		        	field:'createtime'
+		        	field:'created_at'
 		        }];
 		        var sort = [];
 		        // for(var i in pl.metadata[0]){
@@ -86,12 +86,7 @@ define(['angular','modal'],function(angular,modal){
 		        	// 	"collections":s.containers,
 		        	// 	"subshow":false
 		        	// };
-		        	var obj = {
-		        		name:s.name,
-		        		describe:s.describe,
-		        		uuid:s.uuid
-		        	}
-		        	$scope.content.push(obj);
+		        	$scope.content.push(s);
 		        }
 		        console.log($scope.content)
 		        // $scope.content = [
@@ -127,11 +122,13 @@ define(['angular','modal'],function(angular,modal){
 		         * [请确保 custom，sortable,和headers中的field一一对应，并且拼写相同]
 		         * @type {Object}
 		         */
-		        $scope.custom = {name: 'bold', describe:'grey',createtime:'grey'};
-		        $scope.sortable = ['name','describe','createtime'];
+		        $scope.custom = {name: 'bold', create_user:'grey',created_at:'grey'};
+		        $scope.sortable = ['name','create_user','created_at'];
 		        $scope.count = 100;
 		        $scope.links = '/applications';
 		        $scope.selected = [];
+
+		        instance["applications"] = $scope.content;
 		       	//如果不是links 就是func方法
 		      //  	$scope.func = function($event,c){
 		      //  		instance.current_container = c;
@@ -233,10 +230,25 @@ define(['angular','modal'],function(angular,modal){
 			};
 		}
 	])
-	.controller('prodetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile',
-		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams,restful,$compile){
+	.controller('prodetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile','instance',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams,restful,$compile,instance){
 			console.log("223423")
 			console.log($routeParams)
+
+			var apps = restful.action({type:"@id",uuid:"@uuid"},$scope.baseurl+":id/apps/:uuid");
+			var app = apps.get({id:$rootScope.current_tenant.id,uuid:$routeParams.id},function(){
+				$scope.appone = app.metadata[0];
+				if(!instance.applications||instance.applications.length==0){
+					instance.applications = [$scope.appone];
+				}
+			})
+			// $scope.appone = {};
+			// for(var i=0;i<instance.applications.length;i++){
+			// 	if($routeParams.id==instance.applications[i].uuid){
+			// 		$scope.appone = instance.applications[i];
+			// 		break;
+			// 	}
+			// }
 
 			$scope.toggleSearch = false; 
 
