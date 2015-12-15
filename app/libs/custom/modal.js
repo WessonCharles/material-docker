@@ -108,6 +108,7 @@ var Modal = (function($) {
       zindex++;
       // reveal the modal content
       content.classList.add('modal__content--active');
+      // alert(1)
 
       /**
        * when the modal content is finished transitioning, fadeout the temporary

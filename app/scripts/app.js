@@ -12,6 +12,7 @@ define([
   "directives/more/onRendered",
   "directives/directive",
   "filters",
+  "localization",
   "../module/app_application/controller",
   "../module/app_columns/controller",
   "../module/app_service/controller",
@@ -28,13 +29,14 @@ define([
       'ThCofAngSeed.directives.table',
       'ThCofAngSeed.directives',
       'ThCofAngSeed.filters',
+      'ThCofAngSeed.localization',
       'ThCofAngSeed.pod_ctrl',
       'ThCofAngSeed.columns_ctrl',
       'ThCofAngSeed.service_ctrl',
       'ThCofAngSeed.images_ctrl'
-  ]).controller("baseCtrl",["$scope", "$http","$rootScope", "$location","$timeout", "$filter","$window",'$route','AuthService','$mdBottomSheet',
+  ]).controller("baseCtrl",["$scope", "$http","$rootScope", "$location","$timeout", "$filter","$window",'$route','AuthService','$mdBottomSheet','instance',
       
-      function($scope,$http,$rootScope,$location,$timeout,$filter,$window,$route,AuthService,$mdBottomSheet){
+      function($scope,$http,$rootScope,$location,$timeout,$filter,$window,$route,AuthService,$mdBottomSheet,instance){
         $scope.go = 1;
 
         $scope.baseurl = "http://42.51.161.236:8337/";
@@ -85,6 +87,31 @@ define([
          */
         $scope.breads = window.location.pathname.split("/");
         console.log($scope.breads)
+        /**
+         * 获取面包屑导航中id对应的名称
+         */
+        $scope.getidname = function(b,breads){
+          if(b.length>20){
+            if(breads.join(".").indexOf("applications")>-1){
+              var name = "";
+              if(instance.applications){
+                for(var i =0;i<instance.applications.length;i++){
+                  if(b==instance.applications[i].uuid){
+                    name = instance.applications[i].name;
+                    break;
+                  }
+                }
+              }else{
+                name = b;
+              }
+              return name;
+              
+            }
+          }else{
+            return b;
+          }
+        }
+
         /**
          * [当前app选中状态]
          * @param  {[type]} t [description]

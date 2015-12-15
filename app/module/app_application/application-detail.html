@@ -138,6 +138,11 @@
       <div layout="row" class="switchdiv" layout-margin layout-padding>
         <div flex="30">
             <md-subheader class="md-primary">详情</md-subheader>
+            <md-content>
+              <p><b>{{appone.create_user}}</b>&nbsp;&nbsp;创建于&nbsp;&nbsp;<time>{{appone.created_at}}</time></p>
+              <span for=""><b>描述</b></span><br>
+              <p>{{appone.describe}}</p>
+          </md-content>
         </div>
         <div flex="65" class="bl-main" ng-click="toggleSearch=false">
           <md-subheader class="md-primary">Cluter</md-subheader>
