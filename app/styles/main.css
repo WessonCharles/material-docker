@@ -542,6 +542,9 @@ a.hq-button{
 }
 [flex]:hover,.shadow-hover:hover{
 }
+[flex]>input,[flex]>md-select,[flex] .unshadow input,[flex] .unshadow md-select{
+  float:right;
+}
 .unshadow{
   box-shadow: none!important;
 }
@@ -578,6 +581,39 @@ a.hq-button{
 }
 .form-input:not(:first-child){
   margin-top:18px;
+}
+.left{
+  margin:0;
+}
+.rightside{
+  float:right;
+  position: relative;
+  width: 25%;
+  padding:40px 20px;
+  border-left:1px solid rgba(0,0,0,.15);
+}
+[align=right]{
+  margin: 10px -2.4rem -2.4rem -2.4rem;
+  padding: 10px 30px 15px;
+}
+[align=right] .md-primary{
+      margin: 0 3px 0 0;
+    font-size: 12px;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #3b3f4e!important;
+    border: 0;
+    color:#fff;
+    border-bottom: 2px solid #353946;
+    -webkit-appearance: none;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    font-weight: 600;
+    -webkit-transition: all .1s ease-in;
 }
 .navbar-toggle {
     position: relative;
@@ -937,7 +973,7 @@ opacity: 1;
 .modal__close {
     z-index: 1100;
     cursor: pointer;
-    background-color: #ddd;
+    /*background-color: #ddd;*/
     padding: 10px;
     width: 20px;
     border-radius: 20px;
@@ -1185,7 +1221,16 @@ md-list-item .md-list-item-inner>md-checkbox:first-child, md-list-item>md-checkb
   margin-left:15px;
 }
 md-select{
-  margin:0;
+  margin: -5px 0 0 0;
+    display: inline-block;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #dedede;
+    width: 200px;
+}
+md-select-value{
+  min-height: 0;
+  border-bottom: none;
 }
 md-content {
     color: #7A8491;
@@ -1222,12 +1267,11 @@ form {
     display: inline;
     margin-left: -50px;
     top: -7px;
-    margin-top: 8px;
     order:0!important;
 }
 .line-radio md-radio-button{
   float: left;
-  margin:0 10px;
+  margin:4px 10px 0;
 }
 /*
 switch page
@@ -1805,4 +1849,7 @@ md-radio-button.flavo:hover .flavor .des{
 .flavor-image-6{
   background-image:url("../images/flavor6x.png");
 }*/
+.background{
+  background-color: #EDF0F5;
+}
 

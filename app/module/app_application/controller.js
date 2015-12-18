@@ -400,6 +400,56 @@ define(['angular','modal'],function(angular,modal){
 	])
 	.controller('createappctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams,restful){
+
+			$scope.createapps = function(){
+				var data = {name:$scope.app_name};
+				if($scope.app_desc){
+					data["describe"] = $scope.app_desc;
+				}
+				var ap = App.save({id:$rootScope.current_tenant.id},data,function(){
+					console.log(ap)
+					$location.path("/applications")
+				});
+			};
+
+			$scope.selected = [];
+		    $scope.toggle = function (item, list) {
+		        var idx = list.indexOf(item);
+		        if (idx > -1) list.splice(idx, 1);
+		        else list.push(item);
+		    };
+		    $scope.exists = function (item, list) {
+		        return list.indexOf(item) > -1;
+		    };
+
+		}
+	])
+	.controller('createcluterctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','Notify','instance',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams,restful,Notify,instance){
+			$scope.app_uuid = $routeParams.id;
+			/**
+			 * 获取当前处于哪个应用下
+			 * @type {[type]}
+			 */
+			var apps = restful.action({type:"@id",uuid:"@uuid"},$scope.baseurl+":id/apps/:uuid");
+			var app = apps.get({id:$rootScope.current_tenant.id,uuid:$routeParams.id},function(){
+				console.log(instance.applictions)
+				if(!instance.applications||instance.applications.length==0){
+					instance.applications = [app.metadata[0]];
+				}
+				console.log(instance.applications)
+			})
+			/**
+			 * 获取卷列表
+			 * @type {[type]}
+			 */
+			var vol = restful.action({type:"@id",name:"@name"},$scope.baseurl+":id/volume/:name");
+	        console.log($rootScope.current_tenant)
+	        var vo = vol.get({id:$rootScope.current_tenant.id},function(e){
+		        $scope.volumns = vo.metadata;
+		        console.log("卷列表：")
+		        console.log($scope.volumns)
+	        });
 			/**
 			 * 选项卡方法
 			 */
@@ -440,16 +490,6 @@ define(['angular','modal'],function(angular,modal){
 				console.log($scope.nameifmatchreg)
 			}
 
-			$scope.createapps = function(){
-				var data = {name:$scope.app_name};
-				if($scope.app_desc){
-					data["describe"] = $scope.app_desc;
-				}
-				var ap = App.save({id:$rootScope.current_tenant.id},data,function(){
-					console.log(ap)
-					$location.path("/applications")
-				});
-			};
 
 			$scope.selected = [];
 		    $scope.toggle = function (item, list) {
@@ -463,6 +503,35 @@ define(['angular','modal'],function(angular,modal){
 		    $http.get($scope.baseurl+"flavors/").success(function(data){
 				$scope.flavors = data["metadata"];
 			})
+
+			$scope.addtovolumns = function(obj,img){
+				var it;
+				for(var i=0;i<$scope.images.length;i++){
+					if($scope.images[i].uuid == img.uuid){
+						it = $scope.images[i];
+						break;
+					}
+				}
+				console.log(obj)
+				for(var o in obj){
+					it.volumns.push({
+						name:o,
+						mouthpath:obj[o]
+					})
+				}
+			}
+			$scope.removeonevol = function(one,list,img){
+				var it;
+				for(var i=0;i<$scope.images.length;i++){
+					if($scope.images[i].uuid == img.uuid){
+						it = $scope.images[i];
+						break;
+					}
+				}
+				list.splice(list.indexOf(one),1);
+				it.tempvol.splice(it.tempvol.indexOf(one.name),1);
+				delete it.tempvlm[one.name];
+			}
 		    // gethashtag(imcfg.image)
 		    $scope.getdata = function(img){
 		    	img.image = !img.is_official?(img.url+"/"+img.tenant_name+"/"+img.name):(img.url+"/"+img.name);
@@ -471,8 +540,8 @@ define(['angular','modal'],function(angular,modal){
 		    }
 		    $scope.images_config = [];
 		    $scope.savetobox = function(img){
-		    	if(!img.tag)Notify.showSimpleToast("请选择版本",-1);
-		    	if(!img.flavor)Notify.showSimpleToast("请选择配置",-1);
+		    	if(!img.tag){Notify.showSimpleToast("请选择版本",-1); return;}
+		    	if(!img.flavor){Notify.showSimpleToast("请选择配置",-1); return;}
 		    	img.issave = !img.issave;
 		    	$scope.images_config.push({
 		    		name:img.name,
@@ -480,12 +549,41 @@ define(['angular','modal'],function(angular,modal){
 		    		image:img.image,
 		    		tag:img.tag,
 		    		flavor:img.flavor,
-		    		more_cfg:false,//控制高级选项是否显示
-					env:[],//环境配置
-					ports:[],//端口配置
-					tempobj:{},
-					portobj:{},
+		    		more_cfg:img.more_cfg,//控制高级选项是否显示
+					env:img.env,//环境配置
+					ports:img.ports,//端口配置
+					tempobj:img.tempobj,
+					portobj:img.portobj,
+					command:img.strcom.split(" "),
+					args:img.strargs.split(" "),
+					volumes:img.volumns
 		    	})
+		    }
+
+		    $scope.removefrombox = function(img){
+		    	for(var i =0;i<$scope.images.length;i++){
+		    		if($scope.images[i].uuid == img.id){
+		    			$scope.images[i].issave = !$scope.images[i].issave;
+		    			break;
+		    		}
+		    	}
+		    	// img.issave = !img.issave;
+		    	for(var i =0;i<$scope.images_config.length;i++){
+		    		if($scope.images_config[i].id == img.id){
+		    			$scope.images_config.splice(i,1);
+		    			break;
+		    		}
+		    	}
+		    }
+		    $scope.hasimg = function(img){
+		    	var flag = false;
+		    	for(var i=0;i<$scope.images_config.length;i++){
+		    		if($scope.images_config[i].id == img.uuid){
+		    			flag = true;
+		    			break;
+		    		}
+		    	}
+		    	return flag;
 		    }
 
 			$scope.gostep = function(n){
@@ -509,26 +607,30 @@ define(['angular','modal'],function(angular,modal){
 					// 	$scope.images_config.push(obj);
 					// }
 				}else if(n==2){
+					console.log("2222)")
 
 					var reqdata = [];
 					for(var i=0;i<$scope.images_config.length;i++){
 						var im = $scope.images_config[i];
 						var obj = {
-							name:im.name,
+							// name:im.name,
 							image:im.image+":"+im.tag,
-							flavor_id:im.flavor
+							flavor_uuid:im.flavor,
+							command:im.command,
+							args:im.args,
+							volumes:im.volumes
 						};
 						console.log(obj.image)
 						obj.image = obj.image.replace(/\s+/g, "");
 						console.log(obj.image)
 						if(im.env.length>0)obj.env = im.env;
-						if(im.ports.length>0)obj.ports  = im.ports;
+						// if(im.ports.length>0)obj.ports  = im.ports;
 						// delete obj.ports;
 						reqdata.push(obj);
 					}
 					console.log(reqdata);
 					// return false;
-					var ap = App.save({id:$rootScope.current_tenant.id},{name:$scope.app_name,containers:reqdata},function(){
+					var ap = App.save({id:$rootScope.current_tenant.id},{app_uuid:$scope.app_uuid,name:$scope.cluter_name,replicas:reqdata.length,containers:reqdata},function(){
 						console.log(ap)
 						$location.path("/applications")
 					});
@@ -564,7 +666,6 @@ define(['angular','modal'],function(angular,modal){
 	        		$scope.images = sa["metadata"];
 	        	})
 	        }
-
 		}
 	])			
 })
