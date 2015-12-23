@@ -85,7 +85,6 @@
                   <div class="imagesout" ng-repeat="img in images|orderBy:'-star_number'">
                       <md-list-item  class="imageitem" ng-class="(img.isopen||hasimg(img))?'background':''" ng-click="img.isopen = !img.isopen;getdata(img);toggle(img,selected);">
                         <!-- <md-checkbox ng-checked="exists(img, selected)" ng-click="toggle(img,selected)"></md-checkbox> -->
-                        <b>{{$index+1}}</b>
                         <label>{{img.name}}</label>
                         <p ng-if="img.description">{{img.description}}</p>
                         <md-icon style="position: absolute;top: 20px;right: 25%;color:#FFC107;" class="fa fa-star" aria-label="Chat" ><span style="color:#666;margin-left:5px;">{{img.star_number||0}}</span></md-icon>
