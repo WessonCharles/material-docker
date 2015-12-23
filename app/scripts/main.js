@@ -59,7 +59,8 @@ require.config({
 	priority: [
         'angular',
         'jquery'
-    ]
+    ],
+    urlArgs:(new Date()).getTime()
 })
 window.name = "NG_DEFER_BOOTSTRAP!";//必须 、延迟引导、避免发生Failed to instantiate module ThCofAngSeed
 require([

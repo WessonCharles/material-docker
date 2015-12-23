@@ -252,119 +252,111 @@ define(['angular','modal'],function(angular,modal){
 
 			$scope.toggleSearch = false; 
 
+			$scope.tab = 'cluster';
 			var clu = restful.action({id:"@id",uuid:"@uuid"},$scope.baseurl+":id/cluster?app_uuid=:uuid");
+			var lbscol = restful.action({id:"@id",name:"@name"},$scope.baseurl+":id/cluster/:name");
 			var cl = clu.get({id:$rootScope.current_tenant.id,uuid:$routeParams.id},function(){
 				console.log(cl);
 				$scope.headers = [
 		          {
-		            name: 'Name', 
+		            name: '名称', 
 		            field: 'name'
 		          },{
-		            name:'Description', 
-		            field: 'description'
+		            name:'副本数', 
+		            field: 'replicas'
 		          },{
-		            name: 'Last Modified', 
-		            field: 'last_modified'
-		          // },{
-		          //   name:'More Action',
-		          //   field:'more_action'
+		            name: '集群健康状态', 
+		            field: 'health_status'
+		          },{
+		            name:'创建时间',
+		            field:'created_at'
 		          }
 		        ];
 		        
-		        $scope.content = [
-		          {
-		            // thumb:'https://lh3.googleusercontent.com/-5NfcdlvGQhs/AAAAAAAAAAI/AAAAAAAAABY/ibGrApGYTuQ/photo.jpg', 
-		            name: 'Bruno Mars', 
-		            description: 'Human',
-		            last_modified: 'Jun 5, 2014'
-		          },{
-		            // thumb:'http://www.otakia.com/wp-content/uploads/V_1/article_3573/7405.jpg', 
-		            name: 'AT-AT', 
-		            description: 'Robot',
-		            last_modified: 'Jun 5, 2014'
-		          },{
-		            // thumb:'https://speakerdata.s3.amazonaws.com/photo/image/774492/Mark-Ronson-r24.jpg', 
-		            name: 'Mark Ronson', 
-		            description: 'Human',
-		            last_modified: 'Jun 5, 2014'
-		          },{
-		            // thumb:'http://25.media.tumblr.com/61ebf04c3cc7a84944aa0246e902f2a7/tumblr_mm35b87dGz1qmwrnuo1_1280.jpg', 
-		            name: 'Daft Punk', 
-		            description: 'Human-Robot',
-		            last_modified: 'Jun 5, 2014'
-		          },{
-		            // thumb:'http://thatgrapejuice.net/wp-content/uploads/2014/03/lady-gaga-that-grape-juice-televisionjpg.jpg', 
-		            name: 'Lady Gaga', 
-		            description: 'Undefined',
-		            last_modified: 'Jun 5, 2014'
-		          }
-		        ];
+		        $scope.tcollheaders = [];
+		        $scope.content = [];
+		        for(var i=0;i<cl.metadata.length;i++){
+		        	$scope.content.push({
+		        		name:cl.metadata[i].name,
+		        		replicas:cl.metadata[i].replicas,
+		        		health_status:cl.metadata[i].status.current+"/"+cl.metadata[i].status.desired,
+		        		created_at:$filter("date")(cl.metadata[i].created_at,'MM/dd/yyyy h:mm:ss'),
+		        		collections:[]
+		        	})
+		        }
 		        $scope.selected = [];
-		        $scope.custom = {name: 'bold', description:'grey',last_modified: 'grey'};
-		        $scope.sortable = ['name', 'description', 'last_modified'];
+		        $scope.custom = {name: 'bold', replicas:'grey',health_status: 'grey',created_at:'grey'};
+		        $scope.sortable = ['name', 'replicas', 'health_status','created_at'];
 		        // $scope.thumbs = 'thumb';
 		        $scope.count = 5;
-		        var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" thumbs="thumbs" isselect="true" selected="selected" modal="modal" count="count"></md-table>')($scope);
+		        var code = $compile('<md-table headers="headers" innerlinks="applications/'+$routeParams.id+'" content="content" sortable="sortable" filters="search" thumbs="thumbs" isselect="true" selected="selected" modal="modal" collheaders="tcollheaders" getapidata="getcoldata" hover="hover" action="true" count="count"></md-table>')($scope);
 	        	$("#cluter-table").html(code);
 
 			})
 
+
 			var lbs = restful.action({id:"@id",uuid:"@uuid"},$scope.baseurl+":id/lb?app_uuid=:uuid");
+
 			var lb = lbs.get({id:$rootScope.current_tenant.id,uuid:$routeParams.id},function(){
 				console.log(lb);
 				$scope.theaders = [
 		          {
-		            name: 'Name', 
+		            name: '名称', 
 		            field: 'name'
 		          },{
-		            name:'Description', 
-		            field: 'description'
+		            name:'分发策略', 
+		            field: 'sessionAffinity'
 		          },{
-		            name: 'Last Modified', 
-		            field: 'last_modified'
+		            name: '创建时间', 
+		            field: 'created_at'
 		          // },{
 		          //   name:'More Action',
 		          //   field:'more_action'
 		          }
 		        ];
-		        
-		        $scope.tcontent = [
-		          {
-		            // thumb:'https://lh3.googleusercontent.com/-5NfcdlvGQhs/AAAAAAAAAAI/AAAAAAAAABY/ibGrApGYTuQ/photo.jpg', 
-		            name: 'Bruno Mars', 
-		            description: 'Human',
-		            last_modified: 'Jun 5, 2014'
-		          },{
-		            // thumb:'http://www.otakia.com/wp-content/uploads/V_1/article_3573/7405.jpg', 
-		            name: 'AT-AT', 
-		            description: 'Robot',
-		            last_modified: 'Jun 5, 2014'
-		          },{
-		            // thumb:'https://speakerdata.s3.amazonaws.com/photo/image/774492/Mark-Ronson-r24.jpg', 
-		            name: 'Mark Ronson', 
-		            description: 'Human',
-		            last_modified: 'Jun 5, 2014'
-		          },{
-		            // thumb:'http://25.media.tumblr.com/61ebf04c3cc7a84944aa0246e902f2a7/tumblr_mm35b87dGz1qmwrnuo1_1280.jpg', 
-		            name: 'Daft Punk', 
-		            description: 'Human-Robot',
-		            last_modified: 'Jun 5, 2014'
-		          },{
-		            // thumb:'http://thatgrapejuice.net/wp-content/uploads/2014/03/lady-gaga-that-grape-juice-televisionjpg.jpg', 
-		            name: 'Lady Gaga', 
-		            description: 'Undefined',
-		            last_modified: 'Jun 5, 2014'
-		          }
-		        ];
+		        $scope.collheaders = [];
+		        if(lb.metadata[0]&&lb.metadata[0].lb[0]){
+		        	for(var f in lb.metadata[0].lb[0]){
+		        		$scope.collheaders.push(f);
+		        	}
+		        }
+		        console.log($scope.collheaders)
+		        $scope.tcontent = [];
+		        for(var i=0;i<lb.metadata.length;i++){
+		        	$scope.tcontent.push({
+		        		name:lb.metadata[i].name,
+		        		sessionAffinity:lb.metadata[i].sessionAffinity,
+		        		created_at:$filter("date")(lb.metadata[i].created_at,'MM/dd/yyyy h:mm:ss'),
+		        		collections:lb.metadata[i].lb
+		        	})
+		        }
 		        $scope.tselected = [];
-		        $scope.tcustom = {name: 'bold modal__trigger', description:'grey',last_modified: 'grey'};
-		        $scope.tsortable = ['name', 'description', 'last_modified'];
-		        $scope.tmodal = "#container_detail";
+		        $scope.tcustom = {name: 'bold', sessionAffinity:'grey',created_at: 'grey'};
+		        $scope.tsortable = ['name', 'sessionAffinity', 'created_at'];
+		        // $scope.tmodal = "#container_detail";
 		        // $scope.thumbs = 'thumb';
 		        $scope.tcount = 5;
-		        var code = $compile('<md-table headers="theaders" content="tcontent" sortable="tsortable" filters="search" thumbs="tthumbs" isselect="true" selected="tselected" modal="tmodal" count="tcount"></md-table>')($scope);
+		        var code = $compile('<md-table headers="theaders" content="tcontent" sortable="tsortable" filters="search" thumbs="tthumbs" isselect="true" selected="tselected" modal="tmodal" collheaders="collheaders" count="tcount"></md-table>')($scope);
 	        	$("#lb-table").html(code);
 			})
+
+			$scope.getcoldata=function(c){
+				console.log(c)
+				if(!c.replicas)return;
+				c.collections = [];
+				var lsc = lbscol.get({id:$rootScope.current_tenant.id,name:c.name},function(){
+					for(var i =0;i<lsc.metadata.length;i++){
+						c.collections.push({
+							name:lsc.metadata[i].name,
+							private_ip:lsc.metadata[i].private_ip,
+							started_at:$filter("date")(lsc.metadata[i].started_at,"MM/dd/yyyy h:mm:ss"),
+							status:lsc.metadata[i].status.component,
+							images:lsc.metadata[i].images
+						})
+					}
+					$scope.tcollheaders = ["name","private_ip","started_at","status"];
+				})
+			}
 	        
 
 	        $scope.switchmain = function(index,t){
@@ -377,6 +369,12 @@ define(['angular','modal'],function(angular,modal){
 	        		$(t).parents(".switchdiv").addClass("right");
 	        	}
 	        }
+		}
+	])
+	.controller('servicedetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile','instance',
+		function($rootScope,$scope,$http,$timeout,$location,$window,$filter,$routeParams,restful,$compile,instance){
+			console.log($routeParams)
+			console.log("dfjasjflkajsdoijflksjaoifjsdlkajfo")
 		}
 	])
 	.controller('appdetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','instance',

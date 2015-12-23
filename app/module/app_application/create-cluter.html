@@ -29,7 +29,7 @@
                   </md-list>
               </div>
               <form name="nameForm" class="left">
-                <div ng-class="nameifmatchreg">
+                <div ng-class="nameifmatchreg" style="padding-left: 33px;">
                   <label for="">集群名称</label>
                   <input type="text" ng-model="cluter_name" ng-required="true" ng-keydown="checkname()" ng-keyup="checkname()" md-autofocus>
                 </div>
@@ -37,7 +37,7 @@
                   <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
                     <div class="md-no-style md-list-item-inner">
                       <p>选择镜像：
-                        <md-radio-group class="line" ng-model="image_tag">
+                        <md-radio-group class="line" ng-model="image_tag"  ng-init="image_tag='public'">
                           <md-radio-button value="public" class="md-primary">公有</md-radio-button>
                           <md-radio-button value="private" class="md-primary">私有</md-radio-button>
                           <md-radio-button value="thrd" class="md-primary">Docker/第三方镜像</md-radio-button>
@@ -46,7 +46,7 @@
                       </p>
                     </div>
                   </md-list-item>
-                  <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                  <!-- <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
                     <div class="md-no-style md-list-item-inner">
                       <p ng-init="$parent.image_type='u'">镜像类型：
                         <md-radio-group class="line" ng-modal="image_type">
@@ -58,7 +58,7 @@
                         </md-radio-group>
                       </p>
                     </div>
-                  </md-list-item>
+                  </md-list-item> -->
                   <md-divider></md-divider>
                   <md-list-item role="listitem" ng-if="image_tag=='thrd'" style="margin-left:16px;" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
                     <div md-no-float class="nopaddingbot" style="width:50%;">
@@ -82,15 +82,16 @@
                       </div>
                     </md-progress-circular>
                   </div>
-                  <div ng-repeat="img in images|orderBy:'-star_number'">
-                      <md-list-item  ng-class="(img.isopen||hasimg(img))?'background':''" ng-click="img.isopen = !img.isopen;getdata(img);toggle(img,selected);">
+                  <div class="imagesout" ng-repeat="img in images|orderBy:'-star_number'">
+                      <md-list-item  class="imageitem" ng-class="(img.isopen||hasimg(img))?'background':''" ng-click="img.isopen = !img.isopen;getdata(img);toggle(img,selected);">
                         <!-- <md-checkbox ng-checked="exists(img, selected)" ng-click="toggle(img,selected)"></md-checkbox> -->
                         <b>{{$index+1}}</b>
                         <label>{{img.name}}</label>
                         <p ng-if="img.description">{{img.description}}</p>
-                        <md-icon style="position: absolute;top: 25px;right: 100px;color:#FFC107;" class="fa fa-star" aria-label="Chat" ><span style="color:#666;margin-left:5px;">{{img.star_number||0}}</span></md-icon>
+                        <md-icon style="position: absolute;top: 20px;right: 25%;color:#FFC107;" class="fa fa-star" aria-label="Chat" ><span style="color:#666;margin-left:5px;">{{img.star_number||0}}</span></md-icon>
+                        <md-icon style="position: absolute;top: 12px;right: 5%;font-size:2em;color:#666;" class="fa" ng-class="img.isopen?'fa-chevron-circle-down':'fa-chevron-circle-right'"></md-icon>
                       </md-list-item>
-                      <div ng-if="img.isopen">
+                      <div ng-if="img.isopen" class="imageitemdetail">
                           <div class="unshadow" ng-init="img.tempobj = {};img.env=[];img.strcom='';img.command=[];img.strargs='';img.args=[];img.volumns=[];img.tempvol=[];img.tempvlm={};img.more_cfg=fasle;" layout="row" layout-fill layout-padding>
                             <div class="unshadow" flex>
                               <div class="nopaddingbot">
@@ -168,7 +169,7 @@
                               </tbody>
                             </table> 
                           </div>
-                          <div layout="" layout-sm="column">
+                          <div layout="row" layout-fill layout-padding>
                             
                             <div flex class="noshadow">
                               <label for="">环境变量(name)</label>
