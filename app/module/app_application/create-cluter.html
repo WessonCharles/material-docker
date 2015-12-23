@@ -1,0 +1,242 @@
+<div return>
+<div class="content-table">
+  <div layout="row" layout-margin>
+    <div flex flex-order="1" class="noshadow bl-main">
+        <md-subheader class="md-primary">
+        <button  aria-label="returntolist" viewclose link="/applications" md-button class="md-raised md-icon-btn" ng-click="backlist();">
+          <md-icon class="fa fa-arrow-left fa-lg"></md-icon>
+        </button>
+        创建集群</md-subheader>
+       <md-content>
+        <md-tabs md-selected="createstep" md-dynamic-height md-border-bottom md-stretch-tabs="always">
+          <md-tab label="①镜像来源" id="image_source">
+            <md-content class="md-padding" >
+              <div class="rightside">
+                  <md-subheader class="md-primary">已保存清单</md-subheader>
+                  <md-divider></md-divider>
+                  <md-list>
+                    <md-list-item style="min-height:30px" ng-if="!images_config||images_config.length==0">
+                      <p>暂无任何清单</p>
+                    </md-list-item> 
+                    <md-list-item ng-repeat="icf in images_config track by $index" style="min-height:30px">
+                      <p><b><label>{{icf.name}}</label> : <span>{{icf.tag}}</span></b></p>
+                      <md-icon ng-click="removefrombox(icf)" class="fa fa-trash md-default-theme material-icons" aria-label="Chat"></md-icon>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <div  align="right" ng-if="images_config&&images_config.length>0">
+                      <md-button ng-click="gostep(2)" class="md-primary" layout layout-align="center end">完成</md-button>
+                    </div>
+                  </md-list>
+              </div>
+              <form name="nameForm" class="left">
+                <div ng-class="nameifmatchreg" style="padding-left: 33px;">
+                  <label for="">集群名称</label>
+                  <input type="text" ng-model="cluter_name" ng-required="true" ng-keydown="checkname()" ng-keyup="checkname()" md-autofocus>
+                </div>
+                <md-list ng-cloak>
+                  <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                    <div class="md-no-style md-list-item-inner">
+                      <p>选择镜像：
+                        <md-radio-group class="line" ng-model="image_tag"  ng-init="image_tag='public'">
+                          <md-radio-button value="public" class="md-primary">公有</md-radio-button>
+                          <md-radio-button value="private" class="md-primary">私有</md-radio-button>
+                          <md-radio-button value="thrd" class="md-primary">Docker/第三方镜像</md-radio-button>
+                        </md-radio-group>
+                        
+                      </p>
+                    </div>
+                  </md-list-item>
+                  <!-- <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                    <div class="md-no-style md-list-item-inner">
+                      <p ng-init="$parent.image_type='u'">镜像类型：
+                        <md-radio-group class="line" ng-modal="image_type">
+                          <md-radio-button value="u" class="md-primary">SSH服务器</md-radio-button>
+                          <md-radio-button value="stack" class="md-primary">Web服务器</md-radio-button>
+                          <md-radio-button value="public" class="md-primary">数据库与缓存</md-radio-button>
+                          <md-radio-button value="private" class="md-primary">Library</md-radio-button>
+                          <md-radio-button value="collection" class="md-primary">其他</md-radio-button>
+                        </md-radio-group>
+                      </p>
+                    </div>
+                  </md-list-item> -->
+                  <md-divider></md-divider>
+                  <md-list-item role="listitem" ng-if="image_tag=='thrd'" style="margin-left:16px;" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                    <div md-no-float class="nopaddingbot" style="width:50%;">
+                      <md-icon class="fa fa-search" ng-click="searchimage(search_image)"></md-icon>
+                      <input ng-model="search_image" type="text" style="margin:0;" placeholder="搜索镜像">
+                    </div>
+                  </md-list-item>
+                  <md-subheader class="md-no-sticky">镜像列表</md-subheader>
+                  <div ng-if="!images">
+                    <md-progress-circular md-mode="indeterminate" aria-valuemin="0" aria-valuemax="100" role="progressbar" class="md-default-theme" style="transform: scale(1);margin: 0 auto;">
+                      <div class="md-spinner-wrapper">
+                        <div class="md-inner">
+                          <div class="md-gap"></div>
+                          <div class="md-left">
+                            <div class="md-half-circle"></div>
+                          </div>
+                          <div class="md-right">
+                            <div class="md-half-circle"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </md-progress-circular>
+                  </div>
+                  <div class="imagesout" ng-repeat="img in images|orderBy:'-star_number'">
+                      <md-list-item  class="imageitem" ng-class="(img.isopen||hasimg(img))?'background':''" ng-click="img.isopen = !img.isopen;getdata(img);toggle(img,selected);">
+                        <!-- <md-checkbox ng-checked="exists(img, selected)" ng-click="toggle(img,selected)"></md-checkbox> -->
+                        <label>{{img.name}}</label>
+                        <p ng-if="img.description">{{img.description}}</p>
+                        <md-icon style="position: absolute;top: 20px;right: 25%;color:#FFC107;" class="fa fa-star" aria-label="Chat" ><span style="color:#666;margin-left:5px;">{{img.star_number||0}}</span></md-icon>
+                        <md-icon style="position: absolute;top: 12px;right: 5%;font-size:2em;color:#666;" class="fa" ng-class="img.isopen?'fa-chevron-circle-down':'fa-chevron-circle-right'"></md-icon>
+                      </md-list-item>
+                      <div ng-if="img.isopen" class="imageitemdetail">
+                          <div class="unshadow" ng-init="img.tempobj = {};img.env=[];img.strcom='';img.command=[];img.strargs='';img.args=[];img.volumns=[];img.tempvol=[];img.tempvlm={};img.more_cfg=fasle;" layout="row" layout-fill layout-padding>
+                            <div class="unshadow" flex>
+                              <div class="nopaddingbot">
+                                <label>镜像名称：</label>
+                                <input ng-model="img.image" type="text" disabled="true">
+                              </div>
+                            </div>
+                            <div class="unshadow" flex>
+                              <div class="nopaddingbot">
+                                <label>镜像版本：</label>
+                                <md-select placeholder="镜像版本" name="ram" ng-model="img.tag" required>
+                                  <md-option ng-repeat="t in hash_tags[img.image] track by $index" value="{{t}}">{{t}}</md-option>
+                                </md-select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="unshadow" style="padding-top:0px;" layout="row" layout-fill layout-padding>
+                              <div class="unshadow" layout="row" layout-fill layout-padding>
+                              <label>组件配置</label>
+                              <div layout="row" layout-sm-column style="padding-left:50px;">
+                                <md-radio-group class="line" ng-model="img.flavor">
+                                  <md-radio-button value="{{f.uuid}}" ng-repeat="f in flavors track by $index" class="md-primary flavo">
+                                      <div class="md-label flavor">
+                                        <img src="../images/flavor{{$index+1}}x.png" alt="{{$index+1}}x flavor">
+                                        <div class="des">
+                                            <p>内存：{{f.memory}}</p>
+                                            <p>硬盘：{{f.disk}}</p>
+                                        </div>
+                                      </div>
+                                  </md-radio-button>
+                                </md-radio-group>
+                              </div>
+                              </div>
+                          </div>
+                          <div class="unshadow" layout="row" layout-fill layout-padding>
+                            <div class="unshadow" flex>
+                              <div class="nopaddingbot">
+                                <label for="">命令</label>
+                                <input ng-model="img.strcom" type="text">
+                              </div>
+                            </div>
+                            <div class="unshadow" flex>
+                              <div class="nopaddingbot">
+                                <label for="">参数</label>
+                                <input type="text" ng-model="img.strargs" placeholder="以空格分隔">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="unshadow" layout="row" layout-fill layout-padding>
+                            <div class="unshadow" flex>
+                              <div class="nopaddingbot">
+                                <label for="">选择挂载卷</label>
+                                <md-select placeholder="挂载卷" name="volumn" ng-model="img.tempvol" multiple="true" placeholder="卷列表，多选" required>
+                                  <md-option ng-repeat="vo in volumns track by $index" value="{{vo.name}}">{{vo.name}}</md-option>
+                                </md-select>
+                              </div>
+                            </div>
+                            <div class="unshadow" flex>
+                              <div class="nopaddingbot" ng-repeat="ev in img.tempvol track by $index">
+                                <label for="">{{ev}}</label>
+                                <input type="text" ng-model="img.tempvlm[ev]" placeholder="挂载的路径">
+                              </div>
+                              <a ng-click="addtovolumns(img.tempvlm,img)">添加</a>
+                            </div>
+                          </div>
+                          <div style="padding-left:45px;margin: 10px 10px 20px 10px;"> 
+                            <table class="md-table">
+                              <thead class="thead-back"><tr class="md-table-headers-row"><th class="md-table-header">卷名</th><th class="md-table-header">挂载的路径</th><th class="md-table-header">操作</th></tr></thead>
+                              <tbody>
+                                <tr class="md-table-content-row" ng-repeat="e in img.volumns track by $index">
+                                  <td class="md-table-content">{{e.name}}</td>
+                                  <td class="md-table-content">{{e.mouthpath}}</td>
+                                  <td class="md-table-content"><i class="fa fa-trash text-primary" ng-click="removeonevol(e,img.volumns,img)"></i></td>
+                                </tr>
+                              </tbody>
+                            </table> 
+                          </div>
+                          <div layout="row" layout-fill layout-padding>
+                            
+                            <div flex class="noshadow">
+                              <label for="">环境变量(name)</label>
+                              <input ng-model="img.tempobj.name" type="text" placeholder="name">
+                            </div>
+                            <div flex class="noshadow">
+                              <label for="">环境变量(value)</label>
+                              <input ng-model="img.tempobj.value" type="text" placeholder="value">
+                            </div>
+                            <a ng-click="img.env.push({name:img.tempobj.name,value:img.tempobj.value});img.tempobj = {};">添加</a>
+                          </div>
+                          <div style="padding-left:45px;margin: 10px 10px 20px 10px;"> 
+                            <table class="md-table">
+                              <thead class="thead-back"><tr class="md-table-headers-row"><th class="md-table-header">键</th><th class="md-table-header">值</th><th class="md-table-header">操作</th></tr></thead>
+                              <tbody>
+                                <tr class="md-table-content-row" ng-repeat="e in img.env track by $index">
+                                  <td class="md-table-content">{{e.name}}</td>
+                                  <td class="md-table-content">{{e.value}}</td>
+                                  <td class="md-table-content"><i class="fa fa-trash text-primary" ng-click="removeOneimgpro(e,img.env)"></i></td>
+                                </tr>
+                              </tbody>
+                            </table> 
+                          </div>
+                          <!-- <div layout="" layout-sm="column">
+                            <div flex class="noshadow">
+                              <label for="">容器端口</label>
+                              <input ng-model="img.portobj.port" type="text" placeholder="port">
+                            </div>
+                            <div flex class="noshadow left-label">
+                              <label for="">协议</label>
+                              <md-radio-group class="line-radio" ng-model="img.portobj.protocol" ng-init="img.portobj.protocol=='TCP'">
+                                <md-radio-button value="TCP" class="md-primary">TCP</md-radio-button>
+                                <md-radio-button value="HTTP"> HTTP </md-radio-button>
+                              </md-radio-group>
+                            </div>
+                            <a ng-click="img.ports.push({port:img.portobj.port,protocol:img.portobj.protocol});img.portobj = {};">添加</a>
+                          </div> -->
+                          <!-- <div style="padding-left:45px;margin: 10px 10px 20px 10px;">
+                            <table class="md-table">
+                              <thead class="thead-back"><tr class="md-table-headers-row"><th class="md-table-header">容器端口</th><th class="md-table-header">协议</th><th class="md-table-header">映射端口</th><th class="md-table-header">操作</th></tr></thead>
+                              <tbody>
+                                <tr class="md-table-content-row" ng-repeat="p in img.ports track by $index">
+                                  <td class="md-table-content">{{p.port}}</td>
+                                  <td class="md-table-content">{{p.protocol}}</td>
+                                  <td class="md-table-content"><em>动态生成</em></td>
+                                  <td class="md-table-content"><i class="fa fa-trash text-primary" ng-click="removeOneimgpro(p,img.ports)"></i></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                        </div> -->
+                          <div align="right" style="padding: 0 2.4rem 2.4rem;margin-bottom: -25px;">
+                            <md-button ng-if="!img.issave" type="button" ng-click="savetobox(img)" class="md-primary">保存到清单</md-button>
+                          </div>
+                      </div>
+                      <md-divider></md-divider>
+                  </div>
+                  
+                </md-list>
+              </form>
+            </md-content>
+          </md-tab>
+          <md-tab label="②高级配置" id="hight_config" ng-disabled="tabs[2]">
+            <md-content class="md-padding">
+            </md-content>
+          </md-tab>
+        </md-tabs>   
+      </md-content>
+    </div>
+  </div>
+</div>
+</div>

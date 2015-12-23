@@ -15,6 +15,14 @@ define(['angular','app'], function(angular,app) {
             templateUrl:'module/app_application/application-detail.html',
             controller:'prodetailctrl'
         })
+        route.when('/applications/:id/create-cluter',{
+            templateUrl:'module/app_application/create-cluter.html',
+            controller:'createcluterctrl'
+        })
+        route.when('/applications/:id/:name',{
+            templateUrl:'module/app_application/application-service-detail.html',
+            controller:'servicedetailctrl'
+        })
         
     }]);
 });

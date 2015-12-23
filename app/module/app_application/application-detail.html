@@ -1,9 +1,17 @@
 <div return>
   <div class="button-title">
     <div layout="row" layout-margin >
-      <div flex flex-order="1" class="noshadow">
+      <div flex flex-order="1" class="noshadow bl-main">
         <button  aria-label="returntolist" viewclose link="/projects" md-button class="md-raised md-icon-btn" ng-click="backlist();">
           <md-icon class="fa fa-arrow-left fa-lg"></md-icon>
+        </button>
+        <button ng-if="tab=='cluster'" md-button class="md-raised md-primary" viewload href="/applications/{{appone.uuid}}/create-cluter">
+          <md-icon class="fa fa-plus fa-lg"></md-icon>
+          添加集群
+        </button>
+        <button ng-if="tab=='loadbalancer'" md-button class="md-raised md-primary">
+          <md-icon class="fa fa-plus fa-lg"></md-icon>
+          添加负载均衡
         </button>
         <!-- <button md-button class="md-raised md-primary modal__trigger" data-modal="#modal">
           <md-icon class="fa fa-trash-o fa-lg"></md-icon>
@@ -139,20 +147,31 @@
         <div flex="30">
             <md-subheader class="md-primary">详情</md-subheader>
             <md-content>
-              <p><b>{{appone.create_user}}</b>&nbsp;&nbsp;创建于&nbsp;&nbsp;<time>{{appone.created_at}}</time></p>
+              <p><b>名称&nbsp;&nbsp;&nbsp;&nbsp;</b><time>{{appone.create_user}}</time></p>
               <span for=""><b>描述</b></span><br>
               <p>{{appone.describe}}</p>
+              <p><b>创建于&nbsp;&nbsp;&nbsp;&nbsp;</b><time>{{appone.created_at}}</time></p>
           </md-content>
         </div>
         <div flex="65" class="bl-main" ng-click="toggleSearch=false">
-          <md-subheader class="md-primary">Cluter</md-subheader>
-          <div id="cluter-table">
-            
-          </div> 
-         <md-subheader class="md-primary">LoadBalancer</md-subheader> 
-          <div id="lb-table">
-            
-          </div>
+          <md-tabs md-dynamic-height md-border-bottom >
+              <md-tab label="集群" ng-click="tab='cluster';">
+                <md-content class="md-padding">
+                  <md-subheader class="md-primary">Cluter</md-subheader>
+                  <div id="cluter-table">
+                    
+                  </div> 
+                </md-content>
+              </md-tab>
+              <md-tab label="负载均衡" ng-click="tab='loadbalancer';">
+                <md-content class="md-padding">
+                  <md-subheader class="md-primary">LoadBalancer</md-subheader> 
+                  <div id="lb-table">
+                    
+                  </div>
+                </md-content>
+              </md-tab>
+          </md-tabs>
           
         </div>
       </div>
