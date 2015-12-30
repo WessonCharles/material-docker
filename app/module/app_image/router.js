@@ -11,6 +11,14 @@ define(['angular','app'], function(angular,app) {
             templateUrl:'module/app_image/create-image.html',
             controller:'createimagectrl'
         })
+        route.when('/log',{
+            templateUrl:'module/app_image/logs.html',
+            controller:'logsctrl'
+        })
+        route.when('/log/:id',{
+            templateUrl:'module/app_image/logs-detail.html',
+            controller:'logsdetailctrl'
+        })
         // route.when('/projects/:id',{
         //     templateUrl:'module/app_project/projects-detail.html',
         //     controller:'prodetailctrl'

@@ -38,6 +38,7 @@ require.config({
 		socket:'../libs/term.js-master/src/socket.io',
 		term:'../libs/term.js-master/src/term',
 		markdown:'../libs/markdown/markdown',
+		highlight:'//cdn.jsdelivr.net/highlight.js/9.0.0/highlight.min',
 		imgcrop:'../libs/ngImgCrop/ng-img-crop'
 	},
 	shim:{
@@ -54,7 +55,8 @@ require.config({
         'socket':{'exports':'socket'},
         'term':{'exports':'term'},
         'markdown':{'exports':'markdown'},
-        'imgcrop':['angular']
+        'imgcrop':['angular'],
+        'highlight':{'exports':'highlight'}
 	},
 	priority: [
         'angular',
@@ -78,6 +80,7 @@ require([
 	'term',
 	'markdown',
 	'imgcrop',
+	'highlight',
 	'../module/routers',
 	'../module/app_application/router',
 	'../module/app_columns/router',

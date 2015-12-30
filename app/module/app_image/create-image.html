@@ -13,61 +13,66 @@
               <label>镜像名称<span>*</span></label>
               <input ng-model="image.name" type="text" ng-required="true">
             </div>
-            <md-content  class="form-input">
-              <label for="">镜像图标</label>
+            <!-- <md-content  class="form-input">
+              <label for="">镜像图标
+                  <button type="button" style="margin-left:20px;width:100px;" class="md-raised md-icon-btn" ng-click="triggerfile()"><md-icon class="fa fa-upload"></md-icon></button><input type="file" id="fileInput" style="opacity:0;"/>
+              </label>
               <div layout="row" layout-margin layout-padding >
-                <div flex style="background-color:#EDF0F5" class="md-raised md-pink md-default-theme">
-                    <label>选择图片: <button type="button" style="margin-left:20px;width:100px;" class="md-raised md-icon-btn" ng-click="triggerfile()"><md-icon class="fa fa-upload"></md-icon></button><input type="file" id="fileInput" style="opacity:0;"/></label>
+                <div flex class="md-raised md-pink md-default-theme">
                     <div class="cropArea">
                       <img-crop area-type="square" result-image-size="90" image="myImage" result-image="myCroppedImage"></img-crop>
                     </div>
-                </div>    
-                <div flex style="background-color:#EDF0F5" class="md-raised md-grey md-default-theme">
-                    <label for="">剪裁后图片预览</label>
-                    <div style="margin-top:55px;">
-                      <img ng-src="{{myCroppedImage}}" style="border:2px solid #556A74;padding:5px;background-color:#fff;">
-                    </div>
-                </div>
+                </div> 
+                <div flex></div>   
               </div>
-            </md-content>
-            <div  class="form-input">
+            </md-content> -->
+            <div class="form-input"><!--layout="row" layout-sm-column style="padding-left:50px;"-->
+              <div layout="row">
+              <md-radio-group class="line" ng-model="image.is_private" ng-init="image.is_private='1'">
+                <md-radio-button value="1" class="md-primary">公有</md-radio-button>
+                <md-radio-button value="0" class="md-primary">私有</md-radio-button>
+              </md-radio-group>
+              </div>
+            </div>
+            <!-- <div class="form-input">
+              <label for="">简介</label>
+              <textarea name="" id="" cols="30" rows="10" ng-model="image.intro"></textarea>
+            </div> -->
+            <div class="form-input">
               <label for="">分类</label>
               <input type="text" ng-model="image.category">
             </div>
-            <md-content class="form-input">
-              <label>代码源</label>
-              <md-tabs md-dynamic-height md-border-bottom style="padding-left:20px;">
-                <md-tab label="URL">
-                  <md-content class="md-padding">
-                    <div ng-class="urlifmatchreg">
-                      <label for="">URL地址<span>*</span></label>
-                      <input type="text" ng-model="image.url" ng-keydown="checkurl()" ng-keyup="checkurl()">
-                    </div>
-                  </md-content>
-                </md-tab>
-                <md-tab label="Github">
-                  <md-content class="md-padding">
-                  </md-content>
-                </md-tab>
-                <md-tab label="GitCafe">
-                  <md-content class="md-padding">
-                  </md-content>
-                </md-tab>
-                <md-tab label="GitLabe">
-                  <md-content class="md-padding">
-                  </md-content>
-                </md-tab> 
-              </md-tabs>   
-            </md-content>
-            <md-subheader class="md-primary">构建位置</md-subheader>
-              <div layout="" layout-sm="column">
+            <md-subheader class="md-primary">仓库</md-subheader>
+              <div layout="row" layout-fill>
                 <div flex class="noshadow">
-                  <label>路径<span>*</span></label>
-                  <input ng-model="image.dockerfile_dir" type="text" ng-required="true">
+                  <label for="">仓库地址<span>*</span></label>
+                  <input style="float:none;" type="text" ng-model="image.repo_url" ng-keydown="checkurl()" ng-keyup="checkurl()">
+                </div>
+                <div class="noshadow" flex>
+                  <label for="">仓库分支名</label>
+                  <input style="float:none;" type="text" ng-model="image.repo_branch">
+                </div>
+              </div>
+              <div class="form-input">
+                  <label for="">语言类型</label>
+                  <md-select ng-model="img.repo_type" required>
+                  <md-option value="default">default</md-option>
+                    <md-option value="java">java</md-option>
+                    <md-option value="php">php</md-option>
+                    <md-option value="go">go</md-option>
+                    <md-option value="Nodejs">Nodejs</md-option>
+                    <md-option value="python">python</md-option>
+                  </md-select>
+              </div>
+            <md-subheader class="md-primary">Dockerfile</md-subheader>
+              <div layout="row" layout-fill>
+                <div flex class="noshadow">
+                  <label for="">名字</label>
+                  <input style="float:none;" ng-model="image.dockerfile_name" type="text">
                 </div>
                 <div flex class="noshadow">
-                  <label>Dockerfile<span>*</span></label>
-                  <input ng-model="image.dockerfile_name" type="text" ng-required="true">
+                  <label>路径<span>*</span></label>
+                  <input style="float:none;" ng-model="image.dockerfile_dir" type="text" ng-required="true">
                 </div>
               </div>
             <!-- <md-subheader class="md-primary">发布镜像</md-subheader>
