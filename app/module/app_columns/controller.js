@@ -38,7 +38,7 @@ define(['angular','modal'],function(angular,modal){
 	        // $http.get($scope.baseurl+$rootScope.current_tenant.id+"/volumes/pool/").success(function(data){
 	        // 	$scope.pool = data.metadata[0];
 	        // })
-	        var vol = restful.action({type:"@id",name:"@name"},$scope.baseurl+":id/volume/:name");
+	        var vol = restful.action({type:"@id",name:"@name"},$scope.baseurl+":id/volumes/:name");
 	        console.log($rootScope.current_tenant)
 	        var pl = vol.get({id:$rootScope.current_tenant.id},function(e){
 	        	console.timeEnd("restful game");
@@ -95,9 +95,9 @@ define(['angular','modal'],function(angular,modal){
 		       		for(var i=0;i<selects.length;i++){
 		       			(function(c){
 		       				$scope.columns.forEach(function(app, index) {
-							    if (c.name === app.name) {
+							    if (c.uuid === app.uuid) {
 							    	console.log("22")
-							      vol.delete({id:$rootScope.current_tenant.id,name:app.name}, function() {
+							      vol.delete({id:$rootScope.current_tenant.id,name:app.uuid}, function() {
 							        $scope.columns.splice(index, 1);
 							        Notify.showSimpleToast("应用删除成功",1);
 							      });
@@ -121,20 +121,20 @@ define(['angular','modal'],function(angular,modal){
 
 		}
 	])
-	.controller('columnsdetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','instance','restful','$compile',
-		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,instance,restful,$compile){
+	.controller('columnsdetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','instance','restful','$compile','$routeParams',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,instance,restful,$compile,$routeParams){
 			console.log(instance.current_column)
 			console.log($window.location)
 			var current_column = instance.current_column?instance.current_column:$window.location.pathname.split('/').pop();
 			$scope.column = current_column.name||current_column;
 			console.log(current_column)
 			console.log($scope.column)
-			var col = restful.action({id:"@id",name:"@name"},$scope.baseurl+":id/volume/:name");
-			var co = col.get({id:$rootScope.current_tenant.id,name:$scope.column},function(e){
+			var col = restful.action({id:"@id",name:"@name"},$scope.baseurl+":id/volumes/:name");
+			var co = col.get({id:$rootScope.current_tenant.id,name:$routeParams.name},function(e){
 				$scope.base = co.metadata[0];
 			})
-			var snap = restful.action({id:"@id",name:"@name"},$scope.baseurl+":id/volume/snap/:name");
-			var sn = snap.get({id:$rootScope.current_tenant.id,name:$scope.column},function(e){
+			var snap = restful.action({id:"@id",name:"@name"},$scope.baseurl+":id/volumes/snap/:name");
+			var sn = snap.get({id:$rootScope.current_tenant.id,name:$routeParams.name},function(e){
 				console.log(sn.metadata);
 				$scope.headers = [{
 		        	name:'名称',
@@ -184,7 +184,7 @@ define(['angular','modal'],function(angular,modal){
 	.controller('createcolumnsctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','instance','restful','$compile',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,instance,restful,$compile){
 			$scope.col  = {};
-			var col = restful.action({type:'@id'},$scope.baseurl+":id/volume");
+			var col = restful.action({type:'@id'},$scope.baseurl+":id/volumes");
 			$scope.createimage = function(){
 				var co = col.save({id:$rootScope.current_tenant.id},{name:$scope.col.name,size:parseInt($scope.col.size)},function(){
 					$location.path("/columns")

@@ -7,10 +7,10 @@
           <md-icon class="fa fa-arrow-left fa-lg"></md-icon>
         </button>
         {{logone.name}}
-        <button md-button class="md-raised md-button"> <!--viewload href="/applications/create-app">-->
+        <!-- <button md-button class="md-raised md-button"> 
           <md-icon class="fa fa-cog fa-lg"></md-icon>
           快速构建
-        </button>
+        </button> -->
       </md-subheader>
       </div>
     </div>
@@ -27,13 +27,13 @@
                         <span class="label label-success" ng-if="img.result=='SUCCESS'">{{img.result|i18n}}</span>
                         <span class="label label-important"  ng-if="img.result=='FAILURE'">{{img.result|i18n}}</span>
                         <span class="label label-warning"  ng-if="img.result=='ABORTED'">{{img.result|i18n}}</span>
-                        <span class="label label-info"  ng-if="img.result=='BUILDING'">{{img.result|i18n}}</span>
+                        <span class="label label-info"  ng-if="!img.result">{{'BUILDING'|i18n}}</span>
                         <p >{{img.created_at}}</p>
                         <md-icon style="position: absolute;top: 12px;right: 5%;font-size:2em;color:#F81A1F;" class="fa fa-times-circle" ng-if="img.result=='FAILURE'"></md-icon>
                         <md-icon style="position: absolute;top: 12px;right: 5%;font-size:2em;color:#2FBA66;" class="fa fa-check-circle" ng-if="img.result=='SUCCESS'"></md-icon>
-                        <md-icon style="position: absolute;top: 12px;right: 5%;font-size:2em;color:#157EDD;" class="fa fa-spinner fa-pulse" ng-if="img.result=='BUILDING'"></md-icon>
+                        <md-icon style="position: absolute;top: 12px;right: 5%;font-size:2em;color:#157EDD;" class="fa fa-spinner fa-pulse" ng-if="!img.result"></md-icon>
                         <md-icon style="position: absolute;top: 12px;right: 5%;font-size:2em;color:#EDAB21;" class="fa fa-dot-circle-o" ng-if="img.result=='ABORTED'"></md-icon>
-                        <button class="md-button md-raised" ng-click="stopimage(img)" ng-if="img.result=='BUILDING'" style="margin-right: 100px;background-color: #1680DF!important;border-bottom: 0;">停止</button>
+                        <button class="md-button md-raised" ng-click="stopimage(img)" ng-if="!img.result" style="margin-right: 100px;background-color: #1680DF!important;border-bottom: 0;">停止</button>
                       </md-list-item>
                       <div ng-if="img.isopen" class="imageitemdetail">
                          <pre><code>{{img.console}}

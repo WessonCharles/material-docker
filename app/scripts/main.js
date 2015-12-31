@@ -35,7 +35,7 @@ require.config({
 		modal:'../libs/custom/modal',
 		colresize:'../libs/colresize/colresize',
 		modernizr:'../libs/custom/modernizr.custom',
-		socket:'../libs/term.js-master/src/socket.io',
+		socket:'../libs/socket/socket.io',
 		term:'../libs/term.js-master/src/term',
 		markdown:'../libs/markdown/markdown',
 		highlight:'//cdn.jsdelivr.net/highlight.js/9.0.0/highlight.min',

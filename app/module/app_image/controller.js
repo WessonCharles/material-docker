@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular','modal','markdown','highlight'],function(angular,modal,markdown,highlight){
+define(['angular','modal','markdown','highlight','socket'],function(angular,modal,markdown,highlight,io){
 	return angular.module("ThCofAngSeed.images_ctrl",['ThCofAngSeed.services.formDataObject'])
 	.controller('imagesctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','restful','Notify','instance',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,restful,Notify,instance){
@@ -109,7 +109,7 @@ define(['angular','modal','markdown','highlight'],function(angular,modal,markdow
 			    var re=new RegExp(strRegex);        
 			    return re.test(str_url);        
 			}
-			var Images = restful.action({id:"@id",name:"@name"},$scope.baseurl+":id/build/:name"); 
+			var Images = restful.action({id:"@id"},$scope.baseurl+":id/build"); 
 			$scope.image = {
 				dockerfile_dir:"/",
 				dockerfile_name:"Dockerfile"
@@ -157,10 +157,11 @@ define(['angular','modal','markdown','highlight'],function(angular,modal,markdow
 	        		}
 
 	        	}
+	        	console.log(data)
 	        	var ims = Images.save({id:$rootScope.current_tenant.id},data,function(){
 					console.log(ims)
 					Notify.showSimpleToast("镜像创建成功",1);
-					$location.path("/image")
+					$location.path("/log/"+ims.metadata[0].uuid)
 					// ap.name = $scope.app_name;
 					// ap.containers = reqdata;
 					// ap.$save();
@@ -291,8 +292,8 @@ define(['angular','modal','markdown','highlight'],function(angular,modal,markdow
 				for(var i=0;i<$scope.selected.length;i++){
 					var id = $scope.selected[i].uuid;
 					(function(id){
-						http.put($scope.baseurl+$rootScope.current_tenant.id+"/build/"+id+"/?action=redo").success(function(){
-							
+						$http.put($scope.baseurl+$rootScope.current_tenant.id+"/build/"+id+"/?action=redo").success(function(){
+
 						})
 					})(id)
 				}
@@ -307,8 +308,14 @@ define(['angular','modal','markdown','highlight'],function(angular,modal,markdow
 				for(var i=0;i<$scope.selected.length;i++){
 					var id = $scope.selected[i].uuid;
 					(function(id){
-						http.delete($scope.baseurl+$rootScope.current_tenant.id+"/build/"+id).success(function(){
-
+						$http.delete($scope.baseurl+$rootScope.current_tenant.id+"/build/"+id).success(function(data){
+							for(var x =0;x<$scope.content.length;x++){
+								if($scope.content[x].uuid==id){
+									$scope.content.splice(x,1);
+									break;
+								}
+							}
+							Notify.showSimpleToast("删除成功",-1);
 						})
 					})(id)
 				}
@@ -351,11 +358,40 @@ define(['angular','modal','markdown','highlight'],function(angular,modal,markdow
 	        }
 
 	        $scope.stopimage = function(log){
-				http.put($scope.baseurl+$rootScope.current_tenant.id+"/build/"+log.uuid+"/"+log.number+"?action=stop").success(function(){
+				$http.put($scope.baseurl+$rootScope.current_tenant.id+"/build/"+log.uuid+"/"+log.number+"?action=stop").success(function(){
 
 				})
 				console.log($scope.selected)
-			}		
+			}
+
+			/**
+			 * socket
+			 */
+			var url = $scope.baseurl.replace("http","ws");
+			url += $rootScope.current_tenant.id+"/socket/bus";
+			console.log(url)
+			// var socket= io(url+$rootScope.current_tenant.id+"/socket/bus"); 
+			var socket = io.connect(url);
+              socket.on('connect', function() {
+                console.log("sdfasf")
+             
+                socket.on('data', function(data) {
+                  term.write(data);
+                });
+             
+                socket.on('disconnect', function() {
+                  term.destroy();
+                });
+              });
+			
+			// var ws = new WebSocket(url+$rootScope.current_tenant.id+"/socket/bus");
+			// ws.debug = true;
+			// ws.onopen = function(){
+			// 	console.log("已连接")
+			// 	ws.onmessage = function(event){
+			// 		var data = eval("("+event.data+")");
+			// 	}
+			// }
 		}
 	])
 })
