@@ -62,7 +62,21 @@
             <li ng-class="current_app('log')"><a href="/log">构建</a></li>
           </ul>
         </li>
-        <li ng-class="current_app('service')">
+        <li ng-repeat="m in menus track by $index" ng-class="current_app(m.href.split('/')[1])">
+          <a href="{{m.href}}">
+            <div class="icon">
+              <i class="{{m.icon}}"></i>
+              <md-tooltip md-direction="right">
+                {{m.name}}
+              </md-tooltip>
+            </div>
+            <div class="text">{{m.name}}</div>
+          </a>
+          <ul ng-if="m.sublist&&m.sublist.length>0">
+            <li ng-repeat="sum in m.sublist track by $index"><a href="{{sum.href}}">{{sum.name}}</a></li>
+          </ul>
+        </li>
+        <!-- <li ng-class="current_app('service')">
           <a href="/service">
             <div class="icon">
               <i class="fa fa-cloud"></i>
@@ -94,7 +108,7 @@
           </div>
           <div class="text">用户</div>
           </a>
-        </li>
+        </li> -->
       </ul>
     </div> 
 </div>

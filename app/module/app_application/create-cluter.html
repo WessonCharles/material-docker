@@ -7,11 +7,11 @@
           <md-icon class="fa fa-arrow-left fa-lg"></md-icon>
         </button>
         创建集群</md-subheader>
-       <md-content>
+       <md-content id="maincontent">
         <md-tabs md-selected="createstep" md-dynamic-height md-border-bottom md-stretch-tabs="always">
           <md-tab label="①镜像来源" id="image_source">
             <md-content class="md-padding" >
-              <div class="rightside">
+              <div class="rightside" id="rightside">
                   <md-subheader class="md-primary">已保存清单</md-subheader>
                   <md-divider></md-divider>
                   <md-list>
@@ -83,7 +83,7 @@
                     </md-progress-circular>
                   </div>
                   <div class="imagesout" ng-repeat="img in images|orderBy:'-star_number'">
-                      <md-list-item  class="imageitem" ng-class="(img.isopen||hasimg(img))?'background':''" ng-click="img.isopen = !img.isopen;getdata(img);toggle(img,selected);">
+                      <md-list-item  class="imageitem" ng-class="(img.isopen||hasimg(img))?'background':''" ng-click="getdata(img);toggle(img,selected);">
                         <!-- <md-checkbox ng-checked="exists(img, selected)" ng-click="toggle(img,selected)"></md-checkbox> -->
                         <label>{{img.name}}</label>
                         <p ng-if="img.description">{{img.description}}</p>
@@ -144,14 +144,14 @@
                               <div class="nopaddingbot">
                                 <label for="">选择挂载卷</label>
                                 <md-select placeholder="挂载卷" name="volumn" ng-model="img.tempvol" multiple="true" placeholder="卷列表，多选" required>
-                                  <md-option ng-repeat="vo in volumns track by $index" value="{{vo.name}}">{{vo.name}}</md-option>
+                                  <md-option ng-repeat="vo in volumns track by $index" value="{{vo.uuid}}_{{vo.name}}">{{vo.name}}</md-option>
                                 </md-select>
                               </div>
                             </div>
                             <div class="unshadow" flex>
                               <div class="nopaddingbot" ng-repeat="ev in img.tempvol track by $index">
-                                <label for="">{{ev}}</label>
-                                <input type="text" ng-model="img.tempvlm[ev]" placeholder="挂载的路径">
+                                <label for="">{{ev.split('_')[1]}}</label>
+                                <input type="text" ng-model="img.tempvlm[ev.split('_')[0]]" placeholder="挂载的路径">
                               </div>
                               <a ng-click="addtovolumns(img.tempvlm,img)">添加</a>
                             </div>
@@ -161,8 +161,8 @@
                               <thead class="thead-back"><tr class="md-table-headers-row"><th class="md-table-header">卷名</th><th class="md-table-header">挂载的路径</th><th class="md-table-header">操作</th></tr></thead>
                               <tbody>
                                 <tr class="md-table-content-row" ng-repeat="e in img.volumns track by $index">
-                                  <td class="md-table-content">{{e.name}}</td>
-                                  <td class="md-table-content">{{e.mouthpath}}</td>
+                                  <td class="md-table-content">{{e.uuid}}</td>
+                                  <td class="md-table-content">{{e.mountpath}}</td>
                                   <td class="md-table-content"><i class="fa fa-trash text-primary" ng-click="removeonevol(e,img.volumns,img)"></i></td>
                                 </tr>
                               </tbody>

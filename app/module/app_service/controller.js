@@ -1,7 +1,7 @@
 'use strict';
 
 define(['angular','modal'],function(angular,modal){
-	return angular.module("ThCofAngSeed.service_ctrl",['ThCofAngSeed.services.formDataObject'])
+	return angular.module("ThCofAngSeed.service_ctrl",['ThCofAngSeed.services'])
 	.controller('servicectrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams){
 			$scope.toggleSearch = false;   

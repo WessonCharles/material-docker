@@ -1746,6 +1746,10 @@ md-list-item.md-3-line.md-long-text, md-list-item.md-3-line>.md-no-style.md-long
 /**
  * 通知背景色
  */
+md-toast{
+  position: fixed;
+  top:60px!important;
+}
 md-toast.md-cyan-theme{
   background-color: #00BCD4;
 }

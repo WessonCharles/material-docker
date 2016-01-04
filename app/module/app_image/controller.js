@@ -1,7 +1,7 @@
 'use strict';
 
 define(['angular','modal','markdown','highlight','socket'],function(angular,modal,markdown,highlight,io){
-	return angular.module("ThCofAngSeed.images_ctrl",['ThCofAngSeed.services.formDataObject'])
+	return angular.module("ThCofAngSeed.images_ctrl",['ThCofAngSeed.services'])
 	.controller('imagesctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','restful','Notify','instance',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,restful,Notify,instance){
 			

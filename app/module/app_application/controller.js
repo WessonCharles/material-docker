@@ -1,7 +1,7 @@
 'use strict';
 
 define(['angular','modal'],function(angular,modal){
-	return angular.module("ThCofAngSeed.pod_ctrl",['ThCofAngSeed.services.formDataObject','ngMaterial'])
+	return angular.module("ThCofAngSeed.pod_ctrl",['ThCofAngSeed.services','ngMaterial'])
 	.controller('podctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$compile','restful','Notify','$mdBottomSheet','$mdDialog','instance',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$compile,restful,Notify,$mdBottomSheet,$mdDialog,instance){
 			/**
@@ -430,6 +430,20 @@ define(['angular','modal'],function(angular,modal){
 	])
 	.controller('createcluterctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','Notify','instance',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams,restful,Notify,instance){
+			
+			$(document).scroll(function(){
+				if($("#maincontent").length>0){
+					if($(this).scrollTop()>=$("#maincontent")[0].offsetTop){
+						$("#rightside").css({
+							position:"fixed",
+							top:$(this).scrollTop()-100,
+							right:"10px"
+						})
+					}else{
+						$("#rightside").attr("style","");
+					}
+				}
+			})
 			$scope.app_uuid = $routeParams.id;
 			/**
 			 * 获取当前处于哪个应用下
@@ -447,7 +461,7 @@ define(['angular','modal'],function(angular,modal){
 			 * 获取卷列表
 			 * @type {[type]}
 			 */
-			var vol = restful.action({type:"@id",name:"@name"},$scope.baseurl+":id/volume/:name");
+			var vol = restful.action({type:"@id",name:"@name"},$scope.baseurl+":id/volumes/:name");
 	        console.log($rootScope.current_tenant)
 	        var vo = vol.get({id:$rootScope.current_tenant.id},function(e){
 		        $scope.volumns = vo.metadata;
@@ -484,6 +498,7 @@ define(['angular','modal'],function(angular,modal){
 			 * @type {Array}
 			 */
 			var App = restful.action({type:"@id"},$scope.baseurl+":id/apps");
+			var Cluter = restful.action({type:"@id"},$scope.baseurl+":id/cluster");
 			$scope.checkname = function(){
 				var reg =/^[A-Za-z\d-.]+$/;
 				if(new RegExp(reg).test($scope.app_name)){
@@ -519,8 +534,8 @@ define(['angular','modal'],function(angular,modal){
 				console.log(obj)
 				for(var o in obj){
 					it.volumns.push({
-						name:o,
-						mouthpath:obj[o]
+						uuid:o,
+						mountpath:obj[o]
 					})
 				}
 			}
@@ -533,11 +548,15 @@ define(['angular','modal'],function(angular,modal){
 					}
 				}
 				list.splice(list.indexOf(one),1);
-				it.tempvol.splice(it.tempvol.indexOf(one.name),1);
-				delete it.tempvlm[one.name];
+				it.tempvol.splice(it.tempvol.indexOf(one.uuid),1);
+				delete it.tempvlm[one.uuid];
 			}
 		    // gethashtag(imcfg.image)
 		    $scope.getdata = function(img){
+		    	for(var i=0;i<$scope.images.length;i++){
+		    		$scope.images[i].isopen = false;
+		    	}
+		    	img.isopen = !img.isopen;
 		    	img.image = !img.is_official?(img.url+"/"+img.tenant_name+"/"+img.name):(img.url+"/"+img.name);
 		    	$scope.gethashtag(img.image);
 
@@ -634,9 +653,9 @@ define(['angular','modal'],function(angular,modal){
 					}
 					console.log(reqdata);
 					// return false;
-					var ap = App.save({id:$rootScope.current_tenant.id},{app_uuid:$scope.app_uuid,name:$scope.cluter_name,replicas:reqdata.length,containers:reqdata},function(){
-						console.log(ap)
-						$location.path("/applications")
+					var clu = Cluter.save({id:$rootScope.current_tenant.id},{app_uuid:$scope.app_uuid,name:$scope.cluter_name,replicas:reqdata.length,containers:reqdata},function(){
+						console.log(clu)
+						$location.path("/applications/"+$scope.app_uuid);
 					});
 					
 					// App.save({name:$scope.app_name,containers:reqdata},function())

@@ -1,7 +1,7 @@
 'use strict';
 
 define(['angular','modal'],function(angular,modal){
-	return angular.module("ThCofAngSeed.columns_ctrl",['ThCofAngSeed.services.formDataObject','ngMaterial'])
+	return angular.module("ThCofAngSeed.columns_ctrl",['ThCofAngSeed.services','ngMaterial'])
 	.controller('columnctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$compile','restful','Notify','$mdBottomSheet','$mdDialog','instance',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$compile,restful,Notify,$mdBottomSheet,$mdDialog,instance){
 			/**
