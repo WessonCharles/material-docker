@@ -62,7 +62,7 @@
                 </md-progress-circular>
               </div>
               <md-grid-item ng-repeat="item in columns" style="position:relative;">
-                <md-button class="md-grid-item-content" viewload href="/columns/{{item.name}}" ng-click="listItemClick($event,item)"><!--ng-click="listItemClick($event,item)"-->
+                <md-button class="md-grid-item-content" viewload href="/columns/{{item.uuid}}" ng-click="listItemClick($event,item)"><!--ng-click="listItemClick($event,item)"-->
                   <md-icon class="fa fa-3x fa-hdd-o" style="width:48px"></md-icon>
                   <div class="md-grid-text"> {{ item.name }} </div>
                 </md-button>

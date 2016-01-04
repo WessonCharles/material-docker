@@ -106,6 +106,19 @@ define([
               }
               return name;
               
+            }else if(breads.join(".").indexOf("log")>-1){
+              var name = "";
+              if(instance.logs){
+                for(var i=0;i<instance.logs.length;i++){
+                  if(b==instance.logs[i].uuid){
+                    name = instance.logs[i].name;
+                    break;
+                  }
+                }
+              }else{
+                name = b;
+              }
+              return name;
             }
           }else{
             return b;
