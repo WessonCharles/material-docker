@@ -6,11 +6,9 @@
 define([
   "angular",
   "modal",
-  "configs/config",
-  "services/more/formDataObject",
-  "services/service",
-  "directives/more/onRendered",
-  "directives/directive",
+  "config",
+  "service",
+  "directive",
   "filters",
   "localization",
   "../module/app_application/controller",
@@ -24,9 +22,7 @@ define([
       'ngMaterial',
       'ngImgCrop',
       'ThCofAngSeed.configs',
-      'ThCofAngSeed.services.formDataObject',
       'ThCofAngSeed.services',
-      'ThCofAngSeed.directives.table',
       'ThCofAngSeed.directives',
       'ThCofAngSeed.filters',
       'ThCofAngSeed.localization',
@@ -73,6 +69,9 @@ define([
           $scope.selectcurtenant = function(t){
             $rootScope.current_tenant = t;
           }
+          $http.get($scope.baseurl+"menus").success(function(data){
+            $scope.menus = data.metadata;
+          })
         }else{
           $rootScope.islogin = false;
           $location.path("/login");

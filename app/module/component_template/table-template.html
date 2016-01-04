@@ -16,7 +16,7 @@
         <th class="md-table-header" ng-if="!action">操作</th>
       </tr>
     </thead>
-    <tbody on-rendered ng-repeat="c in content | filter:filters | startFrom: tablePage*count | limitTo: count  track by $index" >
+    <tbody on-rendered ng-repeat="c in content | filter:filters | startFrom: tablePage*count | limitTo: count |orderby: '-created_at' track by $index" >
       <tr ng-click="openview($event.target);" class="md-table-content-row">
         <td ng-if="isselect" class="md-table-content" width="35px">
           <md-checkbox aria-label="checkbox" ng-checked="exists(c, selected)" ng-click="toggle(c, selected)">
