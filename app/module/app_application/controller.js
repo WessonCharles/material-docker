@@ -161,11 +161,11 @@ define(['angular','modal'],function(angular,modal){
 		       		for(var i=0;i<selects.length;i++){
 		       			(function(c){
 		       				$scope.content.forEach(function(app, index) {
-							    if (c.name === app.name) {
+							    if (c.uuid == app.uuid) {
 							    	console.log("22")
-							      plat.delete({id:$rootScope.current_tenant.id,name:app.name}, function() {
+							      plat.delete({id:$rootScope.current_tenant.id,name:app.uuid}, function() {
 							        $scope.content.splice(index, 1);
-							        Notify.showSimpleToast("应用删除成功",1);
+							        // Notify.showSimpleToast("应用删除成功",1);
 							      });
 							    }
 							  });
@@ -218,14 +218,20 @@ define(['angular','modal'],function(angular,modal){
 			}
 
 			$scope.createapps = function(t){
+				console.log(t)
 				var data = {name:$scope.app_name};
 				if($scope.app_desc){
 					data["describe"] = $scope.app_desc;
 				}
 				var ap = App.save({id:$rootScope.current_tenant.id},data,function(){
 					console.log(ap)
+					$(t.target).parents(".modal").find(".modal__content").removeClass("modal__content--active");
+					$(t.target).parents(".modal").removeClass("modal--active");
+					$("button.modal__trigger").removeClass('modal__trigger--active').attr("style","");
+					$("button.modal__trigger").find("#modal__temp").remove();
+
+					$scope.content.push(ap.metadata[0]);
 					$location.path("/applications");
-					$(t).parents(".modal").find(".modal__close").trigger("click");
 				});
 			};
 		}
