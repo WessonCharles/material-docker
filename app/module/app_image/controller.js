@@ -369,29 +369,29 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 			 */
 			var url = $scope.baseurl.replace("http","ws");
 			url += $rootScope.current_tenant.id+"/socket/bus";
-			console.log(url)
-			// var socket= io(url+$rootScope.current_tenant.id+"/socket/bus"); 
-			var socket = io.connect(url);
-              socket.on('connect', function() {
-                console.log("sdfasf")
+			// console.log(url)
+			// // var socket= io(url+$rootScope.current_tenant.id+"/socket/bus"); 
+			// var socket = io.connect(url);
+   //            socket.on('connect', function() {
+   //              console.log("sdfasf")
              
-                socket.on('data', function(data) {
-                  term.write(data);
-                });
+   //              socket.on('data', function(data) {
+   //                term.write(data);
+   //              });
              
-                socket.on('disconnect', function() {
-                  term.destroy();
-                });
-              });
+   //              socket.on('disconnect', function() {
+   //                term.destroy();
+   //              });
+   //            });
 			
-			// var ws = new WebSocket(url+$rootScope.current_tenant.id+"/socket/bus");
-			// ws.debug = true;
-			// ws.onopen = function(){
-			// 	console.log("已连接")
-			// 	ws.onmessage = function(event){
-			// 		var data = eval("("+event.data+")");
-			// 	}
-			// }
+			var ws = new WebSocket(url);
+			ws.debug = true;
+			ws.onopen = function(){
+				console.log("已连接")
+				ws.onmessage = function(event){
+					var data = eval("("+event.data+")");
+				}
+			}
 		}
 	])
 })
