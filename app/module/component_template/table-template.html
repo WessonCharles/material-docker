@@ -13,10 +13,10 @@
             <i ng-show="!reverse && h.field == predicate" class="fa fa-unsorted"></i>
           </a>
           <span ng-if="!handleSort(h.field)">{{h.name}}</span></th>
-        <th class="md-table-header" ng-if="!action">操作</th>
+        <th class="md-table-header" ng-if="action">操作</th>
       </tr>
     </thead>
-    <tbody on-rendered ng-repeat="c in content | filter:filters | startFrom: tablePage*count | limitTo: count |orderby: '-created_at' track by $index" >
+    <tbody on-rendered ng-repeat="c in content | filter:filters | startFrom: tablePage*count | limitTo: count track by $index" >
       <tr ng-click="openview($event.target);" class="md-table-content-row">
         <td ng-if="isselect" class="md-table-content" width="35px">
           <md-checkbox aria-label="checkbox" ng-checked="exists(c, selected)" ng-click="toggle(c, selected)">
@@ -30,18 +30,27 @@
         </td> -->
         <td ng-repeat="h in headers" ng-class="customClass[h.field]" ng-if="h.field != thumbs&&!customClass[h.field].indexOf('modal__trigger')" class="md-table-content">
             <a ng-if="links&&h.field=='name'" href="{{links}}/{{c.uuid}}" viewload>{{c[h.field]}}</a>
-            <a ng-if="!links&&h.field=='name'" ng-click="getapidata(c);c.subshow=!c.subshow">{{c[h.field]}}<i style="margin-left:10px;color:#666;font-size:14px;" class="fa " ng-class="c.subshow?'fa-caret-down':'fa-caret-right'"></i></a>
+            <a ng-if="!links&&h.field=='name'&&c.collections" ng-click="getapidata(c);c.subshow=!c.subshow">{{c[h.field]}}<i style="margin-left:10px;color:#666;font-size:14px;" class="fa " ng-class="c.subshow?'fa-caret-down':'fa-caret-right'"></i></a>
             <a style="font-size:22px;" ng-if="h.field=='repo_url'" target="_blank" href="{{c[h.field]}}"><i class="fa fa-github"></i></a>
             <span ng-if="h.field!='name'&&h.field!='repo_url'">{{c[h.field]||''}}</span>
+            <span ng-if="h.field=='name'&&!c.collections&&!links">{{c[h.field]}}</span>
         </td>
         <td ng-repeat="h in headers" ng-class="customClass[h.field]" ng-if="h.field != thumbs&&customClass[h.field].indexOf('modal__trigger')" style="margin-top: 5px;background-color:transparent;" class="md-table-content unshadow" data-modal="{{modal}}">
             <a ng-if="links&&h.field=='name'" href="{{links}}/{{c.uuid}}" viewload>{{c[h.field]}}</a>
-            <a ng-if="!links&&h.field=='name'" ng-click="getapidata(c);c.subshow=!c.subshow">{{c[h.field]}}<i style="margin-left:10px;color:#666;font-size:14px;" class="fa " ng-class="c.subshow?'fa-caret-down':'fa-caret-right'"></i></a>
+            <a ng-if="!links&&h.field=='name'&&c.collections" ng-click="getapidata(c);c.subshow=!c.subshow">{{c[h.field]}}<i style="margin-left:10px;color:#666;font-size:14px;" class="fa " ng-class="c.subshow?'fa-caret-down':'fa-caret-right'"></i></a>
             <a style="font-size:22px;" ng-if="h.field=='repo_url'" target="_blank" href="{{c[h.field]}}"><i class="fa fa-github"></i></a>
             <span ng-if="h.field!='name'&&h.field!='repo_url'">{{c[h.field]||''}}</span>
+            <span ng-if="h.field=='name'&&!c.collections&&!links">{{c[h.field]||''}}</span>
         </td>
-        <td class="md-table-td-more" ng-if="!action">
-          <md-button class="md-mini md-button md-icon-button" aria-label="Info"><i class="fa fa-ellipsis-v"></i></md-button>
+        <td class="md-table-td-more" ng-if="action">
+          <md-button class="md-mini md-button md-raised" aria-label="Info" ng-if="!action.modal" ng-click="action.args['uuid']=c.uuid;action.args['name']=c.name;action.trigger($event);">
+          <i ng-if="action.icon" class="fa {{action.icon}}" ></i>
+            {{action.name}}
+          </md-button>
+          <md-button class="md-mini md-button md-raised modal__trigger" ng-click="action.args['uuid']=c.uuid;action.args['name']=c.name;" ng-if="action.modal" aria-label="Info" data-modal="{{action.modal.target}}">
+          <i ng-if="action.icon" class="fa {{action.icon}}"></i>
+            {{action.name}}
+          </md-button>
         </td>
       </tr>
       <!-- <tr class="md-table-content-row" ng-if="c.collections" ng-class="c.subshow?'animate-show':'animate-show hide'">
@@ -112,3 +121,24 @@
     
   </div> -->
 </div>
+<div id="{{action.modal.target.split('#')[1]}}" ng-if="action&&action.modal" class="modal modal__bg" role="dialog" aria-hidden="true">
+    <div class="modal__dialog">
+      <div class="modal__content">
+        <h2>{{action.modal.title}}</h2>
+        <div class="modal_content_inner">
+        <form name="nameForm">
+          <div class="form-input" ng-repeat="(k,v) in action.modal.params track by $index">
+              <label for="">{{action.labels[k]}}</label>
+              <input type="text" ng-model="action.modal.params[k]" ng-required="true">
+            </div>
+          <div align="right">
+            <md-button ng-click="action.trigger()" class="md-primary" layout layout-align="center end">保存</md-button>
+          </div>
+        </form>
+        </div>
+        <!-- modal close button -->
+        <a class="modal__close demo-close">
+          <i class="fa fa-times"></i>
+        </a>
+      </div>
+    </div>

@@ -9,7 +9,7 @@
           <md-icon class="fa fa-plus fa-lg"></md-icon>
           添加集群
         </button>
-        <button ng-if="tab=='loadbalancer'" md-button class="md-raised md-primary">
+        <button ng-if="tab=='loadbalancer'" md-button class="md-raised md-primary" viewload href="/applications/{{appone.uuid}}/create-loadbalancer">
           <md-icon class="fa fa-plus fa-lg"></md-icon>
           添加负载均衡
         </button>
@@ -119,22 +119,9 @@
           </md-button>
           <md-menu-content width="2">
             <md-menu-item>
-              <md-button ng-click="ctrl.redial($event)">
-                <md-icon md-menu-align-target></md-icon>
-                Redial
-              </md-button>
-            </md-menu-item>
-            <md-menu-item>
-              <md-button ng-click="ctrl.checkVoicemail()">
-                <md-icon></md-icon>
-                Check voicemail
-              </md-button>
-            </md-menu-item>
-            <md-menu-divider></md-menu-divider>
-            <md-menu-item>
-              <md-button ng-click="ctrl.toggleNotifications()">
-                <md-icon></md-icon>
-                {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
+              <md-button ng-click="remove($event)">
+                <md-icon class="fa fa-trash"></md-icon>
+                删除
               </md-button>
             </md-menu-item>
           </md-menu-content>
@@ -157,7 +144,6 @@
           <md-tabs md-dynamic-height md-border-bottom >
               <md-tab label="集群" ng-click="tab='cluster';">
                 <md-content class="md-padding">
-                  <md-subheader class="md-primary">Cluter</md-subheader>
                   <div id="cluter-table">
                     
                   </div> 
@@ -165,7 +151,6 @@
               </md-tab>
               <md-tab label="负载均衡" ng-click="tab='loadbalancer';">
                 <md-content class="md-padding">
-                  <md-subheader class="md-primary">LoadBalancer</md-subheader> 
                   <div id="lb-table">
                     
                   </div>

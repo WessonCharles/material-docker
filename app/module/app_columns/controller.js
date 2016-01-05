@@ -44,7 +44,100 @@ define(['angular','modal'],function(angular,modal){
 	        	console.timeEnd("restful game");
 
 		        Notify.showSimpleToast("存储卷列表请求成功",1);
-		        $scope.columns = pl.metadata;
+		        console.log(pl.metadata)
+		        $scope.headers = [{
+		        	name:'名称',
+		        	field:'name'
+		        },{
+		        	name:'大小',
+		        	field:'quota'
+		        },{
+		        	name:'创建人',
+		        	field:'create_user'
+		        // },{
+		        // 	name:'镜像',
+		        // 	field:'images'
+		        // },{
+		        // 	name:'服务地址',
+		        // 	field:'selfLink'
+		        },{
+		        	name:'创建时间',
+		        	field:'created_at'
+		        }];
+		        var sort = [];
+		        // for(var i in pl.metadata[0]){
+		        // 	sort.push(i);
+		        // 	// $scope.headers.push({
+		        // 	// 	name:i,
+		        // 	// 	field:i
+		        // 	// })
+		        // };
+		        
+		        var sourcedata = pl.metadata;
+		        $scope.content = [];
+		        for(var i =0;i<sourcedata.length;i++){
+		        	var s = sourcedata[i];
+		        	// var time = $filter('date')(s.creationTimestamp,"MM-dd-yyyy h:mma");
+		        	// var obj = {
+		        	// 	"name":s.name,
+		        	// 	"resourceVersion":s.resourceVersion,
+		        	// 	"status":"",
+		        	// 	"images":s.images||"",
+		        	// 	"selfLink":"",
+		        	// 	"createtime":time,
+		        	// 	"collections":s.containers,
+		        	// 	"subshow":false
+		        	// };
+		        	$scope.content.push(s);
+		        }
+		        console.log($scope.content)
+		        $scope.custom = {name: 'bold',quota:'grey', create_user:'grey',created_at:'grey'};
+		        $scope.sortable = ['name','quota','create_user','created_at'];
+		        $scope.count = 100;
+		        // $scope.links = '/volumes';
+		        $scope.selected = [];
+		        $scope.action = {
+		        	name:"调整卷大小",
+		        	icon:'',
+		        	modal:{target:"#resize",title:"调整卷大小",
+		        		params:{quota:''}
+		        	},
+		        	args:{},
+		        	labels:{quota:'卷大小'},
+		        	trigger:function(t){
+		        		console.log($scope.action.modal.params)
+		        		$http.put($scope.baseurl+$rootScope.current_tenant.id+"/volumes/"+$scope.action.args.uuid,$scope.action.modal.params).success(function(data){
+							$($scope.action.modal.target).find(".modal__content").removeClass("modal__content--active");
+							$($scope.action.modal.target).removeClass("modal--active");
+							$("button.modal__trigger").removeClass('modal__trigger--active').attr("style","");
+							$("button.modal__trigger").find("#modal__temp").remove();
+
+							for(var i =0;i<$scope.content.length;i++){
+								if($scope.content[i].uuid == $scope.action.args.uuid){
+									$scope.content[i].quota = $scope.action.modal.params.quota;
+									break;
+								}
+							}
+							Notify.showSimpleToast("更新成功",1);
+						})
+		        	}
+		        }
+		       	//如果不是links 就是func方法
+		      //  	$scope.func = function($event,c){
+		      //  		instance.current_container = c;
+		      //  		$mdBottomSheet.show({
+				    //   templateUrl: 'module/app_application/app-bottom-detail.html',
+				    //   controller: 'appdetailctrl',
+				    //   targetEvent: $event,
+				    //   parent:"#content"
+				    // }).then(function(clickedItem) {
+				    // });
+		      //  	}
+
+		        // $scope.loadtable = function(t){
+		        	// console.log(t);
+	        	var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" action="action" count="count" isselect="true" selected="selected" links="links" func="func"></md-table>')($scope);
+	        	$("#columns").html(code);
 	        });
 
 	        $scope.listItemClick = function($event,it) {
@@ -64,21 +157,21 @@ define(['angular','modal'],function(angular,modal){
 		    	// });
 			    
 			};  
-			$scope.selected = [];
-			$scope.toggle = function (item, list) {
-	          var idx = list.indexOf(item);
-	          if (idx > -1) list.splice(idx, 1);
-	          else list.push(item);
+			// $scope.selected = [];
+			// $scope.toggle = function (item, list) {
+	  //         var idx = list.indexOf(item);
+	  //         if (idx > -1) list.splice(idx, 1);
+	  //         else list.push(item);
 
-	          $scope.selected = list;
-	          console.log($scope.selected)
-	        };
-	        $scope.exists = function (item, list) {
-	          if($scope.checkall){
-	             return $scope.checkall;
-	          }
-	          return list.indexOf(item) > -1;
-	        }; 
+	  //         $scope.selected = list;
+	  //         console.log($scope.selected)
+	  //       };
+	  //       $scope.exists = function (item, list) {
+	  //         if($scope.checkall){
+	  //            return $scope.checkall;
+	  //         }
+	  //         return list.indexOf(item) > -1;
+	  //       }; 
 
 	        $scope.deletecolumns = function(ev){
 			    // Appending dialog to document.body to cover sidenav in docs app
@@ -93,22 +186,29 @@ define(['angular','modal'],function(angular,modal){
 			      var selects= $scope.selected;
 		       		console.log(selects)
 		       		for(var i=0;i<selects.length;i++){
-		       			(function(c){
-		       				$scope.columns.forEach(function(app, index) {
-							    if (c.uuid === app.uuid) {
-							    	console.log("22")
-							      vol.delete({id:$rootScope.current_tenant.id,name:app.uuid}, function() {
-							        $scope.columns.splice(index, 1);
-							        Notify.showSimpleToast("应用删除成功",1);
-							      });
-							    }
-							  });
-		       			})(selects[i]);	
+		       			(function(c,i){
+		       				vol.delete({id:$rootScope.current_tenant.id,name:c.uuid}, function() {
+						        for(var n =0;n<$scope.content.length;n++){
+						        	if(c.uuid==$scope.content[n].uuid){
+						        		$scope.content.splice(n, 1);
+						        		break;
+						        	}
+						        }
+						        
+						      });
+		       				if(i==selects.length-1){
+		       					 Notify.showSimpleToast("应用删除成功",1);
+		       				}
+		       			})(selects[i],i);	
 		       		}
 			    }, function() {
 			      $scope.selected = [];
 			    });
 	        }
+
+	  //       $scope.resize = function(t){
+				
+			// }
 
 	        $scope.$on("$viewContentLoaded",function(){
 	        	// $(".inner_content").css("height",$window.innerHeight-120).css("position","relative");
@@ -133,52 +233,50 @@ define(['angular','modal'],function(angular,modal){
 			var co = col.get({id:$rootScope.current_tenant.id,name:$routeParams.name},function(e){
 				$scope.base = co.metadata[0];
 			})
-			var snap = restful.action({id:"@id",name:"@name"},$scope.baseurl+":id/volumes/snap/:name");
-			var sn = snap.get({id:$rootScope.current_tenant.id,name:$routeParams.name},function(e){
-				console.log(sn.metadata);
-				$scope.headers = [{
-		        	name:'名称',
-		        	field:'name'
-		        // },{
-		        // 	name:'源版本',
-		        // 	field:'resourceVersion'
-		        },{
-		        	name:'ID',
-		        	field:'id'
-		        },{
-		        	name:'大小',
-		        	field:'size'
-		        }];
-		        var sort = [];
-		        
-		        $scope.content = sn.metadata;
-		        /**
-		         * [请确保 custom，sortable,和headers中的field一一对应，并且拼写相同]
-		         * @type {Object}
-		         */
-		        $scope.custom = {name: 'bold', id:'grey',size: 'grey'};
-		        $scope.sortable = ['name','id','size'];
-		        $scope.count = 10;
-		        // $scope.links = '/applications';
-		        $scope.selected = [];
-		       	//如果不是links 就是func方法
-		      //  	$scope.func = function($event,c){
-		      //  		instance.current_container = c;
-		      //  		$mdBottomSheet.show({
-				    //   templateUrl: 'module/app_application/app-bottom-detail.html',
-				    //   controller: 'appdetailctrl',
-				    //   targetEvent: $event,
-				    //   parent:"#content"
-				    // }).then(function(clickedItem) {
-				    // });
-		      //  	}
 
-	        	var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count" isselect="true" selected="selected" links="links" func="func"></md-table>')($scope);
-	        	$("#snaplist").html(code);
-			})
-			$timeout(function(){
-				$("#columns").css("height",200+$("#columns md-list:first")[0].offsetHeight);
-			},100)
+			// var snap = restful.action({id:"@id",name:"@name"},$scope.baseurl+":id/volumes/snap/:name");
+			// var sn = snap.get({id:$rootScope.current_tenant.id,name:$routeParams.name},function(e){
+			// 	console.log(sn.metadata);
+			// 	$scope.headers = [{
+		 //        	name:'名称',
+		 //        	field:'name'
+		 //        // },{
+		 //        // 	name:'源版本',
+		 //        // 	field:'resourceVersion'
+		 //        },{
+		 //        	name:'ID',
+		 //        	field:'id'
+		 //        },{
+		 //        	name:'大小',
+		 //        	field:'size'
+		 //        }];
+		 //        var sort = [];
+		        
+		 //        $scope.content = sn.metadata;
+		 //        /**
+		 //         * [请确保 custom，sortable,和headers中的field一一对应，并且拼写相同]
+		 //         * @type {Object}
+		 //         */
+		 //        $scope.custom = {name: 'bold', id:'grey',size: 'grey'};
+		 //        $scope.sortable = ['name','id','size'];
+		 //        $scope.count = 10;
+		 //        // $scope.links = '/applications';
+		 //        $scope.selected = [];
+		 //       	//如果不是links 就是func方法
+		 //      //  	$scope.func = function($event,c){
+		 //      //  		instance.current_container = c;
+		 //      //  		$mdBottomSheet.show({
+			// 	    //   templateUrl: 'module/app_application/app-bottom-detail.html',
+			// 	    //   controller: 'appdetailctrl',
+			// 	    //   targetEvent: $event,
+			// 	    //   parent:"#content"
+			// 	    // }).then(function(clickedItem) {
+			// 	    // });
+		 //      //  	}
+
+	  //       	var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count" isselect="true" selected="selected" links="links" func="func"></md-table>')($scope);
+	  //       	$("#snaplist").html(code);
+			// })
 		}
 	])
 	.controller('createcolumnsctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','instance','restful','$compile',
@@ -187,7 +285,7 @@ define(['angular','modal'],function(angular,modal){
 			var col = restful.action({type:'@id'},$scope.baseurl+":id/volumes");
 			$scope.createimage = function(){
 				var co = col.save({id:$rootScope.current_tenant.id},{name:$scope.col.name,size:parseInt($scope.col.size)},function(){
-					$location.path("/columns")
+					$location.path("/volumes")
 				})
 			}
 		}

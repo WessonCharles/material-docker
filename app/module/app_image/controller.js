@@ -172,8 +172,8 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 
 		}
 	])
-	.controller('logsctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','restful','Notify','instance','$compile',
-		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,restful,Notify,instance,$compile){
+	.controller('logsctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','restful','Notify','instance','$compile','AuthService',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,restful,Notify,instance,$compile,AuthService){
 			var plat = restful.action({type:"@id",jobid:"@jobid",number:"@number"},$scope.baseurl+":id/build/:jobid/:number");
 	        console.log($rootScope.current_tenant)
 	        var pl = plat.get({id:$rootScope.current_tenant.id},function(e){
@@ -264,6 +264,17 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 		        $scope.count = 100;
 		        $scope.links = '/log';
 		        $scope.selected = [];
+		        $scope.action = {
+		        	name:"重构",
+		        	args:{},
+		        	trigger:function(t){
+		        		$http.put($scope.baseurl+$rootScope.current_tenant.id+"/build/"+$scope.action.args.uuid+"?action=redo").success(function(data){
+							Notify.showSimpleToast("正在重构",0);
+							$(t.target).attr("disabled",true);
+							$(t.target).find("span").before('<i class="fa fa-refresh fa-spin"></i>')
+						})
+		        	}
+		        }
 
 		        instance["logs"] = $scope.content;
 		       	//如果不是links 就是func方法
@@ -280,7 +291,7 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 
 		        // $scope.loadtable = function(t){
 		        	// console.log(t);
-	        	var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count" isselect="true" selected="selected" links="links" func="func"></md-table>')($scope);
+	        	var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count" isselect="true" action="action" selected="selected" links="links" func="func"></md-table>')($scope);
 	        	$("#prolist").html(code);
 		        // }
 	        });
@@ -320,6 +331,22 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 					})(id)
 				}
 				$scope.selected = [];
+			}
+
+			/**
+			 * socket
+			 */
+			var url = $scope.baseurl.replace("http","ws");
+			var token = JSON.parse(AuthService.getInfo()).access.token.id;
+			url += "socket/bus/"+$rootScope.current_tenant.id+"?token="+token;
+			var ws = new WebSocket(url);
+			console.log(ws)
+			// ws.debug = true;
+			ws.onopen = function(){
+				console.log("已连接")
+				ws.onmessage = function(event){
+					var data = eval("("+event.data+")");
+				}
 			}
 
 		}
@@ -364,34 +391,6 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 				console.log($scope.selected)
 			}
 
-			/**
-			 * socket
-			 */
-			var url = $scope.baseurl.replace("http","ws");
-			url += $rootScope.current_tenant.id+"/socket/bus";
-			// console.log(url)
-			// // var socket= io(url+$rootScope.current_tenant.id+"/socket/bus"); 
-			// var socket = io.connect(url);
-   //            socket.on('connect', function() {
-   //              console.log("sdfasf")
-             
-   //              socket.on('data', function(data) {
-   //                term.write(data);
-   //              });
-             
-   //              socket.on('disconnect', function() {
-   //                term.destroy();
-   //              });
-   //            });
-			
-			var ws = new WebSocket(url);
-			ws.debug = true;
-			ws.onopen = function(){
-				console.log("已连接")
-				ws.onmessage = function(event){
-					var data = eval("("+event.data+")");
-				}
-			}
 		}
 	])
 })
