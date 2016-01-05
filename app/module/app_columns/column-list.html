@@ -2,7 +2,7 @@
   <div class="button-title">
     <div layout="row" layout-margin >
       <div flex flex-order="1" class="noshadow  bl-main">
-        <button md-button class="md-raised md-button" viewload href="/columns/create-column">
+        <button md-button class="md-raised md-button" viewload href="/volumes/create-column">
           <md-icon class="fa fa-cog fa-lg"></md-icon>
           创建存储卷
         </button>
@@ -10,7 +10,7 @@
           <md-icon class="fa fa-trash-o fa-lg"></md-icon>
           删除
         </button>
-        <md-menu>
+        <!-- <md-menu>
           <md-button class="md-raised" aria-label="Open phone interactions menu" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
             <md-icon md-menu-origin class="fa fa-caret-square-o-down"></md-icon>
             更多操作
@@ -36,7 +36,7 @@
               </md-button>
             </md-menu-item>
           </md-menu-content>
-        </md-menu>
+        </md-menu> -->
       </div>
     </div>
   </div>
@@ -45,7 +45,7 @@
       <div flex flex-order="1" class="noshadow bl-main" ng-click="toggleSearch=false" id="prolist" ng-init="loadtable($event.target)">
         <md-content class="md-padding"  id="columns" style="min-height:500px;position:static;">
           <!-- <md-bottom-sheet class="md-grid images_list"> -->
-            <md-grid>
+            <!-- <md-grid>
               <div ng-if="!columns">
                 <md-progress-circular md-mode="indeterminate" aria-valuemin="0" aria-valuemax="100" role="progressbar" class="md-default-theme" style="transform: scale(1);margin: 0 auto;">
                   <div class="md-spinner-wrapper">
@@ -62,7 +62,7 @@
                 </md-progress-circular>
               </div>
               <md-grid-item ng-repeat="item in columns" style="position:relative;">
-                <md-button class="md-grid-item-content" viewload href="/columns/{{item.uuid}}" ng-click="listItemClick($event,item)"><!--ng-click="listItemClick($event,item)"-->
+                <md-button class="md-grid-item-content" viewload href="/volumes/{{item.uuid}}" ng-click="listItemClick($event,item)">
                   <md-icon class="fa fa-3x fa-hdd-o" style="width:48px"></md-icon>
                   <div class="md-grid-text"> {{ item.name }} </div>
                 </md-button>
@@ -70,11 +70,11 @@
                 </md-checkbox>
               </md-grid-item>
             </md-grid>
-            <div style="clear:both"></div>
+            <div style="clear:both"></div> -->
           <!-- </md-bottom-sheet> -->
         </md-content>
       </div>
     </div>
   </div>
-</div>          
-          
+</div>  
+

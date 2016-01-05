@@ -142,7 +142,7 @@ md-menu-content{
 md-menu-item>.md-button{
   height:30px;
   margin:0;
-  padding: 0;
+  padding: 0px 10px;
 }
 md-menu-item{
   height: 30px;
@@ -456,6 +456,11 @@ a.md-button.md-raised, .md-button.md-raised{
 }
 a.md-button.md-raised:hover, .md-button.md-raised:hover{
   background-color:#2B2B38!important;
+}
+a.md-button.md-raised[disabled]:hover, .md-button.md-raised[disabled]:hover {
+    color: #ccc;
+    background-color: #ccc!important;
+    border-bottom: 1px solid #eee;
 }
 /*a.md-button.md-raised, .md-button.md-raised md-icon{
   color:#0095B4;
@@ -1162,9 +1167,9 @@ table thead tr th{
 }
 
 .md-table-td-more {
-  max-width:72px;
-  width:72px;
-  /*padding:16px;*/
+  /*max-width:72px;
+  width:72px;*/
+  padding:0 16px;
 }
 
 .md-table-thumbs {

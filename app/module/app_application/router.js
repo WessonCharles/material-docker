@@ -19,6 +19,10 @@ define(['angular','app'], function(angular,app) {
             templateUrl:'module/app_application/create-cluter.html',
             controller:'createcluterctrl'
         })
+        route.when('/applications/:id/create-loadbalancer',{
+            templateUrl:'module/app_application/create-loadbalancer.html',
+            controller:'createlblctrl'
+        })
         route.when('/applications/:id/:name',{
             templateUrl:'module/app_application/application-service-detail.html',
             controller:'servicedetailctrl'

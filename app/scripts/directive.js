@@ -1,5 +1,5 @@
 'use strict';
-define(['angular','colresize','socket','imgcrop'],function(angular,colresize,io,imgcrop){
+define(['angular','colresize','socket','imgcrop','modal'],function(angular,colresize,io,imgcrop,modal){
   return angular.module("ThCofAngSeed.directives",[])
   .directive('mdColresize', ['$timeout',function ($timeout) {
     return {
@@ -27,7 +27,7 @@ define(['angular','colresize','socket','imgcrop'],function(angular,colresize,io,
             }
         };
   }])
-  .directive('mdTable',["$filter",function ($filter) {
+  .directive('mdTable',["$filter","$timeout",function ($filter,$timeout) {
     return {
       restrict: 'E',
       scope: { 
@@ -46,11 +46,11 @@ define(['angular','colresize','socket','imgcrop'],function(angular,colresize,io,
         getapidata:'=',
         hover:'=',
         modal:'=',
-        action:'@',
+        action:'=',
         innerlinks:"@"
       },
       link: function ($scope,$element,$attr) {
-        // console.log($scope.headers)
+        console.log($scope.action)
         var orderBy = $filter('orderBy');
         $scope.tablePage = 0;
         $scope.nbOfPages = function () {
@@ -136,6 +136,10 @@ define(['angular','colresize','socket','imgcrop'],function(angular,colresize,io,
         $scope.$on('ngRepeatFinished',function(){
           console.timeEnd("rendered table")
         });
+
+        $timeout(function(){
+          Modal.init();
+        },0)
       },
       templateUrl:'module/component_template/table-template.html'// angular.element(document.querySelector('#md-table-template')).html()
     }
