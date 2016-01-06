@@ -86,7 +86,8 @@ require([
 	'../module/app_columns/router',
 	'../module/app_service/router',
 	'../module/app_image/router',
-	'app',
+	'../module/app_system/router',
+        'app',
 	],function(angular){
 		angular.element().ready(function() {
             angular.bootstrap(document, ['ThCofAngSeed']);

@@ -18,6 +18,7 @@ define(['angular'], function(angular){
                 'success':'成功',
                 'building':'构建中',
                 'aborted':'拒绝',
+                'system':'系统设置',
             },
             'en_US' : {
            }

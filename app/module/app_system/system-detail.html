@@ -1,0 +1,53 @@
+<div >
+  <div class="content-table">
+    <div layout="row" layout-margin>
+      <div flex="100" flex-gt-sm="50" layout="column">
+        <div>
+          <fieldset class="standard" >
+            <legend>Kubernetes 设置</legend>
+            <div layout="row" layout-wrap flex>
+                <div ng-class="nameifmatchreg" style="padding-left: 33px;">
+                    <label for="">k8s_api 地址:&nbsp;&nbsp;</label>
+                    <input type="text" ng-model="k8s_api" placeholder="http://42.51.161.109:8080" md-autofocus>
+                </div>
+                <div ng-class="nameifmatchreg" style="padding-left: 33px;">
+                    <label for="">k8s_api_prefix API 前缀:&nbsp;&nbsp;</label>
+                    <input type="text" ng-model="k8s_api_prefix" placeholder="/api/v1/namespaces/" md-autofocus>
+                </div>
+            </div>
+          </fieldset>
+
+          </br>
+          <fieldset class="standard" >
+            <legend>登陆设置</legend>
+            <div layout="row" layout-wrap flex>
+                <div ng-class="nameifmatchreg" style="padding-left: 33px;">
+                    <label for="">keystone 认证地址:&nbsp;&nbsp;</label>
+                    <input type="text" ng-model="keystone_url" placeholder="http://42.51.161.109:5000/v2.0" md-autofocus>
+                </div>
+            </div>
+          </fieldset>
+
+          </br>
+          <fieldset class="standard" >
+            <legend>镜像仓库设置</legend>
+            <div layout="row" layout-wrap flex>
+                <div ng-class="nameifmatchreg" style="padding-left: 33px;">
+                    <label for="">registry_api 地址:&nbsp;&nbsp;</label>
+                    <input type="text" ng-model="registry_url" placeholder="http://42.51.161.109:4999" md-autofocus>
+                </div>
+                <div ng-class="nameifmatchreg" style="padding-left: 33px;">
+                    <label for="">registry hook 地址:&nbsp;&nbsp;</label>
+                    <input type="text" ng-model="hook_url" placeholder="http://42.51.161.236:8337" md-autofocus>
+                </div>
+                <div ng-class="nameifmatchreg" style="padding-left: 33px;">
+                    <label for="">registry 超级密码:&nbsp;&nbsp;</label>
+                    <input type="password" ng-model="registry_credential" placeholder="" md-autofocus>
+                </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
