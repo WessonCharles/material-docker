@@ -25,6 +25,17 @@
             </div>
             <div style="padding-top:0px;" layout="row" layout-fill layout-padding>
                 <div layout="row" layout-fill layout-padding>
+                <label>分发策略</label>
+                <div layout="row" layout-sm-column style="padding-left:50px;">
+                  <md-radio-group class="line" ng-model="lbl.policy" ng-init="lbl.policy='roundrobin'">
+                    <md-radio-button value="roundrobin" class="md-primary">轮询</md-radio-button>
+                    <md-radio-button value="clientip" class="md-primary">客户端IP</md-radio-button>
+                  </md-radio-group>
+                </div>
+                </div>
+            </div>
+            <div style="padding-top:0px;" layout="row" layout-fill layout-padding>
+                <div layout="row" layout-fill layout-padding>
                 <label>公网/私网</label>
                 <div layout="row" layout-sm-column style="padding-left:50px;">
                   <md-radio-group class="line" ng-model="lbl.is_public" ng-init="lbl.is_public=1">

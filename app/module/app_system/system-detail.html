@@ -1,52 +1,89 @@
 <div >
   <div class="content-table">
-    <div layout="row" layout-margin>
-      <div flex="100" flex-gt-sm="50" layout="column">
-        <div>
+     <div layout="row" layout-margin>
+      <div flex flex-order="1" class="noshadow bl-main">
+        <md-content>
+          <form name="nameForm">
           <fieldset class="standard" >
-            <legend>Kubernetes 设置</legend>
-            <div layout="row" layout-wrap flex>
-                <div ng-class="nameifmatchreg" style="padding-left: 33px;">
-                    <label for="">k8s_api 地址:&nbsp;&nbsp;</label>
-                    <input type="text" ng-model="k8s_api" placeholder="http://42.51.161.109:8080" md-autofocus>
+            <legend ng-click="field['0'] = !field['0']">Kubernetes 设置</legend>
+            <div ng-show="!field['0']" layout="row" layout-fill layout-padding>
+              <div flex>
+                <div style="width:100%;height:40px">
+                  <label for="">k8s_api 地址:</label>
+                  <input type="text" ng-model="k8s_api" placeholder="http://42.51.161.109:8080" md-autofocus>
+                  <i class="fa fa-save text-primary" ng-click="saveparam('k8s_api')"></i>
                 </div>
-                <div ng-class="nameifmatchreg" style="padding-left: 33px;">
-                    <label for="">k8s_api_prefix API 前缀:&nbsp;&nbsp;</label>
-                    <input type="text" ng-model="k8s_api_prefix" placeholder="/api/v1/namespaces/" md-autofocus>
+                <div style="width:100%;height:40px">
+                   <label for="">k8s_api_prefix API 前缀:</label>
+                  <input type="text" ng-model="k8s_api_prefix" placeholder="/api/v1/namespaces/" md-autofocus>
+                  <i class="fa fa-save text-primary" ng-click="saveparam('k8s_api_prefix')"></i>
                 </div>
+              </div>
             </div>
           </fieldset>
 
           </br>
           <fieldset class="standard" >
-            <legend>登陆设置</legend>
-            <div layout="row" layout-wrap flex>
-                <div ng-class="nameifmatchreg" style="padding-left: 33px;">
+            <legend  ng-click="field['1'] = !field['1']">登陆设置</legend>
+            <div ng-show="!field['1']" layout="row"  layout-fill layout-padding>
+              <div flex>
+                <div style="width:100%;height:40px">
                     <label for="">keystone 认证地址:&nbsp;&nbsp;</label>
-                    <input type="text" ng-model="keystone_url" placeholder="http://42.51.161.109:5000/v2.0" md-autofocus>
+                    <input type="text" ng-model="keystone_api" placeholder="http://42.51.161.109:5000/v2.0" md-autofocus>
+                    <i class="fa fa-save text-primary" ng-click="saveparam('keystone_api')"></i>
                 </div>
+             </div> 
             </div>
           </fieldset>
 
           </br>
           <fieldset class="standard" >
-            <legend>镜像仓库设置</legend>
-            <div layout="row" layout-wrap flex>
-                <div ng-class="nameifmatchreg" style="padding-left: 33px;">
-                    <label for="">registry_api 地址:&nbsp;&nbsp;</label>
-                    <input type="text" ng-model="registry_url" placeholder="http://42.51.161.109:4999" md-autofocus>
-                </div>
-                <div ng-class="nameifmatchreg" style="padding-left: 33px;">
-                    <label for="">registry hook 地址:&nbsp;&nbsp;</label>
-                    <input type="text" ng-model="hook_url" placeholder="http://42.51.161.236:8337" md-autofocus>
-                </div>
-                <div ng-class="nameifmatchreg" style="padding-left: 33px;">
-                    <label for="">registry 超级密码:&nbsp;&nbsp;</label>
-                    <input type="password" ng-model="registry_credential" placeholder="" md-autofocus>
+            <legend ng-click="field['2'] = !field['2']">镜像仓库设置</legend>
+            <div ng-show="!field['2']" layout="row" layout-fill layout-padding>
+                <div flex>
+                  <div style="width:100%;height:40px">
+                      <label for="">registry_api 地址:&nbsp;&nbsp;</label>
+                      <input type="text" ng-model="registry_api" placeholder="http://42.51.161.109:4999" md-autofocus>
+                      <i class="fa fa-save text-primary" ng-click="saveparam('registry_api')"></i>
+                  </div>
+                  <div style="width:100%;height:40px">
+                      <label for="">registry hook 地址:&nbsp;&nbsp;</label>
+                      <input type="text" ng-model="hook_url" placeholder="http://42.51.161.236:8337" md-autofocus>
+                      <i class="fa fa-save text-primary" ng-click="saveparam('hook_url')"></i>
+                  </div>
+                  <div style="width:100%;height:40px">
+                      <label for="">registry 超级密码:&nbsp;&nbsp;</label>
+                      <input type="password" ng-model="registry_credential" placeholder="" md-autofocus>
+                      <i class="fa fa-save text-primary" ng-click="saveparam('registry_credential')"></i>
+                  </div>
                 </div>
             </div>
           </fieldset>
-        </div>
+          <fieldset class="standard" >
+            <legend ng-click="field['3'] = !field['3']">存储ceph设置</legend>
+            <div ng-show="!field['3']" layout="row" layout-fill layout-padding>
+                <div flex>
+                  <div style="width:100%;height:40px">
+                      <label for="">mons地址(多个用逗号隔开):&nbsp;&nbsp;</label>
+                      <input type="text" ng-model="ceph_mons" placeholder="http://42.51.161.109:4999" md-autofocus>
+                      <i class="fa fa-save text-primary" ng-click="saveparam('ceph_mons')"></i>
+                  </div>
+                </div>
+            </div>
+          </fieldset>
+           <fieldset class="standard" >
+            <legend ng-click="field['4'] = !field['4']">监控设置</legend>
+            <div ng-show="!field['4']" layout="row" layout-fill layout-padding>
+                <div flex>
+                  <div style="width:100%;height:40px">
+                      <label for="">prometheus API地址:&nbsp;&nbsp;</label>
+                      <input type="text" ng-model="prometheus_api" placeholder="http://42.51.161.109:4999" md-autofocus>
+                      <i class="fa fa-save text-primary" ng-click="saveparam('prometheus_api')"></i>
+                  </div>
+                </div>
+            </div>
+          </fieldset>
+        </md-content>
       </div>
     </div>
   </div>

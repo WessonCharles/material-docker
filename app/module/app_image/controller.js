@@ -2,9 +2,10 @@
 
 define(['angular','modal','markdown','highlight','socket'],function(angular,modal,markdown,highlight,io){
 	return angular.module("ThCofAngSeed.images_ctrl",['ThCofAngSeed.services'])
-	.controller('imagesctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','restful','Notify','instance',
-		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,restful,Notify,instance){
+	.controller('imagesctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','restful','Notify','instance','$routeParams',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,restful,Notify,instance,$routeParams){
 			
+			console.log($routeParams)
 			var image = restful.action({type:"@id"},$scope.baseurl+":id/images");
 	        var im = image.get({id:$rootScope.current_tenant.id},function(e){
 	        	// $scope.images = im.metadata;
@@ -50,7 +51,6 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 	          // This never happens.
 	        };
 
-
 			$scope.listItemClick = function($event,id) {
 				instance.current_image = $scope.imageshash[id];
 
@@ -66,7 +66,13 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 				    });
 		    	});
 			    
-			};   
+			}; 
+
+			$timeout(function(){
+				if($routeParams.name){
+		        	$("#tab-content-2 #images .images_list md-list md-list-item").find("button[data-name='"+$routeParams.name+"']").trigger("click");
+	        	}
+			},800)
 		}
 	])
 	.controller('imagedetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','instance',
