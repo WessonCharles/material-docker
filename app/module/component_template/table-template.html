@@ -74,7 +74,9 @@
               <tr  ng-click="func($event,l)" ng-if="c.collections" ng-class="c.subshow?'animate-show':'animate-show hide'" data-uid="{{c.uid}}" ng-repeat="l in c.collections track by $index" class="md-table-content-row">
                 <td class="md-table-content"><md-checkbox aria-label="checkbox" style="opacity:0"></md-checkbox></td>
                 <td class="md-table-content" ng-repeat="ch in collheaders track by $index" ng-if="ch=='name'" >
-                  <a ng-if="innerlinks" href="{{innerlinks}}/{{l[ch]}}">{{l[ch]}}</a></td>
+                  <a ng-if="innerlinks&&subhover" href="{{innerlinks}}/{{l[ch]}}" ng-mouseover="subhover($event,l,true)">{{l[ch]}}</a></td>
+                 <a ng-if="innerlinks" href="{{innerlinks}}/{{l[ch]}}">{{l[ch]}}</a></td>
+                 <a ng-if="innerlinks&&subclick" href="{{innerlinks}}/{{l[ch]}}" ng-click="subclick(l)">{{l[ch]}}</a></td>
                 <td class="md-table-content" ng-repeat="ch in collheaders track by $index" ng-if="ch!='name'"><span>{{l[ch]}}</span></td>
               </tr>
              <!-- </tbody> 
@@ -117,10 +119,10 @@
     </ul>
     </span>
   </div>
-  <!-- <div class="tiptool" id="tiptool">
-    
-  </div> -->
 </div>
+<div class="tiptool" id="tiptool">
+    
+  </div>
 <div id="{{action.modal.target.split('#')[1]}}" ng-if="action&&action.modal" class="modal modal__bg" role="dialog" aria-hidden="true">
     <div class="modal__dialog">
       <div class="modal__content">

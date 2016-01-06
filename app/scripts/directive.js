@@ -47,7 +47,9 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
         hover:'=',
         modal:'=',
         action:'=',
-        innerlinks:"@"
+        innerlinks:"@",
+        subhover:"=",
+        subclick:"="
       },
       link: function ($scope,$element,$attr) {
         console.log($scope.action)
@@ -60,29 +62,10 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
             if ($scope.sortable.indexOf(field) > -1) { return true; } else { return false; }
         };
 
-        $scope.showtip = function(e,c){
-          c.showsub = !c.showsub;
-          console.log(c.showsub)
-          if(c.showsub){
-            var w,h,t,l;
-            w = $(e.target).parents("tr").outerWidth()-20;
-            t = $(e.target).parents("tr")[0].getBoundingClientRect().top+$(e.target).parents("tr").outerHeight()-$(".navbar-collapse.collapse").outerHeight()+Math.abs(document.body.scrollTop);
-            l = $(e.target).parents("tr")[0].getBoundingClientRect().left-$("#sidebar").outerWidth();
-            var top = Math.abs(document.body.scrollTop);
-            $("#tiptool").css({
-              "width":w+"px",
-              "top":t+"px",
-              "left":l+"px",
-              "height":"auto",
-            }).addClass("show");
-            $scope.opendata = c;
-          }else{
-            $("#tiptool").removeClass('show')
-          }
-          
-          
-        }
-
+        $("#tiptool").mouseleave(function(){
+          console.log("2324")
+          $(this).removeClass("show").html("");
+        })
         $scope.order = function(predicate, reverse) {
             if(!$scope.handleSort(predicate)){
               return false;

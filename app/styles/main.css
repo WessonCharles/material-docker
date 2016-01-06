@@ -1052,6 +1052,38 @@ form h2 {
     position: relative;
     padding-left: 36px;
 }
+form fieldset div[layout=row]{
+  /*-webkit-transition: all ease 0.3s;
+        transition: all ease 0.3s;*/
+}
+form fieldset label{
+  width:40%;
+  float:left;
+}
+form fieldset .fa-save{
+  margin-left: 10px;
+  font-size: 20px;
+  outline:0;
+  cursor: pointer;
+}
+fieldset {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+legend {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 20px;
+    font-size: 21px;
+    line-height: 40px;
+    color: #333;
+    border: 0;
+    outline:0;
+    cursor: pointer;
+    border-bottom: 1px solid #e5e5e5;
+}
 
 /* angular material table*/
 .main-fab {
@@ -1911,8 +1943,8 @@ md-radio-button.flavo:hover .flavor .des{
     background-clip: padding-box;
     border-radius: 3px;
     outline: 0;
-    -webkit-box-shadow: 0 0px 1px 1px rgba(0,0,0,.1);
-    box-shadow: 0 0px 1px 1px rgba(0,0,0,.1);
+    -webkit-box-shadow: 0 2px 13px 7px rgba(0,0,0,.1);
+    box-shadow: 0 2px 13px 7px rgba(0,0,0,.1);
   z-index: 50;
   -webkit-transition: opacity 0.4s ease 0s,height 0.4s ease 0s;
   -o-transition: opacity 0.4s ease 0s,height 0.4s ease 0s;
@@ -1942,6 +1974,9 @@ md-radio-button.flavo:hover .flavor .des{
 .tiptool.show{
   opacity:1;
   display:block;
+}
+.tiptool p{
+  margin:5px 0;
 }
 .imagesout md-divider{
   border-top-style:none;

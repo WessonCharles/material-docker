@@ -305,7 +305,7 @@ define(['angular','modal'],function(angular,modal){
 		        $scope.sortable = ['name', 'replicas', 'health_status','created_at'];
 		        // $scope.thumbs = 'thumb';
 		        $scope.count = 5;
-		        var code = $compile('<md-table headers="headers" innerlinks="applications/'+$routeParams.id+'" content="content" sortable="sortable" filters="search" thumbs="thumbs" isselect="true" selected="selected" modal="modal" collheaders="tcollheaders" getapidata="getcoldata" hover="hover" count="count"></md-table>')($scope);
+		        var code = $compile('<md-table headers="headers" innerlinks="applications/'+$routeParams.id+'" content="content" sortable="sortable" filters="search" thumbs="thumbs" isselect="true" selected="selected" modal="modal" collheaders="tcollheaders" getapidata="getcoldata" subhover="subhover" count="count"></md-table>')($scope);
 	        	$("#cluter-table").html(code);
 
 			})
@@ -333,7 +333,9 @@ define(['angular','modal'],function(angular,modal){
 		        $scope.collheaders = [];
 		        if(lb.metadata[0]&&lb.metadata[0].lb[0]){
 		        	for(var f in lb.metadata[0].lb[0]){
-		        		$scope.collheaders.push(f);
+		        		if(f!='name'){
+			        		$scope.collheaders.push(f);
+			        	}
 		        	}
 		        }
 		        console.log($scope.collheaders)
@@ -341,20 +343,47 @@ define(['angular','modal'],function(angular,modal){
 		        for(var i=0;i<lb.metadata.length;i++){
 		        	$scope.tcontent.push({
 		        		name:lb.metadata[i].name,
-		        		sessionAffinity:lb.metadata[i].sessionAffinity,
-		        		created_at:$filter("date")(lb.metadata[i].created_at,'MM/dd/yyyy h:mm:ss'),
+		        		sessionAffinity:$filter('i18n')(lb.metadata[i].sessionAffinity),
+		        		created_at:$filter("date")(lb.metadata[i].created_at,'yyyy-MM-dd h:mm:ss'),
 		        		collections:lb.metadata[i].lb
 		        	})
 		        }
+
+		        $scope.subhover = function(e,clu,c){
+		          if(c){
+		            var w,h,t,l;
+		            w = 'auto';//$(e.target).parents("tr").outerWidth()-20;
+		            t = $(e.target).parents("tr")[0].offsetTop+$(e.target).parents("tr")[0].offsetHeight+20;
+		            l = $(e.target)[0].offsetLeft+25;
+		            var top = Math.abs(document.body.scrollTop);
+		            var html = "";
+		            for(var i=0;i<clu.images.length;i++){
+		            	var label = clu.images[i].split("/")[clu.images[i].split("/").length-1];
+		            	var name = label.split(":")[0];
+		            	html += "<p><a href='image?name="+name+"'>"+clu.images[i]+"</a></p>";
+		            }
+		            $("#tiptool").html(html).css({
+		              "width":w+"px",
+		              "top":t+"px",
+		              "left":l+"px",
+		              "height":"auto",
+		            }).addClass("show");
+		          // }else{
+		          //   $("#tiptool").removeClass('show')
+		          }
+				}
+
+
 		        $scope.tselected = [];
 		        $scope.tcustom = {name: 'bold', sessionAffinity:'grey',created_at: 'grey'};
 		        $scope.tsortable = ['name', 'sessionAffinity', 'created_at'];
 		        // $scope.tmodal = "#container_detail";
 		        // $scope.thumbs = 'thumb';
 		        $scope.tcount = 5;
-		        var code = $compile('<md-table headers="theaders" content="tcontent" sortable="tsortable" filters="search" thumbs="tthumbs" isselect="true" selected="tselected" modal="tmodal" collheaders="collheaders" count="tcount"></md-table>')($scope);
+		        var code = $compile('<md-table headers="theaders" content="tcontent" sortable="tsortable" subhover="subhover" filters="search" thumbs="tthumbs" isselect="true" selected="tselected" modal="tmodal" collheaders="collheaders" count="tcount"></md-table>')($scope);
 	        	$("#lb-table").html(code);
 			})
+
 
 			$scope.getcoldata=function(c){
 				console.log(c)
@@ -365,7 +394,7 @@ define(['angular','modal'],function(angular,modal){
 						c.collections.push({
 							name:lsc.metadata[i].name,
 							private_ip:lsc.metadata[i].private_ip,
-							started_at:$filter("date")(lsc.metadata[i].started_at,"MM/dd/yyyy h:mm:ss"),
+							started_at:$filter("date")(lsc.metadata[i].started_at,"yyyy-MM-dd h:mm:ss"),
 							status:lsc.metadata[i].status.component,
 							images:lsc.metadata[i].images
 						})

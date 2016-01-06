@@ -19,6 +19,8 @@ define(['angular'], function(angular){
                 'building':'构建中',
                 'aborted':'拒绝',
                 'system':'系统设置',
+                'roundrobin':'轮询',
+                'clientip':'客户端IP'
             },
             'en_US' : {
            }
