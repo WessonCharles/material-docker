@@ -1,0 +1,86 @@
+<div return>
+<div class="content-table">
+  <div layout="row" layout-margin>
+    <div flex flex-order="1" class="noshadow bl-main">
+        <md-subheader class="md-primary">
+        <button  aria-label="returntolist" viewclose link="/applications" md-button class="md-raised md-icon-btn" ng-click="backlist();">
+          <md-icon class="fa fa-arrow-left fa-lg"></md-icon>
+        </button>
+        创建负载均衡</md-subheader>
+       <md-content id="maincontent" class="md-padding" ng-init="$parent.lbl = {};">
+          <form name="nameForm">
+            <div ng-class="nameifmatchreg" style="padding-left: 16px;">
+              <label for="">负载均衡名</label>
+              <input type="text" ng-model="lbl.name" ng-required="true" ng-keydown="checkname()" ng-keyup="checkname()" md-autofocus>
+            </div>
+            <div layout="row" layout-fill layout-padding>
+              <div flex>
+                <div class="nopaddingbot">
+                  <label>关联集群：</label>
+                  <md-select placeholder="集群列表" name="cluster" ng-model="lbl.cluster_name" required>
+                    <md-option ng-repeat="t in clusters track by $index" value="{{t.name}}">{{t.name}}</md-option>
+                  </md-select>
+                </div>
+              </div>
+            </div>
+            <div style="padding-top:0px;" layout="row" layout-fill layout-padding>
+                <div layout="row" layout-fill layout-padding>
+                <label>公网/私网</label>
+                <div layout="row" layout-sm-column style="padding-left:50px;">
+                  <md-radio-group class="line" ng-model="lbl.is_public" ng-init="lbl.is_public=1">
+                    <md-radio-button value="1" class="md-primary">公网</md-radio-button>
+                    <md-radio-button value="0" class="md-primary">私网</md-radio-button>
+                  </md-radio-group>
+                </div>
+                </div>
+            </div>
+            <div style="background-color:#EDF0F5;">
+              <div layout="row" style="background-color:transparent;" layout-fill layout-padding ng-init="lbl.ports = [];lbl.temppot = {};">
+                <div layout="row" style="background-color:transparent;" layout-fill layout-padding>
+                  <div class="noshadow">
+                    <label for="">端口</label>
+                    <input ng-model="lbl.temppot.port" type="text" placeholder="port">
+                  </div>
+                  <div class="noshadow" style="padding-left:30px">
+                    <label for="">服务端口</label>
+                    <input ng-model="lbl.temppot.targetport" type="text" placeholder="targetport">
+                  </div>
+                </div>
+              </div>
+              <div layout="row" style="background-color:transparent;" layout-fill layout-padding>
+                <div layout="row" style="background-color:transparent;" layout-fill layout-padding>
+                  <div class="noshadow">
+                    <label for="" style="float:left;">协议类型</label>
+                    <md-radio-group class="line" ng-model="lbl.temppot.protocol" ng-init="lbl.temppot.protocol='TCP'">
+                      <md-radio-button value="TCP" class="md-primary">TCP</md-radio-button>
+                      <md-radio-button value="UDP" class="md-primary">UDP</md-radio-button>
+                    </md-radio-group>
+                  </div>
+                  <a ng-click="lbl.ports.push({port:lbl.temppot.port,targetport:lbl.temppot.targetport,protocol:lbl.temppot.protocol});lbl.temppot = {protocol:'TCP'};" style="line-height:35px;">添加</a>
+                </div>
+              </div>
+            </div>
+            <div style="padding-left:5px;margin: 10px 10px 20px 10px;">
+              <label for="">已添加的端口列表</label> 
+              <table class="md-table">
+                <thead class="thead-back"><tr class="md-table-headers-row"><th class="md-table-header">端口</th><th class="md-table-header">服务端口</th><th class="md-table-header">协议类型</th><th class="md-table-header">操作</th></tr></thead>
+                <tbody>
+                  <tr class="md-table-content-row" ng-repeat="e in lbl.ports track by $index">
+                    <td class="md-table-content">{{e.port}}</td>
+                    <td class="md-table-content">{{e.targetport}}</td>
+                    <td class="md-table-content">{{e.protocol}}</td>
+                    <td class="md-table-content"><i class="fa fa-trash text-primary" ng-click="removeOnelblport(e,lbl.ports)"></i></td>
+                  </tr>
+                </tbody>
+              </table> 
+            </div>
+            <div align="right" style="padding: 0 2.4rem 2.4rem;margin-bottom: -25px;">
+              <md-button type="button" ng-disabled="myForm.$invalid" ng-click="addlbl(lbl)" class="md-primary">添加</md-button>
+            </div>
+              
+          </form>
+      </md-content>
+    </div>
+  </div>
+</div>
+</div>

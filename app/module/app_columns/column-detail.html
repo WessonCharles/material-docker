@@ -7,22 +7,22 @@
           <md-icon class="fa fa-arrow-left fa-lg"></md-icon>
         </button>
         {{column}}
-        <button md-button class="md-raised md-button">
+        <!-- <button md-button class="md-raised md-button">
           <md-icon class="fa fa-cog fa-lg"></md-icon>
           创建快照
-        </button>
-        <button md-button class="md-raised md-button">
+        </button> -->
+        <button md-button class="md-raised md-button modal__trigger" data-modal="#resize">
           <md-icon class="fa fa-trash-o fa-lg"></md-icon>
-          分区
+          调整卷大小
         </button>
-        <button md-button class="md-raised md-button">
+        <!-- <button md-button class="md-raised md-button">
           <md-icon class="fa fa-cog fa-lg"></md-icon>
           删除快照
-        </button>
+        </button> -->
       </md-subheader>
        <md-content id="imageform" class="md-padding">
           <div layout="row"  class="unshadow">
-            <div flex='35' class="noshadow">
+            <div flex class="noshadow">
               <md-content>
                 <md-tabs md-dynamic-height md-no-pagination="true" md-swipe-content="false">
                   <md-tab label="基本信息">
@@ -37,7 +37,7 @@
                  </md-tabs> 
               </md-content>
             </div>
-            <div flex="65" class="noshadow bl-main">
+            <!-- <div flex="65" class="noshadow bl-main">
               <md-content>
                 <md-tabs md-dynamic-height md-no-pagination="true" md-swipe-content="false">
                   <md-tab label="快照">
@@ -47,10 +47,32 @@
                   </md-tab>
                  </md-tabs> 
               </md-content>
-            </div>
+            </div> -->
           </div>
       </md-content>
     </div>
    </div>
   <div>
 </div>      
+<div id="resize" class="modal modal__bg" role="dialog" aria-hidden="true">
+    <div class="modal__dialog">
+      <div class="modal__content">
+        <h2>调整卷大小</h2>
+        <div class="modal_content_inner">
+        <form name="nameForm">
+          <div  class="form-input">
+              <label for="">卷大小：<span>GB*</span></label>
+              <input type="text" ng-model="re_size" ng-required="true">
+            </div>
+          <div align="right">
+            <md-button ng-click="resize($event)" class="md-primary" layout layout-align="center end">更新</md-button>
+          </div>
+        </form>
+        </div>
+        <!-- modal close button -->
+        <a class="modal__close demo-close">
+          <i class="fa fa-times"></i>
+        </a>
+      </div>
+    </div>
+  </div>  

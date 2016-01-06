@@ -159,17 +159,20 @@ define(['angular','modal'],function(angular,modal){
 			      var selects= $scope.selected;
 		       		console.log(selects)
 		       		for(var i=0;i<selects.length;i++){
-		       			(function(c){
-		       				$scope.content.forEach(function(app, index) {
-							    if (c.uuid == app.uuid) {
-							    	console.log("22")
-							      plat.delete({id:$rootScope.current_tenant.id,name:app.uuid}, function() {
-							        $scope.content.splice(index, 1);
-							        // Notify.showSimpleToast("应用删除成功",1);
-							      });
-							    }
-							  });
-		       			})(selects[i]);	
+		       			(function(c,i){
+		       				plat.delete({id:$rootScope.current_tenant.id,name:app.uuid}, function() {
+						        for(var n = 0;n<$scope.content.length;n++){
+						        	if(c.uuid==$scope.content[n].uuid){
+						        		$scope.content.splice(n,1);
+						        		break;
+						        	}
+						        }
+						        if(i==selects.length-1){
+						        	Notify.showSimpleToast("应用删除成功",1);
+						        }
+						        
+						    });
+		       			})(selects[i],i);	
 		       		}
 			    }, function() {
 			      $scope.selected = [];
@@ -241,6 +244,13 @@ define(['angular','modal'],function(angular,modal){
 			console.log("223423")
 			console.log($routeParams)
 
+			var originatorEv;
+	        $scope.ctrl = {};
+	        $scope.ctrl.openMenu = function($mdOpenMenu, ev) {
+	          originatorEv = ev;
+	          $mdOpenMenu(ev);
+	        };
+
 			var apps = restful.action({type:"@id",uuid:"@uuid"},$scope.baseurl+":id/apps/:uuid");
 			var app = apps.get({id:$rootScope.current_tenant.id,uuid:$routeParams.id},function(){
 				$scope.appone = app.metadata[0];
@@ -295,7 +305,7 @@ define(['angular','modal'],function(angular,modal){
 		        $scope.sortable = ['name', 'replicas', 'health_status','created_at'];
 		        // $scope.thumbs = 'thumb';
 		        $scope.count = 5;
-		        var code = $compile('<md-table headers="headers" innerlinks="applications/'+$routeParams.id+'" content="content" sortable="sortable" filters="search" thumbs="thumbs" isselect="true" selected="selected" modal="modal" collheaders="tcollheaders" getapidata="getcoldata" hover="hover" action="true" count="count"></md-table>')($scope);
+		        var code = $compile('<md-table headers="headers" innerlinks="applications/'+$routeParams.id+'" content="content" sortable="sortable" filters="search" thumbs="thumbs" isselect="true" selected="selected" modal="modal" collheaders="tcollheaders" getapidata="getcoldata" hover="hover" count="count"></md-table>')($scope);
 	        	$("#cluter-table").html(code);
 
 			})
@@ -360,7 +370,7 @@ define(['angular','modal'],function(angular,modal){
 							images:lsc.metadata[i].images
 						})
 					}
-					$scope.tcollheaders = ["name","private_ip","started_at","status"];
+					$scope.tcollheaders = ["name","private_ip","status","started_at"];
 				})
 			}
 	        
@@ -373,6 +383,36 @@ define(['angular','modal'],function(angular,modal){
 	        		$(t).parents(".switchdiv").removeClass("right");
 	        	}else{
 	        		$(t).parents(".switchdiv").addClass("right");
+	        	}
+	        }
+
+	        $scope.remove = function(){
+	        	console.log($scope.selected)
+	        	for(var i =0;i<$scope.selected.length;i++){
+	        		(function(c,i){
+	        			if($scope.tab=='cluster'){
+	        				$http.delete($scope.baseurl+$rootScope.current_tenant.id+"/cluster/"+c).success(function(){
+	        					for(var n=0;n<$scope.content.length;n++){
+	        						if($scope.content[n].name==c){
+	        							$scope.content.splice(n,1);
+	        							break;
+	        						}
+	        					}
+	        				})
+	        			}else{
+	        				$http.delete($scope.baseurl+$rootScope.current_tenant.id+"/lb/"+c).success(function(){
+	        					for(var n=0;n<$scope.tcontent.length;n++){
+	        						if($scope.tcontent[n].name==c){
+	        							$scope.tcontent.splice(n,1);
+	        							break;
+	        						}
+	        					}
+	        				})
+	        			}
+	        			if(i==$scope.selected.length-1){
+				        	Notify.showSimpleToast("应用删除成功",1);
+				        }
+	        		})($scope.selected[i].name,i)
 	        	}
 	        }
 		}
@@ -690,5 +730,59 @@ define(['angular','modal'],function(angular,modal){
 	        	})
 	        }
 		}
-	])			
+	])	
+	.controller('createlblctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','Notify','instance',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams,restful,Notify,instance){
+			
+			$scope.app_uuid = $routeParams.id;
+			/**
+			 * 获取当前处于哪个应用下
+			 * @type {[type]}
+			 */
+			var apps = restful.action({type:"@id",uuid:"@uuid"},$scope.baseurl+":id/apps/:uuid");
+			var app = apps.get({id:$rootScope.current_tenant.id,uuid:$routeParams.id},function(){
+				console.log(instance.applictions)
+				if(!instance.applications||instance.applications.length==0){
+					instance.applications = [app.metadata[0]];
+				}
+				console.log(instance.applications)
+			})
+			/**
+			 * 获取集群列表
+			 * @type {[type]}
+			 */
+			var clu = restful.action({id:"@id",uuid:"@uuid"},$scope.baseurl+":id/cluster?app_uuid=:uuid");
+			var cl = clu.get({id:$rootScope.current_tenant.id,uuid:$routeParams.id},function(){
+				$scope.clusters = cl.metadata;
+			})
+
+			var lb = restful.action({id:"@id"},$scope.baseurl+":id/lb");
+
+			$scope.checkname = function(){
+				var reg =/^[A-Za-z\d-.]+$/;
+				if(new RegExp(reg).test($scope.app_name)){
+					$scope.nameifmatchreg = "";
+				}else{
+					$scope.nameifmatchreg = "md-input-invalid";
+				}
+				console.log($scope.nameifmatchreg)
+			}
+			$scope.removeOnelblport = function(one,list){
+				list.splice(list.indexOf(one),1);
+			}
+			/**
+			 * [addlbl 增加负载均衡的方法]
+			 * @param  {[type]} lbl [description]
+			 * @return {[type]}     [description]
+			 */
+			$scope.addlbl = function(lbl){
+				lbl["app_uuid"] = $scope.app_uuid;
+				delete lbl['temppot'];
+				lb.save({id:$rootScope.current_tenant.id},lbl,function(){
+					Notify.showSimpleToast("添加负载均衡成功",1);
+					$location.path("/applications/"+$scope.app_uuid);
+				})
+			}
+		}
+	])		
 })
