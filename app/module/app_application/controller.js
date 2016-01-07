@@ -239,8 +239,8 @@ define(['angular','modal'],function(angular,modal){
 			};
 		}
 	])
-	.controller('prodetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile','instance',
-		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams,restful,$compile,instance){
+	.controller('prodetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile','instance','Notify',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams,restful,$compile,instance,Notify){
 			console.log("223423")
 			console.log($routeParams)
 
