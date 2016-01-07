@@ -6,6 +6,12 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,restful,Notify,instance,$routeParams){
 			
 			console.log($routeParams)
+			
+			/**
+			 * 获取我的列表
+			 */
+			 $scope.tab = 'recent';//'mine','market'
+
 			var image = restful.action({type:"@id"},$scope.baseurl+":id/images");
 	        var im = image.get({id:$rootScope.current_tenant.id},function(e){
 	        	// $scope.images = im.metadata;
@@ -22,6 +28,70 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 	        		$scope.imageshash[im.metadata[i].uuid] = im.metadata[i];
 	        	}
 	        });
+
+	        /**
+	         * 获取最近使用
+	         */
+	        var hot = restful.action(null,$scope.baseurl+"hotimages");
+	        var h = hot.get(function(){
+	        	console.log(h.metadata)
+	        	if(typeof h.metadata=="string")h.metadata = JSON.parse(h.metadata);
+	        	$scope.hotimageshash = {};
+	        	$scope.hotitems = [];
+	        	for(var i =0;i<h.metadata.length;i++){
+	        		$scope.hotitems.push({
+	        			name:h.metadata[i].name,
+	        			icon:h.metadata[i].icon||'image',
+	        			id:h.metadata[i].uuid
+	        		})
+	        		$scope.hotimageshash[h.metadata[i].uuid] = h.metadata[i];
+	        	}
+	        })
+
+	        /**
+	         * 获取镜像时常
+	         */
+	        var qname = restful.action({name:"@name"},$scope.baseurl+"topimages?q=:name");
+	        var topk = restful.action({top:"@top"},$scope.baseurl+"topimages?topk=:top");
+	        var q_topk = restful.action({name:"@name",top:"@top"},$scope.baseurl+"topimages?q=:name&topk=:top");
+
+	        var to = topk.get({top:20},function(){
+	        	console.log(to.metadata)
+	        	if(typeof to.metadata=="string")to.metadata = JSON.parse(to.metadata);
+	        	$scope.markimageshash = {};
+	        	$scope.markitems = [];
+	        	for(var i =0;i<to.metadata.length;i++){
+	        		$scope.markitems.push({
+	        			name:to.metadata[i].name,
+	        			icon:to.metadata[i].icon||'image',
+	        			id:to.metadata[i].uuid
+	        		})
+	        		$scope.markimageshash[to.metadata[i].uuid] = to.metadata[i];
+	        	}
+	        	$scope.defaultmark = $scope.markitems;
+	        })
+
+	        $scope.searchimage = function(code){
+	        	if($scope.tab == "market"&&code ==13){
+	        		var seq = q_topk.get({name:$scope.imagectrl.search,top:20},function(){
+	        			for(var i =0;i<seq.metadata.length;i++){
+			        		$scope.markitems.push({
+			        			name:seq.metadata[i].name,
+			        			icon:seq.metadata[i].icon||'image',
+			        			id:seq.metadata[i].uuid
+			        		})
+			        	}
+			        	Notify.showSimpleToast("查询成功",1);
+	        		})
+	        	}
+	        }
+	        $scope.returndefault = function(){
+	        	if($scope.imagectrl.search==""){
+	        		$scope.markitems = $scope.defaultmark;
+	        	}else{
+	        		return;
+	        	}
+	        }
 			/**
 	         * buttondown example
 	         */
@@ -352,6 +422,7 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 				console.log("已连接")
 				ws.onmessage = function(event){
 					var data = eval("("+event.data+")");
+					console.log(data);
 				}
 			}
 
