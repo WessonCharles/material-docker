@@ -416,10 +416,11 @@ define(['angular','modal'],function(angular,modal){
 	        }
 
 	        $scope.remove = function(){
-	        	console.log($scope.selected)
-	        	for(var i =0;i<$scope.selected.length;i++){
-	        		(function(c,i){
-	        			if($scope.tab=='cluster'){
+	        	if($scope.tab=='cluster'){
+		        	console.log($scope.selected)
+		        	for(var i =0;i<$scope.selected.length;i++){
+		        		(function(c,i){
+		        			
 	        				$http.delete($scope.baseurl+$rootScope.current_tenant.id+"/cluster/"+c).success(function(){
 	        					for(var n=0;n<$scope.content.length;n++){
 	        						if($scope.content[n].name==c){
@@ -428,7 +429,15 @@ define(['angular','modal'],function(angular,modal){
 	        						}
 	        					}
 	        				})
-	        			}else{
+		        			if(i==$scope.selected.length-1){
+					        	Notify.showSimpleToast("应用删除成功",1);
+					        }
+		        		})($scope.selected[i].name,i)
+		        	}
+		        }else{
+					console.log($scope.tselected)
+		        	for(var i =0;i<$scope.tselected.length;i++){
+		        		(function(c,i){
 	        				$http.delete($scope.baseurl+$rootScope.current_tenant.id+"/lb/"+c).success(function(){
 	        					for(var n=0;n<$scope.tcontent.length;n++){
 	        						if($scope.tcontent[n].name==c){
@@ -437,12 +446,12 @@ define(['angular','modal'],function(angular,modal){
 	        						}
 	        					}
 	        				})
-	        			}
-	        			if(i==$scope.selected.length-1){
-				        	Notify.showSimpleToast("应用删除成功",1);
-				        }
-	        		})($scope.selected[i].name,i)
-	        	}
+		        			if(i==$scope.tselected.length-1){
+					        	Notify.showSimpleToast("应用删除成功",1);
+					        }
+		        		})($scope.tselected[i].name,i)
+		        	}
+		        }
 	        }
 		}
 	])
