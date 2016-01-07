@@ -286,6 +286,9 @@ define(['angular','modal'],function(angular,modal){
 		          },{
 		            name:'创建时间',
 		            field:'created_at'
+		          },{
+		          	name:'绑定负载均衡',
+		          	field:'bindlbl'
 		          }
 		        ];
 		        
@@ -297,12 +300,13 @@ define(['angular','modal'],function(angular,modal){
 		        		replicas:cl.metadata[i].replicas,
 		        		health_status:cl.metadata[i].status.current+"/"+cl.metadata[i].status.desired,
 		        		created_at:$filter("date")(cl.metadata[i].created_at,'MM/dd/yyyy h:mm:ss'),
-		        		collections:[]
+		        		collections:[],
+		        		bindlbl:cl.metadata[i].bind.gamepublic&&cl.metadata[i].bind.gamepublic.length>0?cl.metadata[i].bind.gamepublic.join(","):""
 		        	})
 		        }
 		        $scope.selected = [];
-		        $scope.custom = {name: 'bold', replicas:'grey',health_status: 'grey',created_at:'grey'};
-		        $scope.sortable = ['name', 'replicas', 'health_status','created_at'];
+		        $scope.custom = {name: 'bold', replicas:'grey',health_status: 'grey',created_at:'grey',bindlbl:'grey'};
+		        $scope.sortable = ['name', 'replicas', 'health_status','created_at','bindlbl'];
 		        // $scope.thumbs = 'thumb';
 		        $scope.count = 5;
 		        var code = $compile('<md-table headers="headers" innerlinks="applications/'+$routeParams.id+'" content="content" sortable="sortable" filters="search" thumbs="thumbs" isselect="true" selected="selected" modal="modal" collheaders="tcollheaders" getapidata="getcoldata" subhover="subhover" count="count"></md-table>')($scope);
