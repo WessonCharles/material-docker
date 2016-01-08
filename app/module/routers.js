@@ -7,6 +7,10 @@ define(['angular','app'], function(angular,app) {
             templateUrl: 'module/login.html',
             controller: 'loginctrl'
         })
+        route.when('/',{
+            templateUrl:'module/index.html',
+            controller:'indexctrl'
+        })
         // route.when('/projects/:id',{
         //     templateUrl:'module/app_project/projects-detail.html',
         //     controller:'prodetailctrl'
