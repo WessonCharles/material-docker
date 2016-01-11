@@ -23,9 +23,9 @@ define(['angular','app'], function(angular,app) {
             templateUrl:'module/app_application/create-loadbalancer.html',
             controller:'createlblctrl'
         })
-        route.when('/applications/:id/:name',{
+        route.when('/applications/:id/instance',{
             templateUrl:'module/app_application/application-service-detail.html',
-            controller:'servicedetailctrl'
+            controller:'instancectrl'
         })
         
     }]);

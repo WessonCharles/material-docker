@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular','modal'],function(angular,modal){
+define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 	return angular.module("ThCofAngSeed.pod_ctrl",['ThCofAngSeed.services','ngMaterial'])
 	.controller('podctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$compile','restful','Notify','$mdBottomSheet','$mdDialog','instance',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$compile,restful,Notify,$mdBottomSheet,$mdDialog,instance){
@@ -295,13 +295,14 @@ define(['angular','modal'],function(angular,modal){
 		        $scope.tcollheaders = [];
 		        $scope.content = [];
 		        for(var i=0;i<cl.metadata.length;i++){
+		        	var bind = JSON.stringify(cl.metadata[i].bind);
 		        	$scope.content.push({
 		        		name:cl.metadata[i].name,
 		        		replicas:cl.metadata[i].replicas,
 		        		health_status:cl.metadata[i].status.current+"/"+cl.metadata[i].status.desired,
 		        		created_at:$filter("date")(cl.metadata[i].created_at,'MM/dd/yyyy h:mm:ss'),
 		        		collections:[],
-		        		bindlbl:cl.metadata[i].bind.gamepublic&&cl.metadata[i].bind.gamepublic.length>0?cl.metadata[i].bind.gamepublic.join(","):""
+		        		bindlbl:bind
 		        	})
 		        }
 		        $scope.selected = [];
@@ -327,6 +328,9 @@ define(['angular','modal'],function(angular,modal){
 		            name:'分发策略', 
 		            field: 'sessionAffinity'
 		          },{
+		          	name:'域名',
+		          	field:'domain'
+		          },{
 		            name: '创建时间', 
 		            field: 'created_at'
 		          // },{
@@ -348,6 +352,7 @@ define(['angular','modal'],function(angular,modal){
 		        	$scope.tcontent.push({
 		        		name:lb.metadata[i].name,
 		        		sessionAffinity:$filter('i18n')(lb.metadata[i].sessionAffinity),
+		        		domain:lb.metadata[i].domain,
 		        		created_at:$filter("date")(lb.metadata[i].created_at,'yyyy-MM-dd h:mm:ss'),
 		        		collections:lb.metadata[i].lb
 		        	})
@@ -379,8 +384,8 @@ define(['angular','modal'],function(angular,modal){
 
 
 		        $scope.tselected = [];
-		        $scope.tcustom = {name: 'bold', sessionAffinity:'grey',created_at: 'grey'};
-		        $scope.tsortable = ['name', 'sessionAffinity', 'created_at'];
+		        $scope.tcustom = {name: 'bold', sessionAffinity:'grey',domain:'grey',created_at: 'grey'};
+		        $scope.tsortable = ['name', 'sessionAffinity','domain','created_at'];
 		        // $scope.tmodal = "#container_detail";
 		        // $scope.thumbs = 'thumb';
 		        $scope.tcount = 5;
@@ -459,10 +464,162 @@ define(['angular','modal'],function(angular,modal){
 	        }
 		}
 	])
-	.controller('servicedetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile','instance',
+	.controller('instancectrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile','instance',
 		function($rootScope,$scope,$http,$timeout,$location,$window,$filter,$routeParams,restful,$compile,instance){
 			console.log($routeParams)
-			console.log("dfjasjflkajsdoijflksjaoifjsdlkajfo")
+			console.log("dsafsdfa")
+			$scope.app_id = $routeParams.id;
+			$scope.ins_name = $routeParams.name;
+			var watch = restful.action({id:"@id",name:"@name",target:"@target"},$scope.baseurl+":id/metrics/:name/:target");
+
+			var indexs = ["cpu_load","memory_usage","input_flow","output_flow"];
+			function getmonitor(params){
+				var req = {id:$rootScope.current_tenant.id,name:$scope.ins_name};
+				if(params){
+					for(var p in params){
+						req[p] = params[p];
+					}
+				}
+				for(var i=0;i<indexs.length;i++){
+					(function(i,name){
+						req["target"] = name;
+						var w = watch.get(req,function(){
+							var data = w.metadata[0];
+							var startday = "",endday="",pstart = 0,serdata = [],maxvalue = 0;
+							if(name=="cpu_load"){
+								maxvalue = 1;
+								var time = [],time1=[],dataval = [],dataval1=[];
+								for(var x = 0;x<w.metadata.length;x++){
+									var data = w.metadata[x];
+									for(var n=0;n<data.values.length;n++){
+										if(n==0||n==data.values.length-1){
+											if(n==0){
+												startday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+											}else{
+												endday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+											}
+										}
+										time.push($filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"h:mm"));
+										dataval.push(parseInt(data.values[n][1]));
+									}
+									serdata.push({
+							            name: data.cpu,
+							            data: dataval
+							        })
+								}
+								console.log(serdata)
+								
+							}else if(name=="memory_usage"){
+								var time = [],dataval = [];
+								maxvalue = 10000;
+								for(var n=0;n<data.values.length;n++){
+									if(n==0||n==data.values.length-1){
+										if(n==0){
+											startday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+										}else{
+											endday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+										}
+									}
+									time.push($filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"h:mm"));
+									dataval.push(parseInt(data.values[n][1]));
+								}
+								serdata.push({
+						            name: name,
+						            data: dataval
+						        })
+								console.log(time)
+								console.log(dataval)
+							}else if(name=="input_flow"){
+								var time = [],dataval = [],time1=[],dataval1=[];
+								maxvalue = 1000000;
+								for(var x = 0;x<w.metadata.length;x++){
+									var data = w.metadata[x];
+									for(var n=0;n<data.values.length;n++){
+										if(n==0||n==data.values.length-1){
+											if(n==0){
+												startday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+											}else{
+												endday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+											}
+										}
+										time.push($filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"h:mm"));
+										dataval.push(parseInt(data.values[n][1]));
+									}
+									serdata.push({
+							            name: data.interface,
+							            data: dataval
+							        })
+								}
+								console.log(serdata)
+							}else if(name=="output_flow"){
+								var time = [],dataval = [],time1=[],dataval1=[];
+								maxvalue = 1000000;
+								for(var x = 0;x<w.metadata.length;x++){
+									var data = w.metadata[x];
+									for(var n=0;n<data.values.length;n++){
+										if(n==0||n==data.values.length-1){
+											if(n==0){
+												startday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+											}else{
+												endday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+											}
+										}
+										time.push($filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"h:mm"));
+										dataval.push(parseInt(data.values[n][1]));
+									}
+									serdata.push({
+							            name: data.interface,
+							            data: dataval
+							        })
+								}
+								console.log(serdata)
+							}
+							$('#'+name).highcharts({
+						        title: {
+						            text: $filter('i18n')(name),
+						            x: -20 //center
+						        },
+						        credits: {
+								    enabled:false//去掉highcharts.com水印，很重要
+								},
+						        subtitle: {
+						            text: '从'+startday+"到"+endday,
+						            x: -20
+						        },
+						        xAxis: {
+						            categories: time
+						        },
+						        yAxis: {
+						            title: {
+						                text: '使用量'//单位
+						            },
+						            plotLines: [{
+						                value: 0,
+						                width: maxvalue,
+						                color: '#ffffff'
+						            }]
+						        },
+						        tooltip: {
+						            valueSuffix: ''//单位
+						        },
+						        legend: {
+						            layout: 'vertical',
+						            align: 'right',
+						            verticalAlign: 'middle',
+						            borderWidth: 0
+						        },
+						        series: serdata
+						    });
+						})
+					})(i,indexs[i])
+				}
+			}
+			getmonitor();
+			
+			$scope.refreshmonitor = function(){
+				console.log($scope.start)
+				getmonitor({start:$scope.start,end:$scope.end})
+			}
 		}
 	])
 	.controller('appdetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','instance',
@@ -486,7 +643,7 @@ define(['angular','modal'],function(angular,modal){
 	])
 	.controller('createappctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams,restful){
-
+			console.log(1)
 			$scope.createapps = function(){
 				var data = {name:$scope.app_name};
 				if($scope.app_desc){
@@ -512,7 +669,7 @@ define(['angular','modal'],function(angular,modal){
 	])
 	.controller('createcluterctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','Notify','instance',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams,restful,Notify,instance){
-			
+			console.log("2")
 			$(document).scroll(function(){
 				if($("#maincontent").length>0){
 					if($(this).scrollTop()>=$("#maincontent")[0].offsetTop){
@@ -775,7 +932,7 @@ define(['angular','modal'],function(angular,modal){
 	])	
 	.controller('createlblctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','Notify','instance',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams,restful,Notify,instance){
-			
+			console.log("3")
 			$scope.app_uuid = $routeParams.id;
 			/**
 			 * 获取当前处于哪个应用下
