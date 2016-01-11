@@ -7,5 +7,9 @@ define(['angular','app'], function(angular,app) {
             templateUrl: 'module/app_publicip/publicips.html',
             controller: 'publicipctrl'
         })
+        route.when('/publicip/create-publicips',{
+        	templateUrl:'module/app_publicip/create-publicips.html',
+        	controller:'createipsctrl'
+        })
     }]);
 });

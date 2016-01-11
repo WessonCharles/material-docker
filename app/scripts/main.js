@@ -39,7 +39,9 @@ require.config({
 		term:'../libs/term.js-master/src/term',
 		markdown:'../libs/markdown/markdown',
 		highlight:'//cdn.jsdelivr.net/highlight.js/9.0.0/highlight.min',
-		imgcrop:'../libs/ngImgCrop/ng-img-crop'
+		imgcrop:'../libs/ngImgCrop/ng-img-crop',
+		highcharts:'http://cdn.hcharts.cn/highcharts/highcharts',
+		// exporting:'http://cdn.hcharts.cn/highcharts/exporting'
 	},
 	shim:{
 		'angular' : {'exports' : 'angular'},
@@ -56,7 +58,9 @@ require.config({
         'term':{'exports':'term'},
         'markdown':{'exports':'markdown'},
         'imgcrop':['angular'],
-        'highlight':{'exports':'highlight'}
+        'highlight':{'exports':'highlight'},
+        'highcharts':['jquery'],
+        // 'exporting':['highcharts']
 	},
 	priority: [
         'angular',
@@ -81,6 +85,9 @@ require([
 	'markdown',
 	'imgcrop',
 	'highlight',
+	'highcharts',
+	// 'exporting',
+
 	'../module/routers',
 	'../module/app_application/router',
 	'../module/app_columns/router',
@@ -88,6 +95,7 @@ require([
 	'../module/app_image/router',
 	'../module/app_publicip/router',
 	'../module/app_system/router',
+	'../module/app_users/router',
         'app',
 	],function(angular){
 		angular.element().ready(function() {

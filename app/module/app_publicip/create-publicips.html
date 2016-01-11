@@ -1,0 +1,37 @@
+<div return>
+  <div class="content-table">
+  <div layout="row" layout-margin>
+    <div flex flex-order="1" class="noshadow bl-main">
+        <md-subheader class="md-primary">
+        <button  aria-label="returntolist" viewclose link="/publicip" md-button class="md-raised md-icon-btn" ng-click="backlist();">
+          <md-icon class="fa fa-arrow-left fa-lg"></md-icon>
+        </button>
+        创建公网IP池</md-subheader>
+       <md-content id="publicipform" class="md-padding">
+          <form name="myForm" style="text-align:center;">
+            <div  class="form-input">
+              <label>IP池名称<span>*</span></label>
+              <input ng-model="ips.name" type="text" ng-required="true">
+            </div>
+            <div class="form-input" style="margin-top:18px">
+              <label for="">网段<span>*</span></label>
+              <input type="text" ng-model="ips.cidr" ng-reuired="true" placeholder="192.168.16.0/24">
+            </div>
+            <div class="form-inpu" style="margin-top:18px">
+              <label for="">起始IP地址</label>
+              <input type="text" ng-model="ips.start_ip" ng-reuired="true">
+            </div>
+            <div class="form-inpu" style="margin-top:18px">
+              <label for="">结束IP地址</label>
+              <input type="text" ng-model="ips.end_ip" ng-reuired="true">
+            </div>
+              <div align="right">
+                <md-button ng-click="clearValue()" style="margin-right: 20px;">清除</md-button>
+                <md-button ng-click="createips()" ng-disabled="myForm.$invalid" class="md-primary" layout layout-align="center end">创建</md-button>
+              </div>
+          </form>
+      </md-content>
+    </div>
+   </div>
+  </div>
+</div>      

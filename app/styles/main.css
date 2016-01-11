@@ -294,7 +294,17 @@ li.menu ul{
     padding-left:0;
 }
 li.menu ul li{
-  padding: 5px 10px 5px 50px;
+  padding: 5px 10px 5px 30px;
+}
+li.menu ul li i{
+  margin-right: 10px;
+    font-size: 30px;
+    width: 10px;
+    display: block;
+    height: 10px;
+    color: #7356A5;
+    float: left;
+    line-height: 18px;
 }
 li.menu ul li.active{
   /*background-color: #00677C;*/

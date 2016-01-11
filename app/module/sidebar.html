@@ -28,38 +28,38 @@
         <li ng-class="current_app('applications')">
           <a href="/applications">
               <div class="icon">
-              <i class="fa fa-object-group"></i>
+              <i class="fa fa-puzzle-piece"></i>
               <md-tooltip md-direction="right">
-              应用
+              应用中心
             </md-tooltip> 
             </div>
-            <div class="text">应用</div>
+            <div class="text">应用中心</div>
           </a>
         </li>
         <li ng-class="current_app('volumes')">
           <a href="/volumes">
               <div class="icon">
-              <i class="fa fa-columns"></i>
+              <i class="fa fa-database"></i>
               <md-tooltip md-direction="right">
-              存储
+              共享存储
             </md-tooltip> 
             </div>
-            <div class="text">存储</div>
+            <div class="text">共享存储</div>
           </a>
         </li>
         <li class="menu" ng-init="$parent.menu = {'image':false};">
           <a ng-click="menu.image=!menu.image;">
           <div class="icon">
-            <i class="fa fa-image"></i>
+            <i class="fa fa-file-video-o"></i>
             <md-tooltip md-direction="right">
-              镜像
+              镜像中心
             </md-tooltip> 
           </div>
-          <div class="text">镜像</div>
+          <div class="text">镜像中心</div>
           </a>
           <ul ng-show="menu.image">
-            <li ng-class="current_app('image')"><a href="/image">镜像中心</a></li>
-            <li ng-class="current_app('log')"><a href="/log">构建</a></li>
+            <li ng-class="current_app('image')"><i></i><a href="/image">镜像市场</a></li>
+            <li ng-class="current_app('log')"><i></i><a href="/log">代码构建</a></li>
           </ul>
         </li>
         <li ng-repeat="m in menus track by $index" ng-class="current_app(m.href.split('/')[1])">

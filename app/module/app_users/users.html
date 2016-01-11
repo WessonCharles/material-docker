@@ -1,0 +1,54 @@
+<div return>
+  <div class="button-title">
+    <div layout="row" layout-margin >
+      <div flex flex-order="1" class="noshadow bl-main">
+        <button ng-if="tab=='user'" md-button class="md-raised md-primary" viewload href="/users/create-user">
+          <md-icon class="fa fa-plus fa-lg"></md-icon>
+          添加用户
+        </button>
+        <button ng-if="tab=='tenant'" md-button class="md-raised md-primary" viewload href="/users/create-tenant">
+          <md-icon class="fa fa-plus fa-lg"></md-icon>
+          添加项目
+        </button>
+        <md-menu>
+          <md-button class="md-raised" aria-label="Open phone interactions menu" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
+            <md-icon md-menu-origin class="fa fa-caret-square-o-down"></md-icon>
+            更多操作
+          </md-button>
+          <md-menu-content width="2">
+            <md-menu-item>
+              <md-button ng-click="remove($event)">
+                <md-icon class="fa fa-trash"></md-icon>
+                删除
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </div>
+    </div>
+  </div>
+  <div class="content-table">
+      <div layout="row" class="switchdiv" layout-margin layout-padding>
+        <div flex class="bl-main">
+          <md-tabs md-dynamic-height md-border-bottom >
+              <md-tab label="用户" id="user" ng-click="tab='user';">
+                <md-content class="md-padding">
+                  <div id="user-table">
+                    
+                  </div> 
+                </md-content>
+              </md-tab>
+              <md-tab label="项目" id="tenant" ng-click="tab='tenant';">
+                <md-content class="md-padding">
+                  <div id="tenant-table">
+                    
+                  </div>
+                </md-content>
+              </md-tab>
+          </md-tabs>
+          
+        </div>
+      </div>
+  </div>
+
+</div>        
