@@ -20,7 +20,8 @@ define(['angular'], function(angular){
                 'aborted':'拒绝',
                 'system':'系统设置',
                 'roundrobin':'轮询',
-                'clientip':'客户端IP'
+                'clientip':'客户端IP',
+                'publicip':'公网管理',
             },
             'en_US' : {
            }

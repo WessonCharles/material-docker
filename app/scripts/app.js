@@ -15,6 +15,7 @@ define([
   "../module/app_columns/controller",
   "../module/app_service/controller",
   "../module/app_image/controller",
+  "../module/app_publicip/controller",
   "../module/app_system/controller",
   ],function(angular){
   window.ThCofAngSeedModule = angular.module('ThCofAngSeed', [
@@ -31,6 +32,7 @@ define([
       'ThCofAngSeed.columns_ctrl',
       'ThCofAngSeed.service_ctrl',
       'ThCofAngSeed.images_ctrl',
+      'ThCofAngSeed.publicip_ctrl',
       'ThCofAngSeed.system_ctrl',
   ]).controller("baseCtrl",["$scope", "$http","$rootScope", "$location","$timeout", "$filter","$window",'$route','AuthService','$mdBottomSheet','instance',
       

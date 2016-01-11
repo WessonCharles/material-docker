@@ -1,0 +1,29 @@
+<div style="position:relative;">
+  <div class="button-title">
+    <div layout="row" layout-margin >
+      <div flex="80" class="noshadow bl-main">
+        <button viewload md-button class="md-raised md-button" href="/image/create-image">
+          <md-icon class="fa fa-cog fa-lg"></md-icon>
+          增加公网IP池
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="content-table">
+    <div layout="row" layout-margin>
+      <div flex class="noshadow bl-main">
+          <md-content>
+            <md-tabs md-dynamic-height md-border-bottom >
+              <md-tab label="公网池" ng-click="tab = 'recent';">
+                <md-content class="md-padding"  id="pools" style="min-height:500px">
+                </md-content>
+              </md-tab>
+              <md-tab label="已使用IP"  ng-click="tab = 'mine';">
+                <md-content class="md-padding" id="pool_used" style="min-height:500px">
+                </md-content>
+              </md-tab>
+            </md-tabs>   
+          </md-content>
+      </div>
+    </div>
+  </div>

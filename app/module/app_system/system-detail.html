@@ -5,7 +5,7 @@
         <md-content>
           <form name="nameForm">
           <fieldset class="standard" >
-            <legend ng-click="field['0'] = !field['0']">Kubernetes 设置</legend>
+            <legend ng-click="field['0'] = !field['0']">1. Kubernetes 设置</legend>
             <div ng-show="!field['0']" layout="row" layout-fill layout-padding>
               <div flex>
                 <div style="width:100%;height:40px">
@@ -22,9 +22,8 @@
             </div>
           </fieldset>
 
-          </br>
           <fieldset class="standard" >
-            <legend  ng-click="field['1'] = !field['1']">登陆设置</legend>
+            <legend  ng-click="field['1'] = !field['1']">2. 登陆设置</legend>
             <div ng-show="!field['1']" layout="row"  layout-fill layout-padding>
               <div flex>
                 <div style="width:100%;height:40px">
@@ -32,13 +31,22 @@
                     <input type="text" ng-model="keystone_api" placeholder="http://42.51.161.109:5000/v2.0" md-autofocus>
                     <i class="fa fa-save text-primary" ng-click="saveparam('keystone_api')"></i>
                 </div>
+                <div style="width:100%;height:40px">
+                    <label for="">keystone 管理API:&nbsp;&nbsp;</label>
+                    <input type="text" ng-model="keystone_admin_api" placeholder="http://42.51.161.109:35357/v2.0" md-autofocus>
+                    <i class="fa fa-save text-primary" ng-click="saveparam('keystone_admin_api')"></i>
+                </div>
+                <div style="width:100%;height:40px">
+                    <label for="">用户默认角色名:&nbsp;&nbsp;</label>
+                    <input type="text" ng-model="keystone_member_role_name" placeholder="_member_" md-autofocus>
+                    <i class="fa fa-save text-primary" ng-click="saveparam('keystone_member_role_name')"></i>
+                </div>
              </div> 
             </div>
           </fieldset>
 
-          </br>
           <fieldset class="standard" >
-            <legend ng-click="field['2'] = !field['2']">镜像仓库设置</legend>
+            <legend ng-click="field['2'] = !field['2']">3. 镜像仓库设置</legend>
             <div ng-show="!field['2']" layout="row" layout-fill layout-padding>
                 <div flex>
                   <div style="width:100%;height:40px">
@@ -59,8 +67,32 @@
                 </div>
             </div>
           </fieldset>
+
           <fieldset class="standard" >
-            <legend ng-click="field['3'] = !field['3']">存储ceph设置</legend>
+            <legend ng-click="field['3'] = !field['3']">4. 持续集成Jenkins设置</legend>
+            <div ng-show="!field['3']" layout="row" layout-fill layout-padding>
+                <div flex>
+                  <div style="width:100%;height:40px">
+                      <label for="">Jenkins API地址:&nbsp;&nbsp;</label>
+                      <input type="text" ng-model="jenkins_api" placeholder="http://42.51.161.110:8220" md-autofocus>
+                      <i class="fa fa-save text-primary" ng-click="saveparam('jenkins_api')"></i>
+                  </div>
+                  <div style="width:100%;height:40px">
+                      <label for="">Jenkins API用户名:&nbsp;&nbsp;</label>
+                      <input type="text" ng-model="jenkins_username" placeholder="admin" md-autofocus>
+                      <i class="fa fa-save text-primary" ng-click="saveparam('jenkins_username')"></i>
+                  </div>
+                  <div style="width:100%;height:40px">
+                      <label for="">Jenkins API用户Token:&nbsp;&nbsp;</label>
+                      <input type="text" ng-model="jenkins_token" placeholder="687c5a9e7db58cb9a5d5ee673cf5dff3" md-autofocus>
+                      <i class="fa fa-save text-primary" ng-click="saveparam('jenkins_token')"></i>
+                  </div>
+                </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="standard" >
+            <legend ng-click="field['3'] = !field['3']">5. 存储ceph设置</legend>
             <div ng-show="!field['3']" layout="row" layout-fill layout-padding>
                 <div flex>
                   <div style="width:100%;height:40px">
@@ -71,8 +103,9 @@
                 </div>
             </div>
           </fieldset>
-           <fieldset class="standard" >
-            <legend ng-click="field['4'] = !field['4']">监控设置</legend>
+
+          <fieldset class="standard" >
+            <legend ng-click="field['4'] = !field['4']">6. 监控设置</legend>
             <div ng-show="!field['4']" layout="row" layout-fill layout-padding>
                 <div flex>
                   <div style="width:100%;height:40px">

@@ -86,6 +86,7 @@ require([
 	'../module/app_columns/router',
 	'../module/app_service/router',
 	'../module/app_image/router',
+	'../module/app_publicip/router',
 	'../module/app_system/router',
         'app',
 	],function(angular){
