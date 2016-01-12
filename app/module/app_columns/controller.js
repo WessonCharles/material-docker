@@ -220,6 +220,12 @@ define(['angular','modal'],function(angular,modal){
 	        	// })
 	        })
 
+	        $rootScope.$watch("current_tenant",function(e,v){
+	        	if(e.id==v.id||!e||!v)return false;
+				$scope.refresh();
+				if($scope.refresh1)$scope.refresh1();
+				if($scope.trefresh)$scope.trefresh();
+			})
 
 		}
 	])

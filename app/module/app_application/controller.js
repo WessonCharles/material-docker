@@ -253,6 +253,13 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 					$location.path("/applications");
 				});
 			};
+
+			$rootScope.$watch("current_tenant",function(e,v){
+				if(e.id==v.id||!e||!v)return false;
+				$scope.refresh();
+				if($scope.refresh1)$scope.refresh1();
+				if($scope.trefresh)$scope.trefresh();
+			})
 		}
 	])
 	.controller('prodetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile','instance','Notify','$mdDialog',
@@ -539,6 +546,14 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 					$scope.selected = [];
 	        	})
 	        }
+
+	        $rootScope.$watch("current_tenant",function(e,v){
+				if(e.id==v.id||!e||!v)return false;
+				$scope.refresh();
+				if($scope.refresh1)$scope.refresh1();
+				if($scope.trefresh)$scope.trefresh();
+			})
+
 		}
 	])
 	.controller('instancectrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile','instance','Notify',
@@ -706,6 +721,11 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 				console.log(tempe)
 				getmonitor({start:temps,end:tempe})
 			}
+
+			$rootScope.$watch("current_tenant",function(e,v){
+				if(e.id==v.id||!e||!v)return false;
+				getmonitor();
+			})
 		}
 	])
 	.controller('appdetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','instance',

@@ -72,7 +72,6 @@ define([
           $rootScope.tenants = AuthService.getInfo()?JSON.parse(AuthService.getInfo()).access.tenants:[];
           if(!$rootScope.current_tenant) $rootScope.current_tenant = $rootScope.tenants[0];
           if(!$rootScope.token) $rootScope.token = JSON.parse(AuthService.getInfo()).access.token.id;
-
           $scope.selectcurtenant = function(t){
             $rootScope.current_tenant = t;
           }
@@ -193,6 +192,7 @@ define([
           })
         })
 
+
         /**
          * [deletoken 删除过期头]
          * @return {[type]} [description]
@@ -246,33 +246,42 @@ define([
   ])
   .controller("indexctrl",["$scope", "$http","$rootScope", "$location","$timeout", "$filter","$window",'$route','AuthService',
     function($scope,$http,$rootScope,$location,$timeout,$filter,$window,$route,AuthService){
-      $scope.percentlist = {cpu: 0,
-                          memory: 0,
-                          pods:0 ,
-                          replicationcontrollers: 0,
-                          resourcequotas: 0,
-                          services: 0};
-      $http.get($scope.baseurl+$rootScope.current_tenant.id+"/resource").success(function(data){
-          $scope.used = data.metadata[0].used;
-          for(var i in data.metadata[0].hard){
-            if(i=='memory'){
-                var hard = data.metadata[0].hard[i],h;
-                console.log(hard,typeof hard)
-                var used = data.metadata[0].used[i],u;
-                if(hard.indexOf("G")>-1)h = parseInt(hard)*1024;
-                if(hard.indexOf("M")>-1)h = parseInt(hard);
-                if(used.indexOf("G")>-1)u = parseInt(used)*1024;
-                if(used.indexOf("M")>-1)u = parseInt(used);
+      function loadsur(){
+        $scope.percentlist = {cpu: 0,
+                            memory: 0,
+                            pods:0 ,
+                            replicationcontrollers: 0,
+                            resourcequotas: 0,
+                            services: 0};
+        $http.get($scope.baseurl+$rootScope.current_tenant.id+"/resource").success(function(data){
+            $scope.used = data.metadata[0].used;
+            for(var i in data.metadata[0].hard){
+              if(i=='memory'){
+                  var hard = data.metadata[0].hard[i],h;
+                  console.log(hard,typeof hard)
+                  var used = data.metadata[0].used[i],u;
+                  if(hard.indexOf("G")>-1)h = parseInt(hard)*1024;
+                  if(hard.indexOf("M")>-1)h = parseInt(hard);
+                  if(used.indexOf("G")>-1)u = parseInt(used)*1024;
+                  if(used.indexOf("M")>-1)u = parseInt(used);
 
-                var per = u/h>1?1:(u/h);
-               $scope.percentlist[i] = per.toFixed(2);
-            }else{
-                var per = parseInt(data.metadata[0].used[i])/parseInt(data.metadata[0].hard[i])>1?1:(parseInt(data.metadata[0].used[i])/parseInt(data.metadata[0].hard[i]));
-               $scope.percentlist[i] = per.toFixed(2);
+                  var per = u/h>1?1:(u/h);
+                 $scope.percentlist[i] = per.toFixed(2);
+              }else{
+                  var per = parseInt(data.metadata[0].used[i])/parseInt(data.metadata[0].hard[i])>1?1:(parseInt(data.metadata[0].used[i])/parseInt(data.metadata[0].hard[i]));
+                 $scope.percentlist[i] = per.toFixed(2);
+              }
             }
-          }
-          console.log($scope.percentlist)
+            console.log($scope.percentlist)
+        })
+      }
+
+      loadsur();
+
+      $rootScope.$watch("current_tenant",function(){
+        loadsur();
       })
+
     }
   ])
   .controller('ToastCtrl',["$scope",'$mdToast',function($scope,$mdToast){
