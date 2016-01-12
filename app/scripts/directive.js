@@ -27,6 +27,27 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
             }
         };
   }])
+  .directive('datetimePicker',function($timeout){
+    return {
+      restrict:'A',
+      link:function(scope,element,attr){
+        var type = attr.dateFormat&&attr.dateFormat.indexOf("hh")>-1?0:2;
+        var sv = attr.dateFormat&&attr.dateFormat.indexOf("hh")>-1&&attr.dateFormat.indexOf("dd")==-1?1:2;
+        $timeout(function(){
+          $(element).datetimepicker({
+              weekStart: 1,
+              todayBtn: 1,
+              autoclose: 1,
+              todayHighlight: 1,
+              startView: sv,
+              minView: type,
+              maxView: 1,
+              forceParse: 0 
+          });
+        })
+      }
+    }
+  })
   .directive('mdTable',["$filter","$timeout",function ($filter,$timeout) {
     return {
       restrict: 'E',
@@ -49,7 +70,8 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
         action:'=',
         innerlinks:"@",
         subhover:"=",
-        subclick:"="
+        subclick:"=",
+        refresh:"="
       },
       link: function ($scope,$element,$attr) {
         console.log($scope.action)

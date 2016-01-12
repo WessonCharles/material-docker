@@ -40,106 +40,108 @@ define(['angular','modal'],function(angular,modal){
 	        // })
 	        var vol = restful.action({type:"@id",name:"@name"},$scope.baseurl+":id/volumes/:name");
 	        console.log($rootScope.current_tenant)
-	        var pl = vol.get({id:$rootScope.current_tenant.id},function(e){
-	        	console.timeEnd("restful game");
+		    $scope.refresh = function(){
+		        var pl = vol.get({id:$rootScope.current_tenant.id},function(e){
+		        	console.timeEnd("restful game");
 
-		        Notify.showSimpleToast("存储卷列表请求成功",1);
-		        console.log(pl.metadata)
-		        $scope.headers = [{
-		        	name:'名称',
-		        	field:'name'
-		        },{
-		        	name:'大小',
-		        	field:'quota'
-		        },{
-		        	name:'创建人',
-		        	field:'create_user'
-		        // },{
-		        // 	name:'镜像',
-		        // 	field:'images'
-		        // },{
-		        // 	name:'服务地址',
-		        // 	field:'selfLink'
-		        },{
-		        	name:'创建时间',
-		        	field:'created_at'
-		        }];
-		        var sort = [];
-		        // for(var i in pl.metadata[0]){
-		        // 	sort.push(i);
-		        // 	// $scope.headers.push({
-		        // 	// 	name:i,
-		        // 	// 	field:i
-		        // 	// })
-		        // };
-		        
-		        var sourcedata = pl.metadata;
-		        $scope.content = [];
-		        for(var i =0;i<sourcedata.length;i++){
-		        	var s = sourcedata[i];
-		        	// var time = $filter('date')(s.creationTimestamp,"MM-dd-yyyy h:mma");
-		        	// var obj = {
-		        	// 	"name":s.name,
-		        	// 	"resourceVersion":s.resourceVersion,
-		        	// 	"status":"",
-		        	// 	"images":s.images||"",
-		        	// 	"selfLink":"",
-		        	// 	"createtime":time,
-		        	// 	"collections":s.containers,
-		        	// 	"subshow":false
-		        	// };
-		        	$scope.content.push(s);
-		        }
-		        console.log($scope.content)
-		        $scope.custom = {name: 'bold',quota:'grey', create_user:'grey',created_at:'grey'};
-		        $scope.sortable = ['name','quota','create_user','created_at'];
-		        $scope.count = 100;
-		        // $scope.links = '/volumes';
-		        $scope.selected = [];
-		        $scope.action = {
-		        	name:"调整卷大小",
-		        	icon:'',
-		        	modal:{target:"#resize",title:"调整卷大小",
-		        		params:{quota:''}
-		        	},
-		        	args:{},
-		        	labels:{quota:'卷大小'},
-		        	trigger:function(t){
-		        		console.log($scope.action.modal.params)
-		        		$http.put($scope.baseurl+$rootScope.current_tenant.id+"/volumes/"+$scope.action.args.uuid,$scope.action.modal.params).success(function(data){
-							$($scope.action.modal.target).find(".modal__content").removeClass("modal__content--active");
-							$($scope.action.modal.target).removeClass("modal--active");
-							$("button.modal__trigger").removeClass('modal__trigger--active').attr("style","");
-							$("button.modal__trigger").find("#modal__temp").remove();
+			        Notify.showSimpleToast("存储卷列表请求成功",1);
+			        console.log(pl.metadata)
+			        $scope.headers = [{
+			        	name:'名称',
+			        	field:'name'
+			        },{
+			        	name:'大小',
+			        	field:'quota'
+			        },{
+			        	name:'创建人',
+			        	field:'create_user'
+			        // },{
+			        // 	name:'镜像',
+			        // 	field:'images'
+			        // },{
+			        // 	name:'服务地址',
+			        // 	field:'selfLink'
+			        },{
+			        	name:'创建时间',
+			        	field:'created_at'
+			        }];
+			        var sort = [];
+			        // for(var i in pl.metadata[0]){
+			        // 	sort.push(i);
+			        // 	// $scope.headers.push({
+			        // 	// 	name:i,
+			        // 	// 	field:i
+			        // 	// })
+			        // };
+			        
+			        var sourcedata = pl.metadata;
+			        $scope.content = [];
+			        for(var i =0;i<sourcedata.length;i++){
+			        	var s = sourcedata[i];
+			        	// var time = $filter('date')(s.creationTimestamp,"MM-dd-yyyy h:mma");
+			        	// var obj = {
+			        	// 	"name":s.name,
+			        	// 	"resourceVersion":s.resourceVersion,
+			        	// 	"status":"",
+			        	// 	"images":s.images||"",
+			        	// 	"selfLink":"",
+			        	// 	"createtime":time,
+			        	// 	"collections":s.containers,
+			        	// 	"subshow":false
+			        	// };
+			        	$scope.content.push(s);
+			        }
+			        console.log($scope.content)
+			        $scope.custom = {name: 'bold',quota:'grey', create_user:'grey',created_at:'grey'};
+			        $scope.sortable = ['name','quota','create_user','created_at'];
+			        $scope.count = 100;
+			        // $scope.links = '/volumes';
+			        $scope.selected = [];
+			        $scope.action = {
+			        	name:"调整卷大小",
+			        	icon:'',
+			        	modal:{target:"#resize",title:"调整卷大小",
+			        		params:{quota:''}
+			        	},
+			        	args:{},
+			        	labels:{quota:'卷大小'},
+			        	trigger:function(t){
+			        		console.log($scope.action.modal.params)
+			        		$http.put($scope.baseurl+$rootScope.current_tenant.id+"/volumes/"+$scope.action.args.uuid,$scope.action.modal.params).success(function(data){
+								$($scope.action.modal.target).find(".modal__content").removeClass("modal__content--active");
+								$($scope.action.modal.target).removeClass("modal--active");
+								$("button.modal__trigger").removeClass('modal__trigger--active').attr("style","");
+								$("button.modal__trigger").find("#modal__temp").remove();
 
-							for(var i =0;i<$scope.content.length;i++){
-								if($scope.content[i].uuid == $scope.action.args.uuid){
-									$scope.content[i].quota = $scope.action.modal.params.quota;
-									break;
+								for(var i =0;i<$scope.content.length;i++){
+									if($scope.content[i].uuid == $scope.action.args.uuid){
+										$scope.content[i].quota = $scope.action.modal.params.quota;
+										break;
+									}
 								}
-							}
-							Notify.showSimpleToast("更新成功",1);
-						})
-		        	}
-		        }
-		       	//如果不是links 就是func方法
-		      //  	$scope.func = function($event,c){
-		      //  		instance.current_container = c;
-		      //  		$mdBottomSheet.show({
-				    //   templateUrl: 'module/app_application/app-bottom-detail.html',
-				    //   controller: 'appdetailctrl',
-				    //   targetEvent: $event,
-				    //   parent:"#content"
-				    // }).then(function(clickedItem) {
-				    // });
-		      //  	}
+								Notify.showSimpleToast("更新成功",1);
+							})
+			        	}
+			        }
+			       	//如果不是links 就是func方法
+			      //  	$scope.func = function($event,c){
+			      //  		instance.current_container = c;
+			      //  		$mdBottomSheet.show({
+					    //   templateUrl: 'module/app_application/app-bottom-detail.html',
+					    //   controller: 'appdetailctrl',
+					    //   targetEvent: $event,
+					    //   parent:"#content"
+					    // }).then(function(clickedItem) {
+					    // });
+			      //  	}
 
-		        // $scope.loadtable = function(t){
-		        	// console.log(t);
-	        	var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" action="action" count="count" isselect="true" selected="selected" links="links" func="func"></md-table>')($scope);
-	        	$("#columns").html(code);
-	        });
-
+			        // $scope.loadtable = function(t){
+			        	// console.log(t);
+		        	var code = $compile('<md-table headers="headers" content="content" refresh="refresh" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" action="action" count="count" isselect="true" selected="selected" links="links" func="func"></md-table>')($scope);
+		        	$("#columns").html(code);
+		        });
+			}
+			$scope.refresh();
 	        $scope.listItemClick = function($event,it) {
 	        	console.log(it)
 				instance.current_column = it;
@@ -285,6 +287,13 @@ define(['angular','modal'],function(angular,modal){
 			var col = restful.action({type:'@id'},$scope.baseurl+":id/volumes");
 			$scope.createimage = function(){
 				var co = col.save({id:$rootScope.current_tenant.id},{name:$scope.col.name,size:parseInt($scope.col.size)},function(){
+					if(co.code==0){
+						Notify.showSimpleToast("操作成功",1);
+					}else if(co.code>0){
+						Notify.showSimpleToast(co.message,-1);
+					}else if(co.code<0){
+						Notify.showSimpleToast(co.message,0)
+					}
 					$location.path("/volumes")
 				})
 			}

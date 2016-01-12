@@ -9,18 +9,26 @@
         实例监控({{ins_name}})
         </md-subheader>
        <md-content class="md-padding">
-          <div layout="row" layout-fill>
-              <div flex class="noshadow">
-                <label for="">开始时间</label>
-                <md-datepicker ng-model="start" md-placeholder="Enter date"></md-datepicker>
+          <div layout="row" layout-fill layout-margin>
+              <div flex="40px" class="noshadow">
+                <div layout="row" layout-fill>
+                  <div flex class="noshadow">
+                    <label style="float:left;">开始时间</label>
+                    <input  datetime-picker type="text" ng-model="start" name="start" class="form-control" data-date-format="yyyy-mm-dd hh:ii" required style="float:left;">
+                  </div>
+                  <div flex class="noshadow">
+                    <label style="float:left;">结束开始</label>
+                    <input  datetime-picker type="text" ng-model="end" name="start" class="form-control" data-date-format="yyyy-mm-dd hh:ii" required style="float:left;">
+                  </div>
+                  <a ng-click="refreshmonitor()">查询</a>
+                </div>
+              </div>  
+              <div flex="55">
+                
               </div>
-              <div flex class="noshadow">
-                <label for="">结束开始</label>
-                <md-datepicker ng-model="start" md-placeholder="Enter date"></md-datepicker>
-              </div>
-              <a ng-click="refreshmonitor()">查询</a>
           </div>
-          <div layout="row" layout-fill>
+          <md-divider class="md-default-theme"></md-divider>
+          <div layout="row" layout-fill layout-margin>
             <div flex="" id="memory_usage" style="min-height:400px;">
               
             </div>
@@ -28,7 +36,7 @@
               
             </div>
           </div>
-          <div layout="row" layout-fill>
+          <div layout="row" layout-fill layout-margin>
             <div flex="" id="input_flow" style="min-height:400px;">
               
             </div>

@@ -93,7 +93,9 @@
       <a href="#" ng-click="goToPage(0); count=100">100</a>
       (当前{{count}}条)
     </span>
-    <span flex="flex" class="noshadow"></span>
+    <span flex="flex" class="noshadow">
+      <a ng-click="refresh()" title="刷新列表"><i style="margin:13px 5px 13px 13px;" class="fa fa-refresh"></i>刷新列表</a>
+    </span>
     <span ng-show="nbOfPages() > 1">
      <!--  <md-button ng-disabled="tablePage==0" ng-click="tablePage=tablePage-1" aria-label="Previous Page" class="md-primary md-hue-2">
       <i style="font-size:16px;" class="ion-chevron-left"></i>

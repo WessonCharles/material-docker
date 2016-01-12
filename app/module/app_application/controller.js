@@ -7,6 +7,11 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			/**
 	         * buttondown example
 	         */
+	        $rootScope.intro = {
+	        	title:"应用中心",
+	        	content:"你可以创建应用，浏览应用列表"
+	        }
+
 	        var originatorEv;
 	        $scope.ctrl = {};
 	        $scope.ctrl.openMenu = function($mdOpenMenu, ev) {
@@ -37,116 +42,120 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 	        	console.time("restful game");
 	        var plat = restful.action({type:"@id",name:"@name"},$scope.baseurl+":id/apps/:name");
 	        console.log($rootScope.current_tenant)
-	        var pl = plat.get({id:$rootScope.current_tenant.id},function(e){
-	        	console.timeEnd("restful game");
+	        $scope.refresh = function(){
+	        	var pl = plat.get({id:$rootScope.current_tenant.id},function(e){
+		        	console.timeEnd("restful game");
 
-	        	console.time("rendered table")
-		        Notify.showSimpleToast("应用列表请求成功",1);
-		        console.log(pl.metadata)
-		        $scope.headers = [{
-		        	name:'名称',
-		        	field:'name'
-		        // },{
-		        // 	name:'源版本',
-		        // 	field:'resourceVersion'
-		        },{
-		        	name:'创建人',
-		        	field:'create_user'
-		        // },{
-		        // 	name:'镜像',
-		        // 	field:'images'
-		        // },{
-		        // 	name:'服务地址',
-		        // 	field:'selfLink'
-		        },{
-		        	name:'创建时间',
-		        	field:'created_at'
-		        }];
-		        var sort = [];
-		        // for(var i in pl.metadata[0]){
-		        // 	sort.push(i);
-		        // 	// $scope.headers.push({
-		        // 	// 	name:i,
-		        // 	// 	field:i
-		        // 	// })
-		        // };
-		        
-		        var sourcedata = pl.metadata;
-		        $scope.content = [];
-		        for(var i =0;i<sourcedata.length;i++){
-		        	var s = sourcedata[i];
-		        	// var time = $filter('date')(s.creationTimestamp,"MM-dd-yyyy h:mma");
-		        	// var obj = {
-		        	// 	"name":s.name,
-		        	// 	"resourceVersion":s.resourceVersion,
-		        	// 	"status":"",
-		        	// 	"images":s.images||"",
-		        	// 	"selfLink":"",
-		        	// 	"createtime":time,
-		        	// 	"collections":s.containers,
-		        	// 	"subshow":false
-		        	// };
-		        	$scope.content.push(s);
-		        }
-		        console.log($scope.content)
-		        // $scope.content = [
-		        //   {
-		        //     // thumb:'https://lh3.googleusercontent.com/-5NfcdlvGQhs/AAAAAAAAAAI/AAAAAAAAABY/ibGrApGYTuQ/photo.jpg', 
-		        //     name: 'Bruno Mars', 
-		        //     description: 'Human',
-		        //     last_modified: 'Jun 5, 2014'
-		        //   },{
-		        //     // thumb:'http://www.otakia.com/wp-content/uploads/V_1/article_3573/7405.jpg', 
-		        //     name: 'AT-AT', 
-		        //     description: 'Robot',
-		        //     last_modified: 'Jun 5, 2014'
-		        //   },{
-		        //     // thumb:'https://speakerdata.s3.amazonaws.com/photo/image/774492/Mark-Ronson-r24.jpg', 
-		        //     name: 'Mark Ronson', 
-		        //     description: 'Human',
-		        //     last_modified: 'Jun 5, 2014'
-		        //   },{
-		        //     // thumb:'http://25.media.tumblr.com/61ebf04c3cc7a84944aa0246e902f2a7/tumblr_mm35b87dGz1qmwrnuo1_1280.jpg', 
-		        //     name: 'Daft Punk', 
-		        //     description: 'Human-Robot',
-		        //     last_modified: 'Jun 5, 2014'
-		        //   },{
-		        //     // thumb:'http://thatgrapejuice.net/wp-content/uploads/2014/03/lady-gaga-that-grape-juice-televisionjpg.jpg', 
-		        //     name: 'Lady Gaga', 
-		        //     description: 'Undefined',
-		        //     last_modified: 'Jun 5, 2014'
-		        //   }
-		        // ];
-		        
-		        /**
-		         * [请确保 custom，sortable,和headers中的field一一对应，并且拼写相同]
-		         * @type {Object}
-		         */
-		        $scope.custom = {name: 'bold', create_user:'grey',created_at:'grey'};
-		        $scope.sortable = ['name','create_user','created_at'];
-		        $scope.count = 100;
-		        $scope.links = '/applications';
-		        $scope.selected = [];
+		        	console.time("rendered table")
+			        Notify.showSimpleToast("应用列表请求成功",1);
+			        console.log(pl.metadata)
+			        $scope.headers = [{
+			        	name:'名称',
+			        	field:'name'
+			        // },{
+			        // 	name:'源版本',
+			        // 	field:'resourceVersion'
+			        },{
+			        	name:'创建人',
+			        	field:'create_user'
+			        // },{
+			        // 	name:'镜像',
+			        // 	field:'images'
+			        // },{
+			        // 	name:'服务地址',
+			        // 	field:'selfLink'
+			        },{
+			        	name:'创建时间',
+			        	field:'created_at'
+			        }];
+			        var sort = [];
+			        // for(var i in pl.metadata[0]){
+			        // 	sort.push(i);
+			        // 	// $scope.headers.push({
+			        // 	// 	name:i,
+			        // 	// 	field:i
+			        // 	// })
+			        // };
+			        
+			        var sourcedata = pl.metadata;
+			        $scope.content = [];
+			        for(var i =0;i<sourcedata.length;i++){
+			        	var s = sourcedata[i];
+			        	// var time = $filter('date')(s.creationTimestamp,"MM-dd-yyyy h:mma");
+			        	// var obj = {
+			        	// 	"name":s.name,
+			        	// 	"resourceVersion":s.resourceVersion,
+			        	// 	"status":"",
+			        	// 	"images":s.images||"",
+			        	// 	"selfLink":"",
+			        	// 	"createtime":time,
+			        	// 	"collections":s.containers,
+			        	// 	"subshow":false
+			        	// };
+			        	$scope.content.push(s);
+			        }
+			        console.log($scope.content)
+			        // $scope.content = [
+			        //   {
+			        //     // thumb:'https://lh3.googleusercontent.com/-5NfcdlvGQhs/AAAAAAAAAAI/AAAAAAAAABY/ibGrApGYTuQ/photo.jpg', 
+			        //     name: 'Bruno Mars', 
+			        //     description: 'Human',
+			        //     last_modified: 'Jun 5, 2014'
+			        //   },{
+			        //     // thumb:'http://www.otakia.com/wp-content/uploads/V_1/article_3573/7405.jpg', 
+			        //     name: 'AT-AT', 
+			        //     description: 'Robot',
+			        //     last_modified: 'Jun 5, 2014'
+			        //   },{
+			        //     // thumb:'https://speakerdata.s3.amazonaws.com/photo/image/774492/Mark-Ronson-r24.jpg', 
+			        //     name: 'Mark Ronson', 
+			        //     description: 'Human',
+			        //     last_modified: 'Jun 5, 2014'
+			        //   },{
+			        //     // thumb:'http://25.media.tumblr.com/61ebf04c3cc7a84944aa0246e902f2a7/tumblr_mm35b87dGz1qmwrnuo1_1280.jpg', 
+			        //     name: 'Daft Punk', 
+			        //     description: 'Human-Robot',
+			        //     last_modified: 'Jun 5, 2014'
+			        //   },{
+			        //     // thumb:'http://thatgrapejuice.net/wp-content/uploads/2014/03/lady-gaga-that-grape-juice-televisionjpg.jpg', 
+			        //     name: 'Lady Gaga', 
+			        //     description: 'Undefined',
+			        //     last_modified: 'Jun 5, 2014'
+			        //   }
+			        // ];
+			        
+			        /**
+			         * [请确保 custom，sortable,和headers中的field一一对应，并且拼写相同]
+			         * @type {Object}
+			         */
+			        $scope.custom = {name: 'bold', create_user:'grey',created_at:'grey'};
+			        $scope.sortable = ['name','create_user','created_at'];
+			        $scope.count = 100;
+			        $scope.links = '/applications';
+			        $scope.selected = [];
 
-		        instance["applications"] = $scope.content;
-		       	//如果不是links 就是func方法
-		      //  	$scope.func = function($event,c){
-		      //  		instance.current_container = c;
-		      //  		$mdBottomSheet.show({
-				    //   templateUrl: 'module/app_application/app-bottom-detail.html',
-				    //   controller: 'appdetailctrl',
-				    //   targetEvent: $event,
-				    //   parent:"#content"
-				    // }).then(function(clickedItem) {
-				    // });
-		      //  	}
+			        instance["applications"] = $scope.content;
+			       	//如果不是links 就是func方法
+			      //  	$scope.func = function($event,c){
+			      //  		instance.current_container = c;
+			      //  		$mdBottomSheet.show({
+					    //   templateUrl: 'module/app_application/app-bottom-detail.html',
+					    //   controller: 'appdetailctrl',
+					    //   targetEvent: $event,
+					    //   parent:"#content"
+					    // }).then(function(clickedItem) {
+					    // });
+			      //  	}
 
-		        // $scope.loadtable = function(t){
-		        	// console.log(t);
-	        	var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count" isselect="true" selected="selected" links="links" func="func"></md-table>')($scope);
-	        	$("#prolist").html(code);
-		        // }
-	        });
+			        // $scope.loadtable = function(t){
+			        	// console.log(t);
+		        	var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" refresh="refresh" custom-class="custom" thumbs="thumbs" count="count" isselect="true" selected="selected" links="links" func="func"></md-table>')($scope);
+		        	$("#prolist").html(code);
+			        // }
+		        });
+	        }
+	        $scope.refresh();
+	        
 			$scope.deleteapp = function(ev){
 				var confirm = $mdDialog.confirm()
 			    .title('删除确认')
@@ -232,6 +241,13 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 					$(t.target).parents(".modal").removeClass("modal--active");
 					$("button.modal__trigger").removeClass('modal__trigger--active').attr("style","");
 					$("button.modal__trigger").find("#modal__temp").remove();
+					if(ap.code==0){
+						Notify.showSimpleToast("操作成功",1);
+					}else if(ap.code>0){
+						Notify.showSimpleToast(ap.message,-1);
+					}else if(ap.code<0){
+						Notify.showSimpleToast(ap.message,0)
+					}
 
 					$scope.content.push(ap.metadata[0]);
 					$location.path("/applications");
@@ -239,8 +255,8 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			};
 		}
 	])
-	.controller('prodetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile','instance','Notify',
-		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams,restful,$compile,instance,Notify){
+	.controller('prodetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile','instance','Notify','$mdDialog',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$routeParams,restful,$compile,instance,Notify,$mdDialog){
 			console.log("223423")
 			console.log($routeParams)
 
@@ -271,128 +287,140 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			$scope.tab = 'cluster';
 			var clu = restful.action({id:"@id",uuid:"@uuid"},$scope.baseurl+":id/cluster?app_uuid=:uuid");
 			var lbscol = restful.action({id:"@id",name:"@name"},$scope.baseurl+":id/cluster/:name");
-			var cl = clu.get({id:$rootScope.current_tenant.id,uuid:$routeParams.id},function(){
-				console.log(cl);
-				$scope.headers = [
-		          {
-		            name: '名称', 
-		            field: 'name'
-		          },{
-		            name:'副本数', 
-		            field: 'replicas'
-		          },{
-		            name: '集群健康状态', 
-		            field: 'health_status'
-		          },{
-		            name:'创建时间',
-		            field:'created_at'
-		          },{
-		          	name:'绑定负载均衡',
-		          	field:'bindlbl'
-		          }
-		        ];
-		        
-		        $scope.tcollheaders = [];
-		        $scope.content = [];
-		        for(var i=0;i<cl.metadata.length;i++){
-		        	var bind = JSON.stringify(cl.metadata[i].bind);
-		        	$scope.content.push({
-		        		name:cl.metadata[i].name,
-		        		replicas:cl.metadata[i].replicas,
-		        		health_status:cl.metadata[i].status.current+"/"+cl.metadata[i].status.desired,
-		        		created_at:$filter("date")(cl.metadata[i].created_at,'MM/dd/yyyy h:mm:ss'),
-		        		collections:[],
-		        		bindlbl:bind
-		        	})
-		        }
-		        $scope.selected = [];
-		        $scope.custom = {name: 'bold', replicas:'grey',health_status: 'grey',created_at:'grey',bindlbl:'grey'};
-		        $scope.sortable = ['name', 'replicas', 'health_status','created_at','bindlbl'];
-		        // $scope.thumbs = 'thumb';
-		        $scope.count = 5;
-		        var code = $compile('<md-table headers="headers" innerlinks="applications/'+$routeParams.id+'" content="content" sortable="sortable" filters="search" thumbs="thumbs" isselect="true" selected="selected" modal="modal" collheaders="tcollheaders" getapidata="getcoldata" subhover="subhover" count="count"></md-table>')($scope);
-	        	$("#cluter-table").html(code);
+			$scope.refresh = function(){
+				var cl = clu.get({id:$rootScope.current_tenant.id,uuid:$routeParams.id},function(){
+					console.log(cl);
+					Notify.showSimpleToast("集群列表请求成功",1);
+					$scope.headers = [
+			          {
+			            name: '名称', 
+			            field: 'name'
+			          },{
+			            name:'副本数', 
+			            field: 'replicas'
+			          },{
+			            name: '集群健康状态', 
+			            field: 'health_status'
+			          },{
+			            name:'创建时间',
+			            field:'created_at'
+			          },{
+			          	name:'绑定负载均衡',
+			          	field:'bindlbl'
+			          }
+			        ];
+			        
+			        $scope.tcollheaders = [];
+			        $scope.content = [];
+			        for(var i=0;i<cl.metadata.length;i++){
+			        	var bind = JSON.stringify(cl.metadata[i].bind);
+			        	if(bind=='{}'){
+			        		bind = "";
+			        	}
+			        	bind = bind.replace(/\{/g,'').replace(/\]}/g,'').replace(/\[/g,'');
+			        	bind = bind.replace(/"/g,'');
+			        	bind = bind.replace(/],/g,';')
+			        	$scope.content.push({
+			        		name:cl.metadata[i].name,
+			        		replicas:cl.metadata[i].replicas,
+			        		health_status:cl.metadata[i].status.current+"/"+cl.metadata[i].status.desired,
+			        		created_at:$filter("date")(cl.metadata[i].created_at,'MM/dd/yyyy h:mm:ss'),
+			        		collections:[],
+			        		bindlbl:bind
+			        	})
+			        }
+			        $scope.selected = [];
+			        $scope.custom = {name: 'bold', replicas:'grey',health_status: 'grey',created_at:'grey',bindlbl:'grey'};
+			        $scope.sortable = ['name', 'replicas', 'health_status','created_at','bindlbl'];
+			        // $scope.thumbs = 'thumb';
+			        $scope.count = 5;
+			        var code = $compile('<md-table headers="headers" innerlinks="applications/'+$routeParams.id+'" refresh="refresh" content="content" sortable="sortable" filters="search" thumbs="thumbs" isselect="true" selected="selected" modal="modal" collheaders="tcollheaders" getapidata="getcoldata" subhover="subhover" count="count"></md-table>')($scope);
+		        	$("#cluter-table").html(code);
 
-			})
+				})
+			}
+			$scope.refresh();
 
 
 			var lbs = restful.action({id:"@id",uuid:"@uuid"},$scope.baseurl+":id/lb?app_uuid=:uuid");
-
-			var lb = lbs.get({id:$rootScope.current_tenant.id,uuid:$routeParams.id},function(){
-				console.log(lb);
-				$scope.theaders = [
-		          {
-		            name: '名称', 
-		            field: 'name'
-		          },{
-		            name:'分发策略', 
-		            field: 'sessionAffinity'
-		          },{
-		          	name:'域名',
-		          	field:'domain'
-		          },{
-		            name: '创建时间', 
-		            field: 'created_at'
-		          // },{
-		          //   name:'More Action',
-		          //   field:'more_action'
-		          }
-		        ];
-		        $scope.collheaders = [];
-		        if(lb.metadata[0]&&lb.metadata[0].lb[0]){
-		        	for(var f in lb.metadata[0].lb[0]){
-		        		if(f!='name'){
-			        		$scope.collheaders.push(f);
+			$scope.refresh1 = function(){
+				var lb = lbs.get({id:$rootScope.current_tenant.id,uuid:$routeParams.id},function(){
+					console.log(lb);
+					Notify.showSimpleToast("负载均衡列表请求成功",1);
+					$scope.theaders = [
+			          {
+			            name: '名称', 
+			            field: 'name'
+			          },{
+			            name:'分发策略', 
+			            field: 'sessionAffinity'
+			          },{
+			          	name:'域名',
+			          	field:'domain'
+			          },{
+			            name: '创建时间', 
+			            field: 'created_at'
+			          // },{
+			          //   name:'More Action',
+			          //   field:'more_action'
+			          }
+			        ];
+			        $scope.collheaders = [];
+			        if(lb.metadata[0]&&lb.metadata[0].lb[0]){
+			        	for(var f in lb.metadata[0].lb[0]){
+			        		if(f!='name'){
+				        		$scope.collheaders.push(f);
+				        	}
 			        	}
-		        	}
-		        }
-		        console.log($scope.collheaders)
-		        $scope.tcontent = [];
-		        for(var i=0;i<lb.metadata.length;i++){
-		        	$scope.tcontent.push({
-		        		name:lb.metadata[i].name,
-		        		sessionAffinity:$filter('i18n')(lb.metadata[i].sessionAffinity),
-		        		domain:lb.metadata[i].domain,
-		        		created_at:$filter("date")(lb.metadata[i].created_at,'yyyy-MM-dd h:mm:ss'),
-		        		collections:lb.metadata[i].lb
-		        	})
-		        }
+			        }
+			        console.log($scope.collheaders)
+			        $scope.tcontent = [];
+			        for(var i=0;i<lb.metadata.length;i++){
+			        	$scope.tcontent.push({
+			        		name:lb.metadata[i].name,
+			        		sessionAffinity:$filter('i18n')(lb.metadata[i].sessionAffinity),
+			        		domain:lb.metadata[i].domain,
+			        		created_at:$filter("date")(lb.metadata[i].created_at,'yyyy-MM-dd h:mm:ss'),
+			        		collections:lb.metadata[i].lb
+			        	})
+			        }
 
-		        $scope.subhover = function(e,clu,c){
-		          if(c){
-		            var w,h,t,l;
-		            w = 'auto';//$(e.target).parents("tr").outerWidth()-20;
-		            t = $(e.target).parents("tr")[0].offsetTop+$(e.target).parents("tr")[0].offsetHeight+20;
-		            l = $(e.target)[0].offsetLeft+25;
-		            var top = Math.abs(document.body.scrollTop);
-		            var html = "";
-		            for(var i=0;i<clu.images.length;i++){
-		            	var label = clu.images[i].split("/")[clu.images[i].split("/").length-1];
-		            	var name = label.split(":")[0];
-		            	html += "<p><a href='image?name="+name+"'>"+clu.images[i]+"</a></p>";
-		            }
-		            $("#tiptool").html(html).css({
-		              "width":w+"px",
-		              "top":t+"px",
-		              "left":l+"px",
-		              "height":"auto",
-		            }).addClass("show");
-		          // }else{
-		          //   $("#tiptool").removeClass('show')
-		          }
-				}
+			        $scope.subhover = function(e,clu,c){
+			          if(c){
+			            var w,h,t,l;
+			            w = 'auto';//$(e.target).parents("tr").outerWidth()-20;
+			            t = $(e.target).parents("tr")[0].offsetTop+$(e.target).parents("tr")[0].offsetHeight+20;
+			            l = $(e.target)[0].offsetLeft+25;
+			            var top = Math.abs(document.body.scrollTop);
+			            var html = "";
+			            for(var i=0;i<clu.images.length;i++){
+			            	var label = clu.images[i].split("/")[clu.images[i].split("/").length-1];
+			            	var name = label.split(":")[0];
+			            	html += "<p><a href='image?name="+name+"'>"+clu.images[i]+"</a></p>";
+			            }
+			            $("#tiptool").html(html).css({
+			              "width":w+"px",
+			              "top":t+"px",
+			              "left":l+"px",
+			              "height":"auto",
+			            }).addClass("show");
+			          // }else{
+			          //   $("#tiptool").removeClass('show')
+			          }
+					}
 
 
-		        $scope.tselected = [];
-		        $scope.tcustom = {name: 'bold', sessionAffinity:'grey',domain:'grey',created_at: 'grey'};
-		        $scope.tsortable = ['name', 'sessionAffinity','domain','created_at'];
-		        // $scope.tmodal = "#container_detail";
-		        // $scope.thumbs = 'thumb';
-		        $scope.tcount = 5;
-		        var code = $compile('<md-table headers="theaders" content="tcontent" sortable="tsortable" subhover="subhover" filters="search" thumbs="tthumbs" isselect="true" selected="tselected" modal="tmodal" collheaders="collheaders" count="tcount"></md-table>')($scope);
-	        	$("#lb-table").html(code);
-			})
-
+			        $scope.tselected = [];
+			        $scope.tcustom = {name: 'bold', sessionAffinity:'grey',domain:'grey',created_at: 'grey'};
+			        $scope.tsortable = ['name', 'sessionAffinity','domain','created_at'];
+			        // $scope.tmodal = "#container_detail";
+			        // $scope.thumbs = 'thumb';
+			        $scope.tcount = 5;
+			        var code = $compile('<md-table headers="theaders" content="tcontent" refresh="refresh1" sortable="tsortable" subhover="subhover" filters="search" thumbs="tthumbs" isselect="true" selected="tselected" modal="tmodal" collheaders="collheaders" count="tcount"></md-table>')($scope);
+		        	$("#lb-table").html(code);
+				})
+			}
+			$scope.refresh1();
 
 			$scope.getcoldata=function(c){
 				console.log(c)
@@ -425,47 +453,58 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 	        }
 
 	        $scope.remove = function(){
-	        	if($scope.tab=='cluster'){
-		        	console.log($scope.selected)
-		        	for(var i =0;i<$scope.selected.length;i++){
-		        		(function(c,i){
-		        			
-	        				$http.delete($scope.baseurl+$rootScope.current_tenant.id+"/cluster/"+c).success(function(){
-	        					for(var n=0;n<$scope.content.length;n++){
-	        						if($scope.content[n].name==c){
-	        							$scope.content.splice(n,1);
-	        							break;
-	        						}
-	        					}
-	        				})
-		        			if(i==$scope.selected.length-1){
-					        	Notify.showSimpleToast("应用删除成功",1);
-					        }
-		        		})($scope.selected[i].name,i)
-		        	}
-		        }else{
-					console.log($scope.tselected)
-		        	for(var i =0;i<$scope.tselected.length;i++){
-		        		(function(c,i){
-	        				$http.delete($scope.baseurl+$rootScope.current_tenant.id+"/lb/"+c).success(function(){
-	        					for(var n=0;n<$scope.tcontent.length;n++){
-	        						if($scope.tcontent[n].name==c){
-	        							$scope.tcontent.splice(n,1);
-	        							break;
-	        						}
-	        					}
-	        				})
-		        			if(i==$scope.tselected.length-1){
-					        	Notify.showSimpleToast("应用删除成功",1);
-					        }
-		        		})($scope.tselected[i].name,i)
-		        	}
-		        }
+	        	var confirm = $mdDialog.confirm()
+			    .title('删除确认')
+			    .content('你确定要删除所选'+($scope.tab=='cluster'?"集群":"负载均衡")+'吗？')
+			    .ariaLabel('Lucky day')
+			    .targetEvent(ev)
+			    .ok('确定')
+			    .cancel('取消');
+			    $mdDialog.show(confirm).then(function() {
+			      	if($scope.tab=='cluster'){
+			        	console.log($scope.selected)
+			        	for(var i =0;i<$scope.selected.length;i++){
+			        		(function(c,i){
+			        			
+		        				$http.delete($scope.baseurl+$rootScope.current_tenant.id+"/cluster/"+c).success(function(){
+		        					for(var n=0;n<$scope.content.length;n++){
+		        						if($scope.content[n].name==c){
+		        							$scope.content.splice(n,1);
+		        							break;
+		        						}
+		        					}
+		        				})
+			        			if(i==$scope.selected.length-1){
+						        	Notify.showSimpleToast("应用删除成功",1);
+						        }
+			        		})($scope.selected[i].name,i)
+			        	}
+			        }else{
+						console.log($scope.tselected)
+			        	for(var i =0;i<$scope.tselected.length;i++){
+			        		(function(c,i){
+		        				$http.delete($scope.baseurl+$rootScope.current_tenant.id+"/lb/"+c).success(function(){
+		        					for(var n=0;n<$scope.tcontent.length;n++){
+		        						if($scope.tcontent[n].name==c){
+		        							$scope.tcontent.splice(n,1);
+		        							break;
+		        						}
+		        					}
+		        				})
+			        			if(i==$scope.tselected.length-1){
+						        	Notify.showSimpleToast("应用删除成功",1);
+						        }
+			        		})($scope.tselected[i].name,i)
+			        	}
+			        }
+			    }, function() {
+			      $scope.selected = [];
+			    });
 	        }
 		}
 	])
-	.controller('instancectrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile','instance',
-		function($rootScope,$scope,$http,$timeout,$location,$window,$filter,$routeParams,restful,$compile,instance){
+	.controller('instancectrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile','instance','Notify',
+		function($rootScope,$scope,$http,$timeout,$location,$window,$filter,$routeParams,restful,$compile,instance,Notify){
 			console.log($routeParams)
 			console.log("dsafsdfa")
 			$scope.app_id = $routeParams.id;
@@ -484,6 +523,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 					(function(i,name){
 						req["target"] = name;
 						var w = watch.get(req,function(){
+							Notify.showSimpleToast("请求成功",1);
 							var data = w.metadata[0];
 							var startday = "",endday="",pstart = 0,serdata = [],maxvalue = 0;
 							if(name=="cpu_load"){
@@ -494,12 +534,12 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 									for(var n=0;n<data.values.length;n++){
 										if(n==0||n==data.values.length-1){
 											if(n==0){
-												startday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+												startday = $filter("date")(new Date(data.values[n][0]*1000+8*3600),"yyyy-MM-dd h:mm");
 											}else{
-												endday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+												endday = $filter("date")(new Date(data.values[n][0]*1000+8*3600),"yyyy-MM-dd h:mm");
 											}
 										}
-										time.push($filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"h:mm"));
+										time.push($filter("date")(new Date(data.values[n][0]*1000+8*3600),"h:mm"));
 										dataval.push(parseInt(data.values[n][1]));
 									}
 									serdata.push({
@@ -515,12 +555,12 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 								for(var n=0;n<data.values.length;n++){
 									if(n==0||n==data.values.length-1){
 										if(n==0){
-											startday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+											startday = $filter("date")(new Date(data.values[n][0]*1000+8*3600),"yyyy-MM-dd h:mm");
 										}else{
-											endday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+											endday = $filter("date")(new Date(data.values[n][0]*1000+8*3600),"yyyy-MM-dd h:mm");
 										}
 									}
-									time.push($filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"h:mm"));
+									time.push($filter("date")(new Date(data.values[n][0]*1000+8*3600),"h:mm"));
 									dataval.push(parseInt(data.values[n][1]));
 								}
 								serdata.push({
@@ -537,12 +577,12 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 									for(var n=0;n<data.values.length;n++){
 										if(n==0||n==data.values.length-1){
 											if(n==0){
-												startday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+												startday = $filter("date")(new Date(data.values[n][0]*1000+8*3600),"yyyy-MM-dd h:mm");
 											}else{
-												endday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+												endday = $filter("date")(new Date(data.values[n][0]*1000+8*3600),"yyyy-MM-dd h:mm");
 											}
 										}
-										time.push($filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"h:mm"));
+										time.push($filter("date")(new Date(data.values[n][0]*1000+8*3600),"h:mm"));
 										dataval.push(parseInt(data.values[n][1]));
 									}
 									serdata.push({
@@ -559,12 +599,12 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 									for(var n=0;n<data.values.length;n++){
 										if(n==0||n==data.values.length-1){
 											if(n==0){
-												startday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+												startday = $filter("date")(new Date(data.values[n][0]* 1000+8*3600),"yyyy-MM-dd h:mm");
 											}else{
-												endday = $filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"yyyy-MM-dd h:mm");
+												endday = $filter("date")(new Date(data.values[n][0]* 1000+8*3600),"yyyy-MM-dd h:mm");
 											}
 										}
-										time.push($filter("date")(new Date((data.values[n][0]+8*3600)* 1000),"h:mm"));
+										time.push($filter("date")(new Date(data.values[n][0]* 1000+8*3600),"h:mm"));
 										dataval.push(parseInt(data.values[n][1]));
 									}
 									serdata.push({
@@ -618,7 +658,15 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			
 			$scope.refreshmonitor = function(){
 				console.log($scope.start)
-				getmonitor({start:$scope.start,end:$scope.end})
+				var temps = $scope.start.replace(/-/g,'/');
+				temps+=":00";
+				temps = new Date(temps).getTime()/1000;
+
+				var tempe = $scope.end.replace(/-/g,'/');
+				tempe+=":00";
+				tempe = new Date(tempe).getTime()/1000;
+				console.log(tempe)
+				getmonitor({start:temps,end:tempe})
 			}
 		}
 	])
@@ -978,8 +1026,14 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 				lbl["app_uuid"] = $scope.app_uuid;
 				delete lbl['temppot'];
 				lb.save({id:$rootScope.current_tenant.id},lbl,function(){
-					Notify.showSimpleToast("添加负载均衡成功",1);
-					$location.path("/applications/"+$scope.app_uuid);
+					if(lb.code==0){
+                       Notify.showSimpleToast("添加负载均衡成功",1);
+						$location.path("/applications/"+$scope.app_uuid);
+                    }else if(lb.code>0){
+                        Notify.showSimpleToast(lb.message,-1);
+                    }else if(lb.code<0){
+                        Notify.showSimpleToast(lb.message,0)
+                    }
 				})
 			}
 		}

@@ -3,6 +3,9 @@
       <div id="content">
         <div ng-include src="'module/header.html'"></div> 
         <div class="inner_content animated hide">
+          <div class="page-header">
+            {{intro.title}} <small>{{intro.content}}</small>
+          </div>
           <div ng-view></div>
         </div>
         <div class="footer">

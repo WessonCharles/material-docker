@@ -236,7 +236,13 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 	        	console.log(data)
 	        	var ims = Images.save({id:$rootScope.current_tenant.id},data,function(){
 					console.log(ims)
-					Notify.showSimpleToast("镜像创建成功",1);
+					if(ims.code==0){
+						Notify.showSimpleToast("操作成功",1);
+					}else if(ims.code>0){
+						Notify.showSimpleToast(ims.message,-1);
+					}else if(ims.code<0){
+						Notify.showSimpleToast(ims.message,0)
+					}
 					$location.path("/log/"+ims.metadata[0].uuid)
 					// ap.name = $scope.app_name;
 					// ap.containers = reqdata;
@@ -252,126 +258,128 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,restful,Notify,instance,$compile,AuthService){
 			var plat = restful.action({type:"@id",jobid:"@jobid",number:"@number"},$scope.baseurl+":id/build/:jobid/:number");
 	        console.log($rootScope.current_tenant)
-	        var pl = plat.get({id:$rootScope.current_tenant.id},function(e){
-	        	console.timeEnd("restful game");
+		    $scope.refresh = function(){ 
+		        var pl = plat.get({id:$rootScope.current_tenant.id},function(e){
+		        	console.timeEnd("restful game");
 
-	        	console.time("rendered table")
-		        Notify.showSimpleToast("应用列表请求成功",1);
-		        console.log(pl.metadata)
-		        $scope.headers = [{
-		        	name:'镜像名',
-		        	field:'name'
-		        },{
-		        	name:'构建人',
-		        	field:'build_user'
-	        	},{
-		        	name:'地址',
-		        	field:'repo_url'
-		        },{
-		        	name:'状态',
-		        	field:'build_state'
-		        // },{
-		        // 	name:'服务地址',
-		        // 	field:'selfLink'
-		        },{
-		        	name:'上次构建时间',
-		        	field:'updated_at'
-		        }];
-		        var sort = [];
-		        // for(var i in pl.metadata[0]){
-		        // 	sort.push(i);
-		        // 	// $scope.headers.push({
-		        // 	// 	name:i,
-		        // 	// 	field:i
-		        // 	// })
-		        // };
-		        
-		        var sourcedata = pl.metadata;
-		        $scope.content = [];
-		        for(var i =0;i<sourcedata.length;i++){
-		        	var s = sourcedata[i];
-		        	var time = $filter('date')(s.updated_at,"MM-dd-yyyy h:mma");
-		        	var obj = {
-		        		"uuid":s.uuid,
-		        		"name":s.name,
-		        		"build_user":s.build_user,
-		        		"build_state":s.build_state,
-		        		"repo_url":s.repo_url,
-		        		"updated_at":time,
-		        	};
-		        	$scope.content.push(obj);
-		        }
-		        console.log($scope.content)
-		        // $scope.content = [
-		        //   {
-		        //     // thumb:'https://lh3.googleusercontent.com/-5NfcdlvGQhs/AAAAAAAAAAI/AAAAAAAAABY/ibGrApGYTuQ/photo.jpg', 
-		        //     name: 'Bruno Mars', 
-		        //     description: 'Human',
-		        //     last_modified: 'Jun 5, 2014'
-		        //   },{
-		        //     // thumb:'http://www.otakia.com/wp-content/uploads/V_1/article_3573/7405.jpg', 
-		        //     name: 'AT-AT', 
-		        //     description: 'Robot',
-		        //     last_modified: 'Jun 5, 2014'
-		        //   },{
-		        //     // thumb:'https://speakerdata.s3.amazonaws.com/photo/image/774492/Mark-Ronson-r24.jpg', 
-		        //     name: 'Mark Ronson', 
-		        //     description: 'Human',
-		        //     last_modified: 'Jun 5, 2014'
-		        //   },{
-		        //     // thumb:'http://25.media.tumblr.com/61ebf04c3cc7a84944aa0246e902f2a7/tumblr_mm35b87dGz1qmwrnuo1_1280.jpg', 
-		        //     name: 'Daft Punk', 
-		        //     description: 'Human-Robot',
-		        //     last_modified: 'Jun 5, 2014'
-		        //   },{
-		        //     // thumb:'http://thatgrapejuice.net/wp-content/uploads/2014/03/lady-gaga-that-grape-juice-televisionjpg.jpg', 
-		        //     name: 'Lady Gaga', 
-		        //     description: 'Undefined',
-		        //     last_modified: 'Jun 5, 2014'
-		        //   }
-		        // ];
-		        
-		        /**
-		         * [请确保 custom，sortable,和headers中的field一一对应，并且拼写相同]
-		         * @type {Object}
-		         */
-		        $scope.custom = {name: 'bold', build_user:'grey',build_state:'grey',repo_url:'grey',updated_at:'grey'};
-		        $scope.sortable = ['name','build_user','build_state','repo_url','updated_at'];
-		        $scope.count = 100;
-		        $scope.links = '/log';
-		        $scope.selected = [];
-		        $scope.action = {
-		        	name:"重构",
-		        	args:{},
-		        	trigger:function(t){
-		        		$http.put($scope.baseurl+$rootScope.current_tenant.id+"/build/"+$scope.action.args.uuid+"?action=redo").success(function(data){
-							Notify.showSimpleToast("正在重构",0);
-							$(t.target).attr("disabled",true);
-							$(t.target).find("span").before('<i class="fa fa-refresh fa-spin"></i>')
-						})
-		        	}
-		        }
+		        	console.time("rendered table")
+			        Notify.showSimpleToast("构建记录列表请求成功",1);
+			        console.log(pl.metadata)
+			        $scope.headers = [{
+			        	name:'镜像名',
+			        	field:'name'
+			        },{
+			        	name:'构建人',
+			        	field:'build_user'
+		        	},{
+			        	name:'地址',
+			        	field:'repo_url'
+			        },{
+			        	name:'状态',
+			        	field:'build_state'
+			        // },{
+			        // 	name:'服务地址',
+			        // 	field:'selfLink'
+			        },{
+			        	name:'上次构建时间',
+			        	field:'updated_at'
+			        }];
+			        var sort = [];
+			        // for(var i in pl.metadata[0]){
+			        // 	sort.push(i);
+			        // 	// $scope.headers.push({
+			        // 	// 	name:i,
+			        // 	// 	field:i
+			        // 	// })
+			        // };
+			        
+			        var sourcedata = pl.metadata;
+			        $scope.content = [];
+			        for(var i =0;i<sourcedata.length;i++){
+			        	var s = sourcedata[i];
+			        	var time = $filter('date')(s.updated_at,"MM-dd-yyyy h:mma");
+			        	var obj = {
+			        		"uuid":s.uuid,
+			        		"name":s.name,
+			        		"build_user":s.build_user,
+			        		"build_state":s.build_state,
+			        		"repo_url":s.repo_url,
+			        		"updated_at":time,
+			        	};
+			        	$scope.content.push(obj);
+			        }
+			        console.log($scope.content)
+			        // $scope.content = [
+			        //   {
+			        //     // thumb:'https://lh3.googleusercontent.com/-5NfcdlvGQhs/AAAAAAAAAAI/AAAAAAAAABY/ibGrApGYTuQ/photo.jpg', 
+			        //     name: 'Bruno Mars', 
+			        //     description: 'Human',
+			        //     last_modified: 'Jun 5, 2014'
+			        //   },{
+			        //     // thumb:'http://www.otakia.com/wp-content/uploads/V_1/article_3573/7405.jpg', 
+			        //     name: 'AT-AT', 
+			        //     description: 'Robot',
+			        //     last_modified: 'Jun 5, 2014'
+			        //   },{
+			        //     // thumb:'https://speakerdata.s3.amazonaws.com/photo/image/774492/Mark-Ronson-r24.jpg', 
+			        //     name: 'Mark Ronson', 
+			        //     description: 'Human',
+			        //     last_modified: 'Jun 5, 2014'
+			        //   },{
+			        //     // thumb:'http://25.media.tumblr.com/61ebf04c3cc7a84944aa0246e902f2a7/tumblr_mm35b87dGz1qmwrnuo1_1280.jpg', 
+			        //     name: 'Daft Punk', 
+			        //     description: 'Human-Robot',
+			        //     last_modified: 'Jun 5, 2014'
+			        //   },{
+			        //     // thumb:'http://thatgrapejuice.net/wp-content/uploads/2014/03/lady-gaga-that-grape-juice-televisionjpg.jpg', 
+			        //     name: 'Lady Gaga', 
+			        //     description: 'Undefined',
+			        //     last_modified: 'Jun 5, 2014'
+			        //   }
+			        // ];
+			        
+			        /**
+			         * [请确保 custom，sortable,和headers中的field一一对应，并且拼写相同]
+			         * @type {Object}
+			         */
+			        $scope.custom = {name: 'bold', build_user:'grey',build_state:'grey',repo_url:'grey',updated_at:'grey'};
+			        $scope.sortable = ['name','build_user','build_state','repo_url','updated_at'];
+			        $scope.count = 100;
+			        $scope.links = '/log';
+			        $scope.selected = [];
+			        $scope.action = {
+			        	name:"重构",
+			        	args:{},
+			        	trigger:function(t){
+			        		$http.put($scope.baseurl+$rootScope.current_tenant.id+"/build/"+$scope.action.args.uuid+"?action=redo").success(function(data){
+								Notify.showSimpleToast("正在重构",0);
+								$(t.target).attr("disabled",true);
+								$(t.target).find("span").before('<i class="fa fa-refresh fa-spin"></i>')
+							})
+			        	}
+			        }
 
-		        instance["logs"] = $scope.content;
-		       	//如果不是links 就是func方法
-		      //  	$scope.func = function($event,c){
-		      //  		instance.current_container = c;
-		      //  		$mdBottomSheet.show({
-				    //   templateUrl: 'module/app_application/app-bottom-detail.html',
-				    //   controller: 'appdetailctrl',
-				    //   targetEvent: $event,
-				    //   parent:"#content"
-				    // }).then(function(clickedItem) {
-				    // });
-		      //  	}
+			        instance["logs"] = $scope.content;
+			       	//如果不是links 就是func方法
+			      //  	$scope.func = function($event,c){
+			      //  		instance.current_container = c;
+			      //  		$mdBottomSheet.show({
+					    //   templateUrl: 'module/app_application/app-bottom-detail.html',
+					    //   controller: 'appdetailctrl',
+					    //   targetEvent: $event,
+					    //   parent:"#content"
+					    // }).then(function(clickedItem) {
+					    // });
+			      //  	}
 
-		        // $scope.loadtable = function(t){
-		        	// console.log(t);
-	        	var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count" isselect="true" action="action" selected="selected" links="links" func="func"></md-table>')($scope);
-	        	$("#prolist").html(code);
-		        // }
-	        });
-			
+			        // $scope.loadtable = function(t){
+			        	// console.log(t);
+		        	var code = $compile('<md-table headers="headers" content="content" refresh="refresh" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count" isselect="true" action="action" selected="selected" links="links" func="func"></md-table>')($scope);
+		        	$("#prolist").html(code);
+			        // }
+		        });
+			}
+			$scope.refresh();
 			$scope.rebuild = function(){
 				if($scope.selected.length==0){
 					Notify.showSimpleToast("请至少选择一项",-1);
@@ -379,8 +387,14 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 				for(var i=0;i<$scope.selected.length;i++){
 					var id = $scope.selected[i].uuid;
 					(function(id){
-						$http.put($scope.baseurl+$rootScope.current_tenant.id+"/build/"+id+"/?action=redo").success(function(){
-
+						$http.put($scope.baseurl+$rootScope.current_tenant.id+"/build/"+id+"/?action=redo").success(function(data){
+							if(data.code==0){
+								Notify.showSimpleToast("操作成功",1);
+							}else if(data.code>0){
+								Notify.showSimpleToast(data.message,-1);
+							}else if(data.code<0){
+								Notify.showSimpleToast(data.message,0)
+							}
 						})
 					})(id)
 				}
@@ -392,21 +406,32 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 				if($scope.selected.length==0){
 					Notify.showSimpleToast("请至少选择一项",-1);
 				}
-				for(var i=0;i<$scope.selected.length;i++){
-					var id = $scope.selected[i].uuid;
-					(function(id){
-						$http.delete($scope.baseurl+$rootScope.current_tenant.id+"/build/"+id).success(function(data){
-							for(var x =0;x<$scope.content.length;x++){
-								if($scope.content[x].uuid==id){
-									$scope.content.splice(x,1);
-									break;
+				var confirm = $mdDialog.confirm()
+			    .title('删除确认')
+			    .content('你确定要删除所选应用吗？')
+			    .ariaLabel('Lucky day')
+			    .targetEvent(ev)
+			    .ok('确定')
+			    .cancel('取消');
+			    $mdDialog.show(confirm).then(function() {
+		       		for(var i=0;i<$scope.selected.length;i++){
+						var id = $scope.selected[i].uuid;
+						(function(id){
+							$http.delete($scope.baseurl+$rootScope.current_tenant.id+"/build/"+id).success(function(data){
+								for(var x =0;x<$scope.content.length;x++){
+									if($scope.content[x].uuid==id){
+										$scope.content.splice(x,1);
+										break;
+									}
 								}
-							}
-							Notify.showSimpleToast("删除成功",-1);
-						})
-					})(id)
-				}
-				$scope.selected = [];
+								Notify.showSimpleToast("删除成功",-1);
+							})
+						})(id)
+					}
+			    }, function() {
+			      $scope.selected = [];
+			    });
+				
 			}
 
 			/**
@@ -462,8 +487,14 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 	        }
 
 	        $scope.stopimage = function(log){
-				$http.put($scope.baseurl+$rootScope.current_tenant.id+"/build/"+log.uuid+"/"+log.number+"?action=stop").success(function(){
-
+				$http.put($scope.baseurl+$rootScope.current_tenant.id+"/build/"+log.uuid+"/"+log.number+"?action=stop").success(function(datadata){
+					if(data.code==0){
+						Notify.showSimpleToast("操作成功",1);
+					}else if(data.code>0){
+						Notify.showSimpleToast(data.message,-1);
+					}else if(data.code<0){
+						Notify.showSimpleToast(data.message,0)
+					}
 				})
 				console.log($scope.selected)
 			}

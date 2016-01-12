@@ -252,9 +252,11 @@ define([
                 if(used.indexOf("G")>-1)u = parseInt(used)*1024;
                 if(used.indexOf("M")>-1)u = parseInt(used);
 
-               $scope.percentlist[i] = (u/h).toFixed(2);
+                var per = u/h>1?1:(u/h);
+               $scope.percentlist[i] = per.toFixed(2);
             }else{
-               $scope.percentlist[i] = (parseInt(data.metadata[0].used[i])/parseInt(data.metadata[0].hard[i])).toFixed(2);
+                var per = parseInt(data.metadata[0].used[i])/parseInt(data.metadata[0].hard[i])>1?1:(parseInt(data.metadata[0].used[i])/parseInt(data.metadata[0].hard[i]));
+               $scope.percentlist[i] = per.toFixed(2);
             }
           }
           console.log($scope.percentlist)
