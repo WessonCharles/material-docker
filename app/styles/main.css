@@ -316,6 +316,9 @@ li.menu ul li.active{
 li.menu ul li a{
   color:#c0c1c4;
 }
+li.menu ul li.active i{
+  color:#fff;
+}
 .sidebar-ul>ul>li:hover{
   color:#fff;
 }
@@ -615,6 +618,11 @@ a.hq-button{
 }
 .form-input:not(:first-child){
   margin-top:18px;
+}
+.form-input::after{
+  content: " ";
+    display: inline-block;
+    clear: both;
 }
 .left{
   margin:0;
@@ -1871,6 +1879,23 @@ md-toast.md-danger-theme{
     top: 0;
     background-color: #fff;
 }
+.images_list md-list-item {
+    border: 1px solid #e4e4e4;
+    margin: 0 10px 0 0;
+    padding-top: 20px;
+}
+.images_list md-list-item .md-grid-item-content{
+  background-color:#fff!important;
+}
+.images_list md-list-item:hover {
+    background-color:#EDF0F5;
+}
+.images_list md-list-item:hover .md-grid-item-content{
+  background-color: #EDF0F5!important;
+}
+.images_list md-list-item button:hover{
+  background-color: #EDF0F5;
+}
 .md-list-item-text p{
   margin: 5px 0;
 }
@@ -1944,21 +1969,39 @@ md-radio-button.flavo:hover .flavor .des{
   border-right:1px solid #e4eaec;
   border-bottom: 1px solid #e4eaec;
   outline: 0;*/
-  display: none;
-  padding: 10px;
-  opacity: 0;
-  position: absolute;
-    background-color: #fff;
-    -webkit-background-clip: padding-box;
-    background-clip: padding-box;
-    border-radius: 3px;
-    outline: 0;
-    -webkit-box-shadow: 0 2px 13px 7px rgba(0,0,0,.1);
-    box-shadow: 0 2px 13px 7px rgba(0,0,0,.1);
-  z-index: 50;
   -webkit-transition: opacity 0.4s ease 0s,height 0.4s ease 0s;
   -o-transition: opacity 0.4s ease 0s,height 0.4s ease 0s;
   transition: opacity 0.4s ease 0s,height 0.4s ease 0s;
+  position: absolute;
+    z-index: 1060;
+    display: none;
+    max-width: 276px;
+    opacity: 0;
+    padding: 5px 10px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: left;
+    text-align: start;
+    text-decoration: none;
+    text-shadow: none;
+    text-transform: none;
+    letter-spacing: normal;
+    word-break: normal;
+    word-spacing: normal;
+    word-wrap: normal;
+    white-space: normal;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.09);
+    border-radius: 6px;
+    -webkit-box-shadow: 0 2px 10px rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    line-break: auto;
 }
 .tiptool::after{
   top: -.25em;
@@ -1971,8 +2014,9 @@ md-radio-button.flavo:hover .flavor .des{
     visibility: visible;
     width: .5em;
     height: .5em;
+    font-size: 18px;
     -webkit-box-shadow: -1px -1px 0 1px rgba(0,0,0,.09);
-    box-shadow: -1px -1px 0 1px rgba(0,0,0,.09);
+    box-shadow: -1px -1px 0 1px rgba(0,0,0,.15);
     background-image: none;
     background-color: #FFF;
     -webkit-transform: rotate(45deg);
@@ -2126,4 +2170,57 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus {
     padding: 0;
     border: none;
     color: #7c7f83;
+}
+.teminal i::before{
+  content: ">_";
+    width: 20px;
+    font-size: 12px;
+    display: inline-block;
+    height: 16px;
+    color: #76FF03;
+    font-weight: 900;
+    line-height: 14px;
+    background-color: #555;
+    border-radius: 2px;
+    text-align: center;
+}
+.status_loading{
+  animation: 1s linear 0.4s normal none infinite running shade;
+  -moz-animation:1s linear 0.4s normal none infinite running shade; /* Firefox */
+  -webkit-animation:1s linear 0.4s normal none infinite running shade; /* Safari and Chrome */
+  -o-animation:1s linear 0.4s normal none infinite running shade;
+  color: #ff9c00;
+  background-color: #ff9c00;
+  transform: scale(0.7);
+  -moz-transform: scale(0.7);
+  -webkit-transform:scale(0.7); /* Safari and Chrome */
+  -o-transform:scale(0.7);
+}
+@keyframes shade {
+  0% {
+      opacity: 1;
+      transform: scale(1.2);
+      -moz-transform: scale(1.2);
+      -webkit-transform:scale(1.2); /* Safari and Chrome */
+      -o-transform:scale(1.2);
+  }
+  100% {
+      opacity: 0.1;
+      transform: scale(0.7);
+      -moz-transform: scale(0.7);
+      -webkit-transform:scale(0.7); /* Safari and Chrome */
+      -o-transform:scale(0.7);
+  }
+}
+
+/**
+ * 镜像图片字典
+ */
+.docker-images{
+  width:42px;
+  height:42px;
+}
+.docker-images img{
+  width:42px;
+  height:42px;
 }

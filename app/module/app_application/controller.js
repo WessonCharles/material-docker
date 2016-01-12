@@ -281,7 +281,8 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			// 		break;
 			// 	}
 			// }
-
+			// 
+			
 			$scope.toggleSearch = false; 
 
 			$scope.tab = 'cluster';
@@ -324,7 +325,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			        		name:cl.metadata[i].name,
 			        		replicas:cl.metadata[i].replicas,
 			        		health_status:cl.metadata[i].status.current+"/"+cl.metadata[i].status.desired,
-			        		created_at:$filter("date")(cl.metadata[i].created_at,'MM/dd/yyyy h:mm:ss'),
+			        		created_at:$filter("date")(cl.metadata[i].created_at,'yyyy-MM-dd h:mm:ss'),
 			        		collections:[],
 			        		bindlbl:bind
 			        	})
@@ -389,7 +390,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			          if(c){
 			            var w,h,t,l;
 			            w = 'auto';//$(e.target).parents("tr").outerWidth()-20;
-			            t = $(e.target).parents("tr")[0].offsetTop+$(e.target).parents("tr")[0].offsetHeight+20;
+			            t = $(e.target).parents("tr")[0].offsetTop+$(e.target).parents("tr")[0].offsetHeight+50;
 			            l = $(e.target)[0].offsetLeft+25;
 			            var top = Math.abs(document.body.scrollTop);
 			            var html = "";
@@ -433,10 +434,15 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 							private_ip:lsc.metadata[i].private_ip,
 							started_at:$filter("date")(lsc.metadata[i].started_at,"yyyy-MM-dd h:mm:ss"),
 							status:lsc.metadata[i].status.component,
-							images:lsc.metadata[i].images
+							images:lsc.metadata[i].images,
+							component:lsc.metadata[i].component,
+							host:lsc.metadata[i].host
 						})
 					}
 					$scope.tcollheaders = ["name","private_ip","status","started_at"];
+					setTimeout(function(){
+						Modal.init();
+					},300)
 				})
 			}
 	        
@@ -501,6 +507,34 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			      $scope.selected = [];
 			    });
 	        }
+
+	        $scope.ifcheckone = function(){
+	        	if($scope.selected.length==0){
+	        		Notify.showSimpleToast("请至少选择一条",-1);
+	        		return false;
+	        	}else if($scope.selected.length>1){
+	        		Notify.showSimpleToast("只能选择一条进行操作",-1);
+	        		return false;
+	        	}else{
+	        		$scope.current_size = $scope.selected[0].replicas;
+	        	}
+	        }
+
+	        $scope.resizem = function(t){
+	        	$http.post($scope.baseurl+$rootScope.current_tenant.id+"/cluster/"+$scope.selected[0].name+"/do/scale",{size:$scope.resizenum}).success(function(data){
+	        		$(t.target).parents(".modal").find(".modal__content").removeClass("modal__content--active");
+					$(t.target).parents(".modal").removeClass("modal--active");
+					$("button.modal__trigger").removeClass('modal__trigger--active').attr("style","");
+					$("button.modal__trigger").find("#modal__temp").remove();
+					for(var i =0;i<$scope.content.length;i++){
+						if($scope.selected[0].name==$scope.content[i].name){
+							$scope.content[i].replicas = data.metadata[0].replicas;
+							break;
+						}
+					}
+					$scope.selected = [];
+	        	})
+	        }
 		}
 	])
 	.controller('instancectrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile','instance','Notify',
@@ -528,8 +562,8 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 							var startday = "",endday="",pstart = 0,serdata = [],maxvalue = 0;
 							if(name=="cpu_load"){
 								maxvalue = 1;
-								var time = [],time1=[],dataval = [],dataval1=[];
 								for(var x = 0;x<w.metadata.length;x++){
+									var time = [],dataval = [];
 									var data = w.metadata[x];
 									for(var n=0;n<data.values.length;n++){
 										if(n==0||n==data.values.length-1){
@@ -570,9 +604,9 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 								console.log(time)
 								console.log(dataval)
 							}else if(name=="input_flow"){
-								var time = [],dataval = [],time1=[],dataval1=[];
 								maxvalue = 1000000;
 								for(var x = 0;x<w.metadata.length;x++){
+									var time = [],dataval = [];
 									var data = w.metadata[x];
 									for(var n=0;n<data.values.length;n++){
 										if(n==0||n==data.values.length-1){
@@ -592,9 +626,9 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 								}
 								console.log(serdata)
 							}else if(name=="output_flow"){
-								var time = [],dataval = [],time1=[],dataval1=[];
 								maxvalue = 1000000;
 								for(var x = 0;x<w.metadata.length;x++){
+									var time = [],dataval = [];
 									var data = w.metadata[x];
 									for(var n=0;n<data.values.length;n++){
 										if(n==0||n==data.values.length-1){
@@ -644,8 +678,8 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 						        },
 						        legend: {
 						            layout: 'vertical',
-						            align: 'right',
-						            verticalAlign: 'middle',
+						            align: 'center',
+						            verticalAlign: 'bottom',
 						            borderWidth: 0
 						        },
 						        series: serdata
@@ -764,13 +798,13 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			}
 
 			$scope.hash_tags = {};//镜像对应的tags
-			$scope.gethashtag = function(name){
+			$scope.gethashtag = function(tname,name){
 				var it= name;
 				var url = "";
 				if(name.indexOf("index.docker.io")>-1){
-					url = "docker-hub/tags/"+name.split("index.docker.io/")[1];
+					url = "docker-hub/tags/"+tname+"/"+name.split("index.docker.io/")[1];
 				}else{
-					url = $rootScope.current_tenant.id+"/tags/"+name.split("/")[name.split("/").length-1];
+					url = $rootScope.current_tenant.id+"/tags/"+tname+"/"+name.split("/")[name.split("/").length-1];
 				}
 				$http.get($scope.baseurl+url).success(function(data){
 					console.log(data)
@@ -845,7 +879,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 		    	}
 		    	img.isopen = !img.isopen;
 		    	img.image = !img.is_official?(img.url+"/"+img.tenant_name+"/"+img.name):(img.url+"/"+img.name);
-		    	$scope.gethashtag(img.image);
+		    	$scope.gethashtag(img.tenant_name,img.image);
 
 		    }
 		    $scope.images_config = [];
@@ -1025,14 +1059,15 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			$scope.addlbl = function(lbl){
 				lbl["app_uuid"] = $scope.app_uuid;
 				delete lbl['temppot'];
-				lb.save({id:$rootScope.current_tenant.id},lbl,function(){
-					if(lb.code==0){
+				var l = lb.save({id:$rootScope.current_tenant.id},lbl,function(e){
+					console.log(e)
+					if(e.code==0){
                        Notify.showSimpleToast("添加负载均衡成功",1);
 						$location.path("/applications/"+$scope.app_uuid);
-                    }else if(lb.code>0){
-                        Notify.showSimpleToast(lb.message,-1);
-                    }else if(lb.code<0){
-                        Notify.showSimpleToast(lb.message,0)
+                    }else if(e.code>0){
+                        Notify.showSimpleToast(e.message,-1);
+                    }else if(e.code<0){
+                        Notify.showSimpleToast(e.message,0)
                     }
 				})
 			}

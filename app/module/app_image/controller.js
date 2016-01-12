@@ -7,6 +7,13 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 			
 			console.log($routeParams)
 			
+			function geticon(text){
+				var icon = ""
+				if(text.name.indexOf("mysql")>-1){
+
+				}
+			}
+
 			/**
 			 * 获取我的列表
 			 */
@@ -124,43 +131,44 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 			$scope.listItemClick = function($event,id) {
 				instance.current_image = $scope.imageshash[id];
 
-		    	$timeout(function(){
-		    		$mdBottomSheet.show({
-				      templateUrl: 'module/app_image/image-detail.html',
-				      controller: 'imagedetailctrl',
-				      targetEvent: $event,
-				      parent:"#images"
-				    }).then(function(clickedItem) {
-				    	// console.log(clickedItem)
-				      // $scope.alert = clickedItem.name + ' clicked!';
-				    });
-		    	});
+		    	// $timeout(function(){
+		    	// 	$mdBottomSheet.show({
+				   //    templateUrl: 'module/app_image/image-detail.html',
+				   //    controller: 'imagedetailctrl',
+				   //    targetEvent: $event,
+				   //    parent:"#images"
+				   //  }).then(function(clickedItem) {
+				   //  	// console.log(clickedItem)
+				   //    // $scope.alert = clickedItem.name + ' clicked!';
+				   //  });
+		    	// });
 			    
 			}; 
 
-			$timeout(function(){
-				if($routeParams.name){
-		        	$("#tab-content-2 #images .images_list md-list md-list-item").find("button[data-name='"+$routeParams.name+"']").trigger("click");
-	        	}
-			},800)
+			// $timeout(function(){
+			// 	if($routeParams.name){
+		 //        	$("#tab-content-2 #images .images_list md-list md-list-item").find("button[data-name='"+$routeParams.name+"']").trigger("click");
+	  //       	}
+			// },800)
 		}
 	])
 	.controller('imagedetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','instance',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,instance){
+			
 			$scope.current_image = instance.current_image;
 			console.log(instance.current_image)
 			if($scope.current_image.readme&&!$scope.current_image.convert_rm){
-	    		$scope.current_image.readme = markdown.toHTML($scope.current_image.readme);
+	    		// $scope.current_image.readme = markdown.toHTML($scope.current_image.readme);
 	    		$scope.current_image.convert_rm = true;
 	    	}
 	    	if($scope.current_image.dockerfile&&!$scope.current_image.convert_df){
-	    		$scope.current_image.dockerfile = markdown.toHTML($scope.current_image.dockerfile);	
+	    		// $scope.current_image.dockerfile = markdown.toHTML($scope.current_image.dockerfile);	
 	    		$scope.current_image.convert_df = true;
 	    	}
 	    	console.log($scope.current_image);
-			$timeout(function(){
-				$("#images").css("height",200+$("#images md-bottom-sheet:first")[0].offsetHeight);
-			},100)
+			// $timeout(function(){
+			// 	$("#images").css("height",200+$("#images md-bottom-sheet:first")[0].offsetHeight);
+			// },100)
 		}
 	])
 	.controller('createimagectrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','restful','Notify','instance',
@@ -254,8 +262,8 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 
 		}
 	])
-	.controller('logsctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','restful','Notify','instance','$compile','AuthService',
-		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,restful,Notify,instance,$compile,AuthService){
+	.controller('logsctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','restful','Notify','instance','$compile','AuthService','$mdDialog',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,restful,Notify,instance,$compile,AuthService,$mdDialog){
 			var plat = restful.action({type:"@id",jobid:"@jobid",number:"@number"},$scope.baseurl+":id/build/:jobid/:number");
 	        console.log($rootScope.current_tenant)
 		    $scope.refresh = function(){ 
@@ -402,7 +410,7 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 				console.log($scope.selected)
 			}
 
-			$scope.removebuild = function(){
+			$scope.removebuild = function(ev){
 				if($scope.selected.length==0){
 					Notify.showSimpleToast("请至少选择一项",-1);
 				}
@@ -446,7 +454,7 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 			ws.onopen = function(){
 				console.log("已连接")
 				ws.onmessage = function(event){
-					var data = eval("("+event.data+")");
+					var data = JSON.parse(event.data);
 					console.log(data);
 				}
 			}
@@ -458,13 +466,16 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 			console.log($routeParams)
 			var logs = restful.action({type:"@id",jobid:"@jobid",number:"@number"},$scope.baseurl+":id/build/:jobid/:number");
 	        console.log($rootScope.current_tenant)
-	        var log = logs.get({id:$rootScope.current_tenant.id,jobid:$routeParams.id},function(e){	
-	        	$scope.loglist = log.metadata;
-	        	$scope.logone = {name:log.metadata[0].job_name,uuid:$routeParams.id};
-				if(!instance.logs||instance.logs.length==0){
-					instance.logs = [$scope.logone];
-				}
-	        })
+	        $scope.refresh = function(){
+		        var log = logs.get({id:$rootScope.current_tenant.id,jobid:$routeParams.id},function(e){	
+		        	$scope.loglist = log.metadata;
+		        	$scope.logone = {name:log.metadata[0].job_name,uuid:$routeParams.id};
+					if(!instance.logs||instance.logs.length==0){
+						instance.logs = [$scope.logone];
+					}
+		        })
+		    }
+		    $scope.refresh();
 
 	        $scope.getdata = function(l){
 	        	//先把其他的都关了
