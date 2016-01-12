@@ -152,20 +152,22 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 			// },800)
 		}
 	])
-	.controller('imagedetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','instance',
-		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,instance){
-			
-			$scope.current_image = instance.current_image;
-			console.log(instance.current_image)
-			if($scope.current_image.readme&&!$scope.current_image.convert_rm){
-	    		// $scope.current_image.readme = markdown.toHTML($scope.current_image.readme);
-	    		$scope.current_image.convert_rm = true;
-	    	}
-	    	if($scope.current_image.dockerfile&&!$scope.current_image.convert_df){
-	    		// $scope.current_image.dockerfile = markdown.toHTML($scope.current_image.dockerfile);	
-	    		$scope.current_image.convert_df = true;
-	    	}
-	    	console.log($scope.current_image);
+	.controller('imagedetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','instance','$routeParams',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,instance,$routeParams){
+			var id = $routeParams.id;
+			$http.get($scope.baseurl+$rootScope.current_tenant.id+"/images/"+id).success(function(data){
+				console.log(data)
+				$scope.current_image = data.metadata[0];
+				if($scope.current_image.readme&&!$scope.current_image.convert_rm){
+		    		// $scope.current_image.readme = markdown.toHTML($scope.current_image.readme);
+		    		$scope.current_image.convert_rm = true;
+		    	}
+		    	if($scope.current_image.dockerfile&&!$scope.current_image.convert_df){
+		    		// $scope.current_image.dockerfile = markdown.toHTML($scope.current_image.dockerfile);	
+		    		$scope.current_image.convert_df = true;
+		    	}
+		    	console.log($scope.current_image);
+			})
 			// $timeout(function(){
 			// 	$("#images").css("height",200+$("#images md-bottom-sheet:first")[0].offsetHeight);
 			// },100)

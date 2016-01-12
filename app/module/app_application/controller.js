@@ -397,7 +397,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			            for(var i=0;i<clu.images.length;i++){
 			            	var label = clu.images[i].split("/")[clu.images[i].split("/").length-1];
 			            	var name = label.split(":")[0];
-			            	html += "<p><a href='image?name="+name+"'>"+clu.images[i]+"</a></p>";
+			            	html += "<p><a href='image/"+name+"'>"+clu.images[i]+"</a></p>";
 			            }
 			            $("#tiptool").html(html).css({
 			              "width":w+"px",

@@ -52,7 +52,7 @@
                   <md-bottom-sheet class="md-grid images_list">
                     <md-list>
                       <md-list-item ng-repeat="item in hotitems | filter:imagectrl.search">
-                        <md-button class="md-grid-item-content" data-name="{{item.name}}" ng-click="listItemClick($index,item.id)" href="/image/{{item.id}}">
+                        <md-button class="md-grid-item-content" data-name="{{item.name}}" ng-click="listItemClick($index,item.id)" href="/image/{{item.name}}">
                           <md-icon class="docker-images">
                             <img src="../images/docker.png" alt="">
                           </md-icon>
@@ -69,7 +69,7 @@
                   <md-bottom-sheet class="md-grid images_list">
                     <md-list>
                       <md-list-item ng-repeat="item in items  | filter:imagectrl.search">
-                        <md-button class="md-grid-item-content" data-name="{{item.name}}" ng-click="listItemClick($index,item.id)" href="/image/{{item.id}}">
+                        <md-button class="md-grid-item-content" data-name="{{item.name}}" ng-click="listItemClick($index,item.id)" href="/image/{{item.name}}">
                           <md-icon  class="docker-images">
                             <img src="../images/docker.png" alt="">
                           </md-icon>
@@ -86,7 +86,7 @@
                   <md-bottom-sheet class="md-grid images_list">
                     <md-list>
                       <md-list-item ng-repeat="item in markitems">
-                        <md-button class="md-grid-item-content" data-name="{{item.name}}" ng-click="listItemClick($index,item.id)"  href="/image/{{item.id}}">
+                        <md-button class="md-grid-item-content" data-name="{{item.name}}" ng-click="listItemClick($index,item.id)"  href="/image/{{item.name}}">
                           <md-icon  class="docker-images">
                             <img src="../images/docker.png" alt="">
                           </md-icon>
