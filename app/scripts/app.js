@@ -71,6 +71,7 @@ define([
           console.log(JSON.parse(AuthService.getInfo()))
           $rootScope.tenants = AuthService.getInfo()?JSON.parse(AuthService.getInfo()).access.tenants:[];
           if(!$rootScope.current_tenant) $rootScope.current_tenant = $rootScope.tenants[0];
+          if(!$rootScope.token) $rootScope.token = JSON.parse(AuthService.getInfo()).access.token.id;
 
           $scope.selectcurtenant = function(t){
             $rootScope.current_tenant = t;

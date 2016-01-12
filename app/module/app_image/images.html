@@ -52,8 +52,10 @@
                   <md-bottom-sheet class="md-grid images_list">
                     <md-list>
                       <md-list-item ng-repeat="item in hotitems | filter:imagectrl.search">
-                        <md-button class="md-grid-item-content" data-name="{{item.name}}" ng-click="listItemClick($index,item.id)">
-                          <md-icon class="fa fa-3x fa-{{item.icon}}"></md-icon>
+                        <md-button class="md-grid-item-content" data-name="{{item.name}}" ng-click="listItemClick($index,item.id)" href="/image/{{item.id}}">
+                          <md-icon class="docker-images">
+                            <img src="../images/docker.png" alt="">
+                          </md-icon>
                           <div class="md-grid-text"> {{ item.name }} </div>
                         </md-button>
                       </md-list-item>
@@ -67,8 +69,10 @@
                   <md-bottom-sheet class="md-grid images_list">
                     <md-list>
                       <md-list-item ng-repeat="item in items  | filter:imagectrl.search">
-                        <md-button class="md-grid-item-content" data-name="{{item.name}}" ng-click="listItemClick($index,item.id)">
-                          <md-icon class="fa fa-3x fa-{{item.icon}}"></md-icon>
+                        <md-button class="md-grid-item-content" data-name="{{item.name}}" ng-click="listItemClick($index,item.id)" href="/image/{{item.id}}">
+                          <md-icon  class="docker-images">
+                            <img src="../images/docker.png" alt="">
+                          </md-icon>
                           <div class="md-grid-text"> {{ item.name }} </div>
                         </md-button>
                       </md-list-item>
@@ -82,8 +86,10 @@
                   <md-bottom-sheet class="md-grid images_list">
                     <md-list>
                       <md-list-item ng-repeat="item in markitems">
-                        <md-button class="md-grid-item-content" data-name="{{item.name}}" ng-click="listItemClick($index,item.id)">
-                          <md-icon class="fa fa-3x fa-{{item.icon}}"></md-icon>
+                        <md-button class="md-grid-item-content" data-name="{{item.name}}" ng-click="listItemClick($index,item.id)"  href="/image/{{item.id}}">
+                          <md-icon  class="docker-images">
+                            <img src="../images/docker.png" alt="">
+                          </md-icon>
                           <div class="md-grid-text"> {{ item.name }} </div>
                         </md-button>
                       </md-list-item>

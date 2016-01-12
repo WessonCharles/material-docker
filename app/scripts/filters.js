@@ -25,4 +25,11 @@ define(["angular"],function(angular){
             return text;
         };
     }])
+    .filter('toHtml',['$sce', function($sce){  
+        return function(text){ 
+            var htmlreg = new RegExp('^<([^>\s]+)[^>]*>(.*?<\/\\1>)?$');;
+            var flag = htmlreg.test(text); 
+            return $sce.trustAsHtml(text);  
+        }  
+    }])  
 })

@@ -5,13 +5,14 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {
-        scope.$evalAsync(function () {
-          $timeout(function(){ $(element).colResizable({
-            liveDrag: true,
-            fixed: true
+        // scope.$evalAsync(function () {
+        //   $timeout(function(){ $(element).colResizable({
+        //     liveDrag: true,
+        //     fixed: true
             
-          });},100);
-        });
+        //   });},100);
+        // });
+        return;
       }
     }
   }])
@@ -48,7 +49,7 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
       }
     }
   })
-  .directive('mdTable',["$filter","$timeout",function ($filter,$timeout) {
+  .directive('mdTable',["$filter","$timeout","$rootScope",function ($filter,$timeout,$rootScope) {
     return {
       restrict: 'E',
       scope: { 
@@ -71,7 +72,7 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
         innerlinks:"@",
         subhover:"=",
         subclick:"=",
-        refresh:"="
+        refresh:"=",
       },
       link: function ($scope,$element,$attr) {
         console.log($scope.action)
@@ -83,6 +84,28 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
         $scope.handleSort = function (field) {
             if ($scope.sortable.indexOf(field) > -1) { return true; } else { return false; }
         };
+        $scope.setconsole = function(l){
+          $scope.consoles = l;
+        }
+        $scope.current_tenant={
+          id:$rootScope.current_tenant.id
+        }
+        $scope.token = $rootScope.token;
+
+        $scope.linkconsole = function(){
+          var link = "http://"+$scope.consoles.host+"/"+$scope.current_tenant.id+"/console/"+$scope.consoles.name+"/"+$scope.console+"?token="+$scope.token;
+          var it = $('<a href="'+link+'" id="console" target="_blank">确认连接</a>');
+          if($("body").find("a#console").length>0){
+            $("body").find("a#console").remove();
+          }
+          it.appendTo(document.body).css({"z-index":1600,
+          position:"absolute",
+          opacity:0,
+          top:$("#consolel")[0].getBoundingClientRect().top,
+          left:$("#consolel")[0].getBoundingClientRect().left
+          });
+          console.log(it)
+        }
 
         $("#tiptool").mouseleave(function(){
           console.log("2324")

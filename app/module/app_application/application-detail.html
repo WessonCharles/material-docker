@@ -9,6 +9,10 @@
           <md-icon class="fa fa-plus fa-lg"></md-icon>
           添加集群
         </button>
+        <button ng-if="tab=='cluster'" md-button class="md-raised md-primary modal__trigger" ng-click="ifcheckone()" data-modal="#resizem">
+          <md-icon class="fa fa-plus fa-lg"></md-icon>
+          扩容/缩容
+        </button>
         <button ng-if="tab=='loadbalancer'" md-button class="md-raised md-primary" viewload href="/applications/{{appone.uuid}}/create-loadbalancer">
           <md-icon class="fa fa-plus fa-lg"></md-icon>
           添加负载均衡
@@ -221,7 +225,29 @@
         </a>
       </div>
   </div> -->
-</div>        
+</div> 
+<div id="resizem" class="modal modal__bg" role="dialog" aria-hidden="true">
+    <div class="modal__dialog">
+      <div class="modal__content">
+        <h2>扩容/缩容</h2>
+        <div class="modal_content_inner">
+        <form name="myForm">
+          <md-content class="md-padding">
+            <div class="form-input">
+              <label for="">当前副本数-{{current_size}},调整为：</label>
+              <input type="text" ng-model="resizenum" ng-required>
+            </div>
+            <div class="right">
+              <md-button ng-click="resizem($event)" ng-disabled="myForm.$invalid" class="md-primary" layout layout-align="center end">提交</md-button>
+            </div>
+        </form>
+        </div>
+        <a class="modal__close demo-close">
+          <i class="fa fa-times"></i>
+        </a>
+      </div>
+    </div>
+  </div>       
 <!-- <div id="container_detail" class="modal modal__bg" role="dialog" aria-hidden="true">
   <div class="modal__dialog" style="max-width: 80%;">
     <div class="modal__content">

@@ -1,4 +1,40 @@
 <div id="md-table-template" style="min-height:245px;">
+  <div layout="row" class="md-table-footer unshadow">
+    <span class="md-table-count-info">每页条数 : 
+      <a href="#" ng-click="goToPage(0); count=10">10</a>,
+      <a href="#" ng-click="goToPage(0); count=25">25</a>,
+      <a href="#" ng-click="goToPage(0); count=50">50</a>,
+      <a href="#" ng-click="goToPage(0); count=100">100</a>
+      (当前{{count}}条)
+    </span>
+    <span flex="flex" class="noshadow">
+      <a ng-click="refresh()" title="刷新列表"><i style="margin:13px 5px 13px 13px;" class="fa fa-refresh"></i>刷新列表</a>
+    </span>
+    <span ng-show="nbOfPages() > 1">
+     <!--  <md-button ng-disabled="tablePage==0" ng-click="tablePage=tablePage-1" aria-label="Previous Page" class="md-primary md-hue-2">
+      <i style="font-size:16px;" class="ion-chevron-left"></i>
+    </md-button>
+      <a href="#" ng-repeat="i in getNumber(nbOfPages()) track by $index">
+        <md-button ng-click="goToPage($index)" class="md-primary md-hue-2 md-table-footer-item">
+          <span ng-class="{ 'md-table-active-page': tablePage==$index}">{{$index+1}}</span>
+        </md-button>
+      </a>
+      <md-button ng-disabled="tablePage==nbOfPages()-1" ng-click="tablePage=tablePage+1" aria-label="Next Page" class="md-primary md-hue-2">
+      <i style="font-size:16px;" class="ion-chevron-right"></i>
+    </md-button>
+ -->    <ul class="pagination">
+        <li ng-disabled="tablePage==0" ng-click="tablePage=tablePage-1" aria-label="Previous Page">
+          <a class="md-button" href="javascript:void(0)">«</a>
+        </li>
+        <li ng-repeat="i in getNumber(nbOfPages()) track by $index" ng-class="{ 'active': tablePage==$index}">
+          <a ng-click="goToPage($index)" class="md-button" ng-class="{'md-primary md-raised':tablePage==$index}" href="javascript:void(0)">
+            {{$index+1}}
+          </a>
+        </li>
+        <li ng-disabled="tablePage==nbOfPages()-1" ng-click="tablePage=tablePage+1" aria-label="Next Page"><a class="md-button" href="javascript:void(0)">»</a></li>
+    </ul>
+    </span>
+  </div>
   <table md-colresize="md-colresize" class="md-table">
     <thead>
       <tr class="md-table-headers-row">
@@ -34,6 +70,7 @@
             <a style="font-size:22px;" ng-if="h.field=='repo_url'" target="_blank" href="{{c[h.field]}}"><i class="fa fa-github"></i></a>
             <span ng-if="h.field!='name'&&h.field!='repo_url'">{{c[h.field]}}</span>
             <span ng-if="h.field=='name'&&!c.collections&&!links">{{c[h.field]}}</span>
+            <!-- <i ng-if="c.isScale"  class="fa fa-zone status_loading" title="正在扩/缩容"></i> -->
         </td>
         <td ng-repeat="h in headers" ng-class="customClass[h.field]" ng-if="h.field != thumbs&&customClass[h.field].indexOf('modal__trigger')" style="margin-top: 5px;background-color:transparent;" class="md-table-content unshadow" data-modal="{{modal}}">
             <a ng-if="links&&h.field=='name'" href="{{links}}/{{c.uuid}}" viewload>{{c[h.field]}}</a>
@@ -74,7 +111,9 @@
               <tr  ng-click="func($event,l)" ng-if="c.collections" ng-class="c.subshow?'animate-show':'animate-show hide'" data-uid="{{c.uid}}" ng-repeat="l in c.collections track by $index" class="md-table-content-row">
                 <td class="md-table-content"><md-checkbox aria-label="checkbox" style="opacity:0"></md-checkbox></td>
                 <td class="md-table-content" ng-repeat="ch in collheaders track by $index" ng-if="ch=='name'" >
-                  <a ng-if="innerlinks&&subhover" href="{{innerlinks}}/instance?name={{l[ch]}}" ng-mouseover="subhover($event,l,true)">{{l[ch]}}</a></td>
+                  <a ng-if="innerlinks&&subhover" href="{{innerlinks}}/instance?name={{l[ch]}}" ng-mouseover="subhover($event,l,true)">{{l[ch]}}</a>
+                  <a ng-if="l.component&&l.host" class="modal__trigger" ng-click="setconsole(l)" data-modal="#termanal_sure"><i class="fa fa-desktop"></i></a>
+                </td>
                  <a ng-if="innerlinks" href="{{innerlinks}}/{{l[ch]}}">{{l[ch]}}</a></td>
                  <a ng-if="innerlinks&&subclick" href="{{innerlinks}}/instance?name={{l[ch]}}" ng-click="subclick(l)">{{l[ch]}}</a></td>
                 <td class="md-table-content" ng-repeat="ch in collheaders track by $index" ng-if="ch!='name'"><span>{{l[ch]}}</span></td>
@@ -85,42 +124,6 @@
       </tr> -->
     </tbody>
   </table>
-  <div layout="row" class="md-table-footer unshadow">
-    <span class="md-table-count-info">每页条数 : 
-      <a href="#" ng-click="goToPage(0); count=10">10</a>,
-      <a href="#" ng-click="goToPage(0); count=25">25</a>,
-      <a href="#" ng-click="goToPage(0); count=50">50</a>,
-      <a href="#" ng-click="goToPage(0); count=100">100</a>
-      (当前{{count}}条)
-    </span>
-    <span flex="flex" class="noshadow">
-      <a ng-click="refresh()" title="刷新列表"><i style="margin:13px 5px 13px 13px;" class="fa fa-refresh"></i>刷新列表</a>
-    </span>
-    <span ng-show="nbOfPages() > 1">
-     <!--  <md-button ng-disabled="tablePage==0" ng-click="tablePage=tablePage-1" aria-label="Previous Page" class="md-primary md-hue-2">
-      <i style="font-size:16px;" class="ion-chevron-left"></i>
-    </md-button>
-      <a href="#" ng-repeat="i in getNumber(nbOfPages()) track by $index">
-        <md-button ng-click="goToPage($index)" class="md-primary md-hue-2 md-table-footer-item">
-          <span ng-class="{ 'md-table-active-page': tablePage==$index}">{{$index+1}}</span>
-        </md-button>
-      </a>
-      <md-button ng-disabled="tablePage==nbOfPages()-1" ng-click="tablePage=tablePage+1" aria-label="Next Page" class="md-primary md-hue-2">
-      <i style="font-size:16px;" class="ion-chevron-right"></i>
-    </md-button>
- -->    <ul class="pagination">
-        <li ng-disabled="tablePage==0" ng-click="tablePage=tablePage-1" aria-label="Previous Page">
-          <a class="md-button" href="javascript:void(0)">«</a>
-        </li>
-        <li ng-repeat="i in getNumber(nbOfPages()) track by $index" ng-class="{ 'active': tablePage==$index}">
-          <a ng-click="goToPage($index)" class="md-button" ng-class="{'md-primary md-raised':tablePage==$index}" href="javascript:void(0)">
-            {{$index+1}}
-          </a>
-        </li>
-        <li ng-disabled="tablePage==nbOfPages()-1" ng-click="tablePage=tablePage+1" aria-label="Next Page"><a class="md-button" href="javascript:void(0)">»</a></li>
-    </ul>
-    </span>
-  </div>
 </div>
 <div class="tiptool" id="tiptool">
     
@@ -137,6 +140,30 @@
             </div>
           <div align="right">
             <md-button ng-click="action.trigger()" class="md-primary" layout layout-align="center end">保存</md-button>
+          </div>
+        </form>
+        </div>
+        <!-- modal close button -->
+        <a class="modal__close demo-close">
+          <i class="fa fa-times"></i>
+        </a>
+      </div>
+    </div>
+</div>
+<div id="termanal_sure" class="modal modal__bg" role="dialog" aria-hidden="true">
+    <div class="modal__dialog">
+      <div class="modal__content">
+        <h2>连接确认</h2>
+        <div class="modal_content_inner">
+        <form name="nameForm">
+          <div class="form-input">
+              <label for="">选择终端</label>
+              <md-select placeholder="终端列表" name="cluster" ng-change="linkconsole()" ng-model="console" required>
+                <md-option ng-repeat="t in consoles.component track by $index" value="{{t.containerID}}">{{t.name}}</md-option>
+              </md-select>
+            </div>
+          <div align="right">
+            <a id="consolel">确认连接</a>
           </div>
         </form>
         </div>
