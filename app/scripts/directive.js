@@ -94,18 +94,26 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
 
         $scope.linkconsole = function(){
           var link = "http://"+$scope.consoles.host+"/"+$scope.current_tenant.id+"/console/"+$scope.consoles.name+"/"+$scope.console+"?token="+$scope.token;
-          var it = $('<a href="'+link+'" id="console" target="_blank">确认连接</a>');
+          var it = $('<a class="md-primary" layout layout-align="center end" href="'+link+'" id="console" target="_blank">确认连接</a>');
           if($("body").find("a#console").length>0){
             $("body").find("a#console").remove();
           }
           it.appendTo(document.body).css({"z-index":1600,
           position:"absolute",
           opacity:0,
-          top:$("#consolel")[0].getBoundingClientRect().top,
-          left:$("#consolel")[0].getBoundingClientRect().left
+          display:"inline-block",
+          top:$("#consolel")[0].getBoundingClientRect().top+$("body")[0].scrollTop,
+          left:$("#consolel")[0].getBoundingClientRect().left,
+          width:$("#consolel")[0].offsetWidth,
+          height:$("#consolel")[0].offsetHeight
           });
           console.log(it)
         }
+        $(document).scroll(function(){
+          if($("#console").length>0){
+            $("#console").css("top",($("#consolel")[0].getBoundingClientRect().top+$("body")[0].scrollTop)+"px");
+          }
+        })
 
         $("#tiptool").mouseleave(function(){
           console.log("2324")

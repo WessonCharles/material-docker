@@ -46,7 +46,7 @@
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
         $httpProvider.defaults.useXDomain = true;
         console.log($httpProvider);
-        $httpProvider.interceptors.push('securityInterceptor');
+        // $httpProvider.interceptors.push('securityInterceptor');
         $httpProvider.interceptors.push('allres');
         // delete $httpProvider.defaults.headers.common['X-Requested-With'];
       //   $httpProvider.interceptors.push('formsubmit');
@@ -83,28 +83,28 @@
 
       $httpProvider.interceptors.push(interceptor);
     }])
-    .provider('securityInterceptor',function(){
-      /**
-       * 监控返回错误的请求
-       * @param  {[type]} ){                     this.$get [description]
-       * @return {[type]}     [description]
-       */
-        this.$get = function($location, $q){
-          return function(promise) {
-            return promise.then(null, function(response) {
-              console.log(response)
-              if(response&&response.data&&response.data.error&&response.data.error.message=="Invalid user / password"){
+    // .provider('securityInterceptor',function(){
+    //   /**
+    //    * 监控返回错误的请求
+    //    * @param  {[type]} ){                     this.$get [description]
+    //    * @return {[type]}     [description]
+    //    */
+    //     this.$get = function($location, $q){
+    //       return function(promise) {
+    //         return promise.then(null, function(response) {
+    //           console.log(response)
+    //           if(response&&response.data&&response.data.error&&response.data.error.message=="Invalid user / password"){
                   
-              }else if(response.status === 403 || response.status === 401) {//token过期或无效的token
-                console.log("I Dont know why")
-                window.location.href="/";
-              }else if(response.status===500 || response.status===503){
-              }
-              return $q.reject(response);
-            });
-          };
-        };
-    })
+    //           }else if(response.status === 403 || response.status === 401) {//token过期或无效的token
+    //             console.log("I Dont know why")
+    //             window.location.href="/";
+    //           }else if(response.status===500 || response.status===503){
+    //           }
+    //           return $q.reject(response);
+    //         });
+    //       };
+    //     };
+    // })
 		return window.ThCofAngSeedConfig;
 	})
 // }());

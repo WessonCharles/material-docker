@@ -47,7 +47,7 @@
             <div class="text">共享存储</div>
           </a>
         </li>
-        <li class="menu" ng-init="$parent.menu = {'image':false};">
+        <li class="menu" ng-init="$parent.menu = {'image':false};" ng-style="menu.image?{'background-color':'#44444c'}:{}">
           <a ng-click="menu.image=!menu.image;">
           <div class="icon">
             <i class="fa fa-file-video-o"></i>

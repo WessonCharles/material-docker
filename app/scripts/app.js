@@ -180,6 +180,17 @@ define([
          */
         $scope.$on('$viewContentLoaded',function(){
           Modal.init();
+          function togglesid(){
+            if($("html")[0].offsetWidth<=1024){
+              $("body .main").addClass("minside");
+            }else{
+              $("body .main").removeClass("minside");
+            }
+          }
+          togglesid();
+          $(window).resize(function(){
+            togglesid();
+          })
         })
 
         /**

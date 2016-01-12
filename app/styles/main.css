@@ -238,6 +238,7 @@ md-menu-item{
   position: fixed;
   top:0px;
   left:0;
+  z-index: 20;
   bottom:0;
   /*background-color: #2196F3;*/
   background-color: #22222C;
@@ -290,11 +291,23 @@ md-menu-item{
 }
 li.menu ul{
   list-style: none;
-    background-color: #33333c;
+    background-color: #44444c;
     padding-left:0;
+}
+.minside li.menu ul {
+    list-style: none;
+    background-color: #44444c;
+    padding-left: 0;
+    position: absolute;
+    width: 120px;
+    z-index: 30;
+    margin: -41px 0 0 50px;
 }
 li.menu ul li{
   padding: 5px 10px 5px 30px;
+}
+.minside li.menu ul li{
+  padding:5px 10px 5px 10px;
 }
 li.menu ul li i{
   margin-right: 10px;
@@ -872,6 +885,7 @@ a.hq-button{
 .pagination>li>a, .pagination>li>span {
     position: relative;
     float: left;
+    line-height: 20px!important;
     padding: 6px 12px;
     margin-left: -1px;
     line-height: 1.42857143;

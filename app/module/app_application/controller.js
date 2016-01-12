@@ -508,12 +508,16 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			    });
 	        }
 
-	        $scope.ifcheckone = function(){
+	        $scope.ifcheckone = function(e){
 	        	if($scope.selected.length==0){
 	        		Notify.showSimpleToast("请至少选择一条",-1);
+	        		e.stopPropagation();
+	        		e.preventDefault(); 
 	        		return false;
 	        	}else if($scope.selected.length>1){
 	        		Notify.showSimpleToast("只能选择一条进行操作",-1);
+	        		e.stopPropagation();
+	        		e.preventDefault(); 
 	        		return false;
 	        	}else{
 	        		$scope.current_size = $scope.selected[0].replicas;

@@ -15,6 +15,7 @@ var rev = require('gulp-rev');
 var revCollector = require('gulp-rev-collector');
 var rjs = require('requirejs');
 var minifyHTML   = require('gulp-minify-html'); //压缩html
+var minifycss = require('gulp-minify-css');
 var htmlreplace = require('gulp-html-replace');
 
 
@@ -34,27 +35,6 @@ gulp.task('clean',function(){
 })
 
 
-//require合并
-// gulp.task('rjs', function () {
-//     gulp.src('./src/js/**/*.js')
-//         .pipe(amdOptimize("main", { //require config
-//             paths: {
-//                 "jquery": "../../libs/jquery/dist/jquery.min",
-//                 "jquery.serializeJSON": "../../libs/jquery.serializeJSON/jquery.serializejson.min",
-//                 "sug": "src/js/suggestion/suggestion",
-//                 "validate": "../util/src/js/util/validate",
-//                 "urlParam": "../util/src/js/util/url.param"
-//             },
-//             shim: {
-//                 "jquery.serializeJSON": ['jquery']
-//             }
-//         }))
-//         .pipe(concat("index.js"))           //合并
-//         .pipe(gulp.dest("dist/js"))          //输出保存
-//         .pipe(rename("index.min.js"))          //重命名
-//         .pipe(uglify())                        //压缩
-//         .pipe(gulp.dest("dist/js"));         //输出保存
-// });
 gulp.task('build',['clean'] ,function(cb){//中间的字符串数组，是指当前任务的依赖任务，即 build任务需要再clean任务执行完再执行，以此来实现异步
   rjs.optimize({
       baseUrl: "app/scripts",                     //js根目录
@@ -73,11 +53,18 @@ gulp.task('build',['clean'] ,function(cb){//中间的字符串数组，是指当
         angularRoute:'../libs/angular-route/angular-route.min',
         angularAnimate:'../libs/angular-animate/angular-animate.min',
         angularAria:'../libs/angular-aria/angular-aria.min',
-        angularMaterial:'empty:',
+        angularMaterial:'../libs/angular-material/angular-material.min',
         angularResource:'../libs/angular-resource/angular-resource.min',
         modal:'../libs/custom/modal',
         colresize:'../libs/colresize/colresize',
         modernizr:'../libs/custom/modernizr.custom',
+        socket:'../libs/socket/socket.io',
+        term:'../libs/term.js-master/src/term',
+        markdown:'../libs/markdown/markdown',
+        highlight:'empty:',
+        imgcrop:'../libs/ngImgCrop/ng-img-crop',
+        datetime:'../libs/datePicker/js/bootstrap-datetimepicker.min',
+        highcharts:'empty:',
       },
       shim:{
         'angular' : {'exports' : 'angular'},
@@ -86,10 +73,17 @@ gulp.task('build',['clean'] ,function(cb){//中间的字符串数组，是指当
         'angularRoute': ['angular'],
         'angularAnimate':['angular'],
         'angularAria':['angular'],
-        'angularMaterial':['angular','angularAria'],
+        'angularMaterial':['angular','angularAnimate','angularAria'],
         'modal':['jquery'],
         'modernizr':{'exports':'modernizr'},
-        'colresize':['jquery']
+        'colresize':['jquery'],
+        'socket':{'exports':'socket'},
+        'term':{'exports':'term'},
+        'markdown':{'exports':'markdown'},
+        'imgcrop':['angular'],
+        'highlight':{'exports':'highlight'},
+        'highcharts':['jquery'],
+        'datetime':['jquery']
       },
       priority: [
         'angular',
@@ -111,21 +105,23 @@ gulp.task('build',['clean'] ,function(cb){//中间的字符串数组，是指当
 /**
  * 对静态资源增加版本控制MD5戳
  */
-// gulp.task('css',['clean','build'],function(){
-//     return gulp.src('app/libs/**/*.css')
-//         // .pipe(csso())  //这里是针对css进行压缩  需要引用gulp-csso
-//         .pipe(rename(function(path){
-//             console.log(path)
-//             // path.basename += ".min";
-//             path.etname=".css";
-//         }))
-//         .pipe(rev())
-//         .pipe(gulp.dest('app/gulp-build/styles'))
-//         .pipe(rev.manifest())
-//         .pipe(gulp.dest('app/gulp-build/rev/css')) //生成minifest.json（静态资源表）文件
-// });
+gulp.task('conmincss',['build'],function(){
+  var cssc = {
+        uikit:'app/libs/angular-material/angular-material.min.css',
+        codemirror:'app/styles/main.css',
+        htmleditor:'app/libs/ngImgCrop/ng-img-crop.css',
+        pretty:'app/libs/datePicker/bootstrap-datetimepicker.min.css'
+    },csscfile=[];
+    for(var c in cssc){
+        csscfile.push(cssc[c]);
+    }
+    return gulp.src(csscfile)
+      .pipe(concat('coanseed.min.css'))
+      .pipe(minifycss())
+      .pipe(gulp.dest('app/min'))
+})
 
-gulp.task('js&css',['clean','build'],function(){
+gulp.task('js&css',['conmincss'],function(){
   return gulp.src(['app/**/*.*'])
         // .pipe(rename())
         // .pipe(rev())
@@ -144,18 +140,26 @@ gulp.task('js',['clean','js&css'],function(){
 })
 
 gulp.task('css',['clean','js&css'],function(){
-    return gulp.src(['app/libs/**/*.css'])
+    return gulp.src(['app/style/*.css'])
         // .pipe(rename())
         .pipe(rev())
-        .pipe(gulp.dest('dest/libs'))
+        .pipe(gulp.dest('dest/style'))
         .pipe(rev.manifest())
         .pipe(gulp.dest('dest/rev/css')) 
 })
 
+gulp.task('min_css',['clean','js&css'],function(){
+    return gulp.src(['app/min/*.css'])
+        // .pipe(rename())
+        .pipe(rev())
+        .pipe(gulp.dest('dest/min'))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest('dest/rev/min_css')) 
+})
 /**
  * 根据生成的mainfest进行替换
  */
-gulp.task('rev',['js','css'],function(){
+gulp.task('rev',['js','css','min_css'],function(){
     return gulp.src(['dest/rev/**/*.json','app/index.html'])//数组前一个是生成的静态资源文件，后一个是需要修改的html模板
         .pipe(revCollector({
             replaceReved:true,
@@ -170,7 +174,8 @@ gulp.task('rev',['js','css'],function(){
 gulp.task('replace',['rev'],function(){
   return gulp.src('dest/index.html')
         .pipe(htmlreplace({
-          'require':'min/coanseed.min.js'
+          'require':'min/coanseed.min.js',
+          'css':'min/coanseed.min.css'
         }))
         .pipe(gulp.dest('dest/'))
 })
@@ -190,7 +195,7 @@ gulp.task('revrequire',['replace'],function(){
 
 
 
-gulp.task('default', ['clean','build','js&css','js','css','rev','replace','revrequire']);
+gulp.task('default', ['clean','conmincss','build','js&css','js','css','min_css','rev','replace','revrequire']);
 
 // gulp.task('default', function () {
 //     //监听js变化
