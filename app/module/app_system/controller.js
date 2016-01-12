@@ -19,7 +19,14 @@ define(['angular','modal'],function(angular,modal){
 				var dat = {};
 				dat[p] = $scope[p];
 				$http.put(url,dat).success(function(data){
-					Notify.showSimpleToast("配置修改成功",1);
+					if(data.code==0){
+                       Notify.showSimpleToast("配置修改成功",1);
+                    }else if(data.code>0){
+                        Notify.showSimpleToast(data.message,-1);
+                    }else if(data.code<0){
+                        Notify.showSimpleToast(data.message,0)
+                    }
+					
 				})
 			}
 		}

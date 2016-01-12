@@ -2116,3 +2116,14 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus {
 .progress-bar {
     background-color: #1ab394!important;
 }
+
+.datetimepicker{
+  border: 1px solid #ccc!important;
+}
+.page-header {
+    font-size: 17px;
+    margin: 0px 10px -5px;
+    padding: 0;
+    border: none;
+    color: #7c7f83;
+}
