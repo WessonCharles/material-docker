@@ -1882,10 +1882,13 @@ md-toast.md-danger-theme{
 .images_list md-list-item {
     border: 1px solid #e4e4e4;
     margin: 0 10px 0 0;
-    padding-top: 20px;
 }
 .images_list md-list-item .md-grid-item-content{
   background-color:#fff!important;
+    display: inline-block;
+    width: 100%!important;
+    height: 70%;
+    margin-top: 14px;
 }
 .images_list md-list-item:hover {
     background-color:#EDF0F5;
