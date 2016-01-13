@@ -61,8 +61,7 @@ require.config({
 		highlight:'//cdn.jsdelivr.net/highlight.js/9.0.0/highlight.min',
 		imgcrop:'../libs/ngImgCrop/ng-img-crop',
 		datetime:'../libs/datePicker/js/bootstrap-datetimepicker.min',
-		highcharts:'http://cdn.hcharts.cn/highcharts/highcharts',
-		// exporting:'http://cdn.hcharts.cn/highcharts/exporting'
+		highcharts:'http://cdn.hcharts.cn/highcharts/highcharts'
 	},
 	shim:{
 		'angular' : {'exports' : 'angular'},
@@ -119,7 +118,7 @@ require([
 	'../module/app_publicip/router',
 	'../module/app_system/router',
 	'../module/app_users/router',
-        'app',
+        'app'
 	],function(angular){
 		angular.element().ready(function() {
             angular.bootstrap(document, ['ThCofAngSeed']);

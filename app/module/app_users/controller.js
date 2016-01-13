@@ -45,7 +45,7 @@ define(['angular','modal'],function(angular,modal){
 			        	// 	name:user.metadata[i].name,
 			        	// 	replicas:user.metadata[i].replicas,
 			        	// 	health_status:user.metadata[i].status.current+"/"+user.metadata[i].status.desired,
-			        	// 	created_at:$filter("date")(user.metadata[i].created_at,'MM/dd/yyyy h:mm:ss'),
+			        	// 	created_at:$filter("date")(user.metadata[i].created_at,'MM/dd/yyyy HH:mm:ss'),
 			        	// 	collections:[],
 			        	// 	bindtenantl:user.metadata[i].bind.gamepublic&&user.metadata[i].bind.gamepublic.length>0?user.metadata[i].bind.gamepublic.join(","):""
 			        	// })
@@ -82,7 +82,7 @@ define(['angular','modal'],function(angular,modal){
 			        	// $scope.tcontent.push({
 			        	// 	name:tenant.metadata[i].name,
 			        	// 	sessionAffinity:$filter('i18n')(tenant.metadata[i].sessionAffinity),
-			        	// 	created_at:$filter("date")(tenant.metadata[i].created_at,'yyyy-MM-dd h:mm:ss'),
+			        	// 	created_at:$filter("date")(tenant.metadata[i].created_at,'yyyy-MM-dd HH:mm:ss'),
 			        	// 	collections:tenant.metadata[i].tenant
 			        	// })
 			        	$scope.tcontent.push(tenant.metadata[i]);

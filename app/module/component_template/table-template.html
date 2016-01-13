@@ -159,7 +159,7 @@
           <div class="form-input">
               <label for="">选择终端</label>
               <md-select placeholder="终端列表" name="cluster" ng-change="linkconsole()" ng-model="console" required>
-                <md-option ng-repeat="t in consoles.component track by $index" value="{{t.containerID}}">{{t.name}}</md-option>
+                <md-option ng-repeat="t in conscom track by t.containerID" value="{{t.containerID}}">{{t.name}}</md-option>
               </md-select>
             </div>
           <div align="right">
