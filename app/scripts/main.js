@@ -61,8 +61,7 @@ require.config({
 		highlight:'//cdn.jsdelivr.net/highlight.js/9.0.0/highlight.min',
 		imgcrop:'../libs/ngImgCrop/ng-img-crop',
 		datetime:'../libs/datePicker/js/bootstrap-datetimepicker.min',
-		highcharts:'http://cdn.hcharts.cn/highcharts/highcharts',
-		// exporting:'http://cdn.hcharts.cn/highcharts/exporting'
+		highcharts:'http://cdn.hcharts.cn/highcharts/highcharts'
 	},
 	shim:{
 		'angular' : {'exports' : 'angular'},

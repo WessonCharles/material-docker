@@ -332,7 +332,7 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 			        $scope.content = [];
 			        for(var i =0;i<sourcedata.length;i++){
 			        	var s = sourcedata[i];
-			        	var time = $filter('date')(s.updated_at,"MM-dd-yyyy h:mma");
+			        	var time = $filter('date')(s.updated_at,"MM-dd-yyyy HH:mm");
 			        	var obj = {
 			        		"uuid":s.uuid,
 			        		"name":s.name,
