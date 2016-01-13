@@ -2320,3 +2320,11 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus {
   margin-left: -1px!important;
     margin-right: 0px!important;
 }
+.trspan{
+      overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    word-wrap: break-word;
+    display: inline-block;
+    word-break: break-all;
+}
