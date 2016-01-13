@@ -291,8 +291,8 @@ define(['angular','modal'],function(angular,modal){
 			// })
 		}
 	])
-	.controller('createcolumnsctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','instance','restful','$compile',
-		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,instance,restful,$compile){
+	.controller('createcolumnsctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','instance','restful','$compile','Notify',
+		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,instance,restful,$compile,Notify){
 			$scope.col  = {};
 			var col = restful.action({type:'@id'},$scope.baseurl+":id/volumes");
 			$scope.createimage = function(){
