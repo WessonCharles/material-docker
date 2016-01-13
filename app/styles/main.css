@@ -637,6 +637,12 @@ a.hq-button{
     display: inline-block;
     clear: both;
 }
+.form-input.message{
+  height:50px;
+}
+[flex].message{
+  height:50px;
+}
 .left{
   margin:0;
 }
@@ -2240,4 +2246,14 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus {
 .docker-images img{
   width:42px;
   height:42px;
+}
+.hint {
+    position: absolute;
+    left: 85px;
+    right: auto;
+    bottom: 0;
+    font-size: 12px;
+    line-height: 14px;
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    color: grey;
 }
