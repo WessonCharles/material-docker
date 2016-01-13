@@ -378,8 +378,11 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			            name:'分发策略', 
 			            field: 'sessionAffinity'
 			          },{
-			          	name:'域名',
-			          	field:'domain'
+                                    name: '公网IP',
+                                    field: 'publicip'
+                                  },{
+			            name:'内部域名',
+			            field:'domain'
 			          },{
 			            name: '创建时间', 
 			            field: 'created_at'
@@ -388,23 +391,28 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			          //   field:'more_action'
 			          }
 			        ];
-			        $scope.collheaders = [];
-			        if(lb.metadata[0]&&lb.metadata[0].lb[0]){
+			        $scope.collheaders = ["instance","protocol","endpoint", "xxx", "created_at"];
+			        /*if(lb.metadata[0]&&lb.metadata[0].lb[0]){
 			        	for(var f in lb.metadata[0].lb[0]){
 			        		if(f!='name'){
 				        		$scope.collheaders.push(f);
 				        	}
 			        	}
-			        }
+			        }*/
 			        console.log($scope.collheaders)
 			        $scope.tcontent = [];
 			        for(var i=0;i<lb.metadata.length;i++){
+                                        var publicIP = lb.metadata[i].public_ip.join(",");
+                                        var sub_endpoint = lb.metadata[i].lb;
+                                        sub_endpoint.xxx = "";
+                                        sub_endpoint.created_at = $filter("date")(lb.metadata[i].created_at,'yyyy-MM-dd h:mm:ss');
 			        	$scope.tcontent.push({
 			        		name:lb.metadata[i].name,
 			        		sessionAffinity:$filter('i18n')(lb.metadata[i].sessionAffinity),
 			        		domain:lb.metadata[i].domain,
 			        		created_at:$filter("date")(lb.metadata[i].created_at,'yyyy-MM-dd h:mm:ss'),
-			        		collections:lb.metadata[i].lb
+			        		collections:sub_endpoint,
+                                                publicip:publicIP
 			        	})
 			        }
 
@@ -434,8 +442,8 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 
 
 			        $scope.tselected = [];
-			        $scope.tcustom = {name: 'bold', sessionAffinity:'grey',domain:'grey',created_at: 'grey'};
-			        $scope.tsortable = ['name', 'sessionAffinity','domain','created_at'];
+			        $scope.tcustom = {name: 'bold', sessionAffinity:'grey',domain:'grey',created_at:'grey',publicip:'grey'};
+			        $scope.tsortable = ['name', 'sessionAffinity','domain','created_at','publicip'];
 			        // $scope.tmodal = "#container_detail";
 			        // $scope.thumbs = 'thumb';
 			        $scope.tcount = 5;
@@ -458,10 +466,13 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 							status:lsc.metadata[i].status.component,
 							images:lsc.metadata[i].images,
 							component:lsc.metadata[i].component,
-							host:lsc.metadata[i].host
+							host:lsc.metadata[i].host,
+                                                        protocol:lsc.metadata[i].protocol,
+							created_at:$filter("date")(lsc.metadata[i].created_at,"yyyy-MM-dd h:mm:ss"),
+                                                        xx:"",
 						})
 					}
-					$scope.tcollheaders = ["name","private_ip","status","started_at"];
+					$scope.tcollheaders = ["name","private_ip","status","started_at","xx"];
 					setTimeout(function(){
 						Modal.init();
 					},300)
