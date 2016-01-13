@@ -22,6 +22,8 @@ define(['angular'], function(angular){
                 'roundrobin':'轮询',
                 'clientip':'客户端IP',
                 'publicip':'公网管理',
+                'cluster':'集群',
+                'event':'操作事件',
             },
             'en_US' : {
            }

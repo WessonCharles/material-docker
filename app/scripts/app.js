@@ -17,7 +17,8 @@ define([
   "../module/app_image/controller",
   "../module/app_publicip/controller",
   "../module/app_system/controller",
-  "../module/app_users/controller"
+  "../module/app_users/controller",
+  "../module/app_events/controller",
   ],function(angular){
   window.ThCofAngSeedModule = angular.module('ThCofAngSeed', [
       'ngRoute',
@@ -35,7 +36,8 @@ define([
       'ThCofAngSeed.images_ctrl',
       'ThCofAngSeed.publicip_ctrl',
       'ThCofAngSeed.system_ctrl',
-      'ThCofAngSeed.users_ctrl'
+      'ThCofAngSeed.users_ctrl',
+      'ThCofAngSeed.events_ctrl',
   ]).controller("baseCtrl",["$scope", "$http","$rootScope", "$location","$timeout", "$filter","$window",'$route','AuthService','$mdBottomSheet','instance',
       
       function($scope,$http,$rootScope,$location,$timeout,$filter,$window,$route,AuthService,$mdBottomSheet,instance){

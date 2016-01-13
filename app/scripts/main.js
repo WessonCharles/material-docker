@@ -118,7 +118,8 @@ require([
 	'../module/app_publicip/router',
 	'../module/app_system/router',
 	'../module/app_users/router',
-        'app'
+	'../module/app_events/router',
+        'app',
 	],function(angular){
 		angular.element().ready(function() {
             angular.bootstrap(document, ['ThCofAngSeed']);
