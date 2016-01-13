@@ -289,11 +289,22 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			// 	}
 			// }
 			// 
+			
 	                $rootScope.intro = {
 	                	title:"集群",
 	                	content:"我们将所有的基础服务以集群的方式来运行,有了集群,在日后,您可以轻松的对集群进行横向扩展(扩容/缩容)."
 	                }
 			
+	        $scope.changetitle = function(p){
+	        	$rootScope.intro = p=='cluster'?{
+	                	title:"集群",
+	                	content:"我们将所有的基础服务以集群的方式来运行,有了集群,在日后,您可以轻松的对集群进行横向扩展(扩容/缩容)."
+	                }:{
+	                	title:"负载均衡",
+	                	content:""
+	                }	
+	        }
+
 			$scope.toggleSearch = false; 
 
 			$scope.tab = 'cluster';
