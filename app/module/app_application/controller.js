@@ -328,33 +328,50 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			            name:'创建时间',
 			            field:'created_at'
 			          },{
-			          	name:'绑定负载均衡',
-			          	field:'bindlbl'
-			          }
+			            name:'绑定的负载均衡',
+			            field:'lb_lists'
+			          },{
+                                      name:'负载均衡公网IP',
+                                      field:'lb_public'
+                                  },{
+                                      name:'负载均衡集群IP',
+                                      field:'lb_private'
+                                  }
 			        ];
 			        
 			        $scope.tcollheaders = [];
 			        $scope.content = [];
 			        for(var i=0;i<cl.metadata.length;i++){
-			        	var bind = JSON.stringify(cl.metadata[i].bind);
+                                        var lb_lists = [], lb_public = [], lb_private = [];
+                                        var bind = cl.metadata[i].bind;
+                                        for(var m=0;m<bind.length;m++){
+                                            lb_lists.push(bind[m].name);
+                                            if(bind[m].public_ip&&bind[m].public_ip.length>0){
+                                                lb_public.push(bind[m].public_ip.join(","));
+                                            }
+                                            lb_private.push(bind[m].private_ip);
+                                        }
+			        	/*var bind = JSON.stringify(cl.metadata[i].bind);
 			        	if(bind=='{}'){
 			        		bind = "";
 			        	}
 			        	bind = bind.replace(/\{/g,'').replace(/\]}/g,'').replace(/\[/g,'');
 			        	bind = bind.replace(/"/g,'');
-			        	bind = bind.replace(/],/g,';')
+			        	bind = bind.replace(/],/g,';')*/
 			        	$scope.content.push({
 			        		name:cl.metadata[i].name,
 			        		replicas:cl.metadata[i].replicas,
 			        		health_status:cl.metadata[i].status.current+"/"+cl.metadata[i].status.desired,
 			        		created_at:$filter("date")(cl.metadata[i].created_at,'yyyy-MM-dd h:mm:ss'),
 			        		collections:[],
-			        		bindlbl:bind
+			        		lb_lists:lb_lists.join(","),
+                                                lb_public:lb_public.join(","),
+                                                lb_private:lb_private.join(",")
 			        	})
 			        }
 			        $scope.selected = [];
-			        $scope.custom = {name: 'bold', replicas:'grey',health_status: 'grey',created_at:'grey',bindlbl:'grey'};
-			        $scope.sortable = ['name', 'replicas', 'health_status','created_at','bindlbl'];
+			        $scope.custom = {name: 'bold', replicas:'grey',health_status: 'grey',created_at:'grey',lb_lists:'grey',lb_public:'grey',lb_private:'grey'};
+			        $scope.sortable = ['name', 'replicas', 'health_status','created_at','lb_lists','lb_public','lb_private'];
 			        // $scope.thumbs = 'thumb';
 			        $scope.count = 5;
 			        var code = $compile('<md-table headers="headers" innerlinks="applications/'+$routeParams.id+'" refresh="refresh" content="content" sortable="sortable" filters="search" thumbs="thumbs" isselect="true" selected="selected" modal="modal" collheaders="tcollheaders" getapidata="getcoldata" subhover="subhover" count="count"></md-table>')($scope);
@@ -381,6 +398,9 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
                                     name: '公网IP',
                                     field: 'publicip'
                                   },{
+                                    name: '集群IP',
+                                    field: 'private_ip'
+                                  },{
 			            name:'内部域名',
 			            field:'domain'
 			          },{
@@ -391,7 +411,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			          //   field:'more_action'
 			          }
 			        ];
-			        $scope.collheaders = ["instance","protocol","endpoint", "xxx", "created_at"];
+			        $scope.collheaders = ["instance","protocol","xxx","endpoint","created_at","xxx"];
 			        /*if(lb.metadata[0]&&lb.metadata[0].lb[0]){
 			        	for(var f in lb.metadata[0].lb[0]){
 			        		if(f!='name'){
@@ -412,7 +432,8 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			        		domain:lb.metadata[i].domain,
 			        		created_at:$filter("date")(lb.metadata[i].created_at,'yyyy-MM-dd h:mm:ss'),
 			        		collections:sub_endpoint,
-                                                publicip:publicIP
+                                                publicip:publicIP,
+                                                private_ip:lb.metadata[i].private_ip
 			        	})
 			        }
 
@@ -442,8 +463,8 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 
 
 			        $scope.tselected = [];
-			        $scope.tcustom = {name: 'bold', sessionAffinity:'grey',domain:'grey',created_at:'grey',publicip:'grey'};
-			        $scope.tsortable = ['name', 'sessionAffinity','domain','created_at','publicip'];
+			        $scope.tcustom = {name: 'bold', sessionAffinity:'grey',domain:'grey',created_at:'grey',publicip:'grey',private_ip:'grey'};
+			        $scope.tsortable = ['name', 'sessionAffinity','domain','created_at','publicip','private_ip'];
 			        // $scope.tmodal = "#container_detail";
 			        // $scope.thumbs = 'thumb';
 			        $scope.tcount = 5;
@@ -472,7 +493,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
                                                         xx:"",
 						})
 					}
-					$scope.tcollheaders = ["name","private_ip","status","started_at","xx"];
+					$scope.tcollheaders = ["name","private_ip","status","started_at","xx","xx","xx"];
 					setTimeout(function(){
 						Modal.init();
 					},300)
