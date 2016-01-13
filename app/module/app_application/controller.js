@@ -9,7 +9,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 	         */
 	        $rootScope.intro = {
 	        	title:"应用中心",
-	        	content:"你可以创建应用，浏览应用列表"
+	        	content:"我们为您提供服务的分类,这种分类体现就是 应用,您可以将一个论坛,官网分别创建在不同的应用下,以便您能快速的查找到."
 	        }
 
 	        var originatorEv;
@@ -289,6 +289,10 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			// 	}
 			// }
 			// 
+	                $rootScope.intro = {
+	                	title:"集群",
+	                	content:"我们将所有的基础服务以集群的方式来运行,有了集群,在日后,您可以轻松的对集群进行横向扩展(扩容/缩容)."
+	                }
 			
 			$scope.toggleSearch = false; 
 
