@@ -45,31 +45,12 @@
 		│  │          
 		│  ├─scripts
 		│  │  │  app.js 	————│——入口app文件
-		│  │  │  
-		│  │  ├─configs		————│——config配置
-		│  │  │  │  config.js  ————│——集合所有config的config模块
 		│  │  │  │  
-		│  │  │  └─more			————│——零碎的功能化config配置
-		│  │  │          httpProvider.js
-		│  │  │          sceDelegateProvider.js
-		│  │  │          ...
-		│  │  │          
-		│  │  ├─directives
-		│  │  │  │  directive.js ————│——集合所有directive的模块
 		│  │  │  │  
-		│  │  │  └─more
-		│  │  │          abnTree.js  ————│——零碎的功能化directive
-		│  │  │          onRendered.js
-		│  │  │          pageNation.js
-		│  │  │          
-		│  │  │          ...
-		│  │  └─services
-		│  │      │  service.js  ————│——集合所有service的模块
-		│  │      │  
-		│  │      └─more   ————│——所有的service
-		│  │              formDataObject.js
-		│  │              ...
-		│  │              
+		│  │  │  ├─config.js  ————│——集合所有config的config模块
+		│  │  │  ├─directive.js ————│——集合所有directive的模块
+		│  │  │  │  
+		│  │  │  └─...
 		│  └─styles    ————│——所有样式文件
 		│          main.css
 		│          

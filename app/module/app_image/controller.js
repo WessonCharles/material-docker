@@ -20,40 +20,48 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 			 $scope.tab = 'recent';//'mine','market'
 
 			var image = restful.action({type:"@id"},$scope.baseurl+":id/images");
-	        var im = image.get({id:$rootScope.current_tenant.id},function(e){
-	        	// $scope.images = im.metadata;
-	        	console.log(im.metadata)
-	        	if(typeof im.metadata=="string")im.metadata = JSON.parse(im.metadata);
-	        	$scope.imageshash = {};
-	        	$scope.items = [];
-	        	for(var i =0;i<im.metadata.length;i++){
-	        		$scope.items.push({
-	        			name:im.metadata[i].name,
-	        			icon:im.metadata[i].icon||'image',
-	        			id:im.metadata[i].uuid
-	        		})
-	        		$scope.imageshash[im.metadata[i].uuid] = im.metadata[i];
-	        	}
-	        });
+	        $scope.refresh = function(){
+		        var im = image.get({id:$rootScope.current_tenant.id},function(e){
+		        	// $scope.images = im.metadata;
+		        	console.log(im.metadata)
+		        	Notify.showSimpleToast("我的列表请求成功",1);
+		        	if(typeof im.metadata=="string")im.metadata = JSON.parse(im.metadata);
+		        	$scope.imageshash = {};
+		        	$scope.items = [];
+		        	for(var i =0;i<im.metadata.length;i++){
+		        		$scope.items.push({
+		        			name:im.metadata[i].name,
+		        			icon:im.metadata[i].icon||'image',
+		        			id:im.metadata[i].uuid
+		        		})
+		        		$scope.imageshash[im.metadata[i].uuid] = im.metadata[i];
+		        	}
+		        });
+		    }
+		    $scope.refresh();
 
 	        /**
 	         * 获取最近使用
 	         */
 	        var hot = restful.action(null,$scope.baseurl+"hotimages");
-	        var h = hot.get(function(){
-	        	console.log(h.metadata)
-	        	if(typeof h.metadata=="string")h.metadata = JSON.parse(h.metadata);
-	        	$scope.hotimageshash = {};
-	        	$scope.hotitems = [];
-	        	for(var i =0;i<h.metadata.length;i++){
-	        		$scope.hotitems.push({
-	        			name:h.metadata[i].name,
-	        			icon:h.metadata[i].icon||'image',
-	        			id:h.metadata[i].uuid
-	        		})
-	        		$scope.hotimageshash[h.metadata[i].uuid] = h.metadata[i];
-	        	}
-	        })
+	        $scope.refresh1 = function(){
+		        var h = hot.get(function(){
+		        	console.log(h.metadata)
+		        	Notify.showSimpleToast("最近使用列表请求成功",1);
+		        	if(typeof h.metadata=="string")h.metadata = JSON.parse(h.metadata);
+		        	$scope.hotimageshash = {};
+		        	$scope.hotitems = [];
+		        	for(var i =0;i<h.metadata.length;i++){
+		        		$scope.hotitems.push({
+		        			name:h.metadata[i].name,
+		        			icon:h.metadata[i].icon||'image',
+		        			id:h.metadata[i].uuid
+		        		})
+		        		$scope.hotimageshash[h.metadata[i].uuid] = h.metadata[i];
+		        	}
+		        })
+		    }
+		    $scope.refresh1();
 
 	        /**
 	         * 获取镜像时常
@@ -61,22 +69,25 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 	        var qname = restful.action({name:"@name"},$scope.baseurl+"topimages?q=:name");
 	        var topk = restful.action({top:"@top"},$scope.baseurl+"topimages?topk=:top");
 	        var q_topk = restful.action({name:"@name",top:"@top"},$scope.baseurl+"topimages?q=:name&topk=:top");
-
-	        var to = topk.get({top:20},function(){
-	        	console.log(to.metadata)
-	        	if(typeof to.metadata=="string")to.metadata = JSON.parse(to.metadata);
-	        	$scope.markimageshash = {};
-	        	$scope.markitems = [];
-	        	for(var i =0;i<to.metadata.length;i++){
-	        		$scope.markitems.push({
-	        			name:to.metadata[i].name,
-	        			icon:to.metadata[i].icon||'image',
-	        			id:to.metadata[i].uuid
-	        		})
-	        		$scope.markimageshash[to.metadata[i].uuid] = to.metadata[i];
-	        	}
-	        	$scope.defaultmark = $scope.markitems;
-	        })
+	        $scope.trefresh = function(){
+		        var to = topk.get({top:20},function(){
+		        	console.log(to.metadata)
+		        	Notify.showSimpleToast("镜像市场请求成功",1);
+		        	if(typeof to.metadata=="string")to.metadata = JSON.parse(to.metadata);
+		        	$scope.markimageshash = {};
+		        	$scope.markitems = [];
+		        	for(var i =0;i<to.metadata.length;i++){
+		        		$scope.markitems.push({
+		        			name:to.metadata[i].name,
+		        			icon:to.metadata[i].icon||'image',
+		        			id:to.metadata[i].uuid
+		        		})
+		        		$scope.markimageshash[to.metadata[i].uuid] = to.metadata[i];
+		        	}
+		        	$scope.defaultmark = $scope.markitems;
+		        })
+	    	}
+	    	$scope.trefresh();
 
 	        $scope.searchimage = function(code){
 	        	if($scope.tab == "market"&&code ==13){
@@ -145,6 +156,12 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 			    
 			}; 
 
+			$rootScope.$watch("current_tenant",function(e,v){
+				if(e.id==v.id||!e||!v)return false;
+				$scope.refresh();
+				if($scope.refresh1)$scope.refresh1();
+				if($scope.trefresh)$scope.trefresh();
+			})
 			// $timeout(function(){
 			// 	if($routeParams.name){
 		 //        	$("#tab-content-2 #images .images_list md-list md-list-item").find("button[data-name='"+$routeParams.name+"']").trigger("click");
@@ -461,6 +478,13 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 				}
 			}
 
+			$rootScope.$watch("current_tenant",function(e,v){
+				if(e.id==v.id||!e||!v)return false;
+				$scope.refresh();
+				if($scope.refresh1)$scope.refresh1();
+				if($scope.trefresh)$scope.trefresh();
+			})
+
 		}
 	])
 	.controller('logsdetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','restful','Notify','instance','$compile','$routeParams',
@@ -511,6 +535,13 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 				})
 				console.log($scope.selected)
 			}
+
+			$rootScope.$watch("current_tenant",function(e,v){
+				if(e.id==v.id||!e||!v)return false;
+				$scope.refresh();
+				if($scope.refresh1)$scope.refresh1();
+				if($scope.trefresh)$scope.trefresh();
+			})
 
 		}
 	])
