@@ -81,7 +81,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			        $scope.content = [];
 			        for(var i =0;i<sourcedata.length;i++){
 			        	var s = sourcedata[i];
-			        	// var time = $filter('date')(s.creationTimestamp,"MM-dd-yyyy h:mma");
+			        	// var time = $filter('date')(s.creationTimestamp,"MM-dd-yyyy HH:mm");
 			        	// var obj = {
 			        	// 	"name":s.name,
 			        	// 	"resourceVersion":s.resourceVersion,
@@ -362,7 +362,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			        		name:cl.metadata[i].name,
 			        		replicas:cl.metadata[i].replicas,
 			        		health_status:cl.metadata[i].status.current+"/"+cl.metadata[i].status.desired,
-			        		created_at:$filter("date")(cl.metadata[i].created_at,'yyyy-MM-dd h:mm:ss'),
+			        		created_at:$filter("date")(cl.metadata[i].created_at,'yyyy-MM-dd HH:mm:ss'),
 			        		collections:[],
 			        		lb_lists:lb_lists.join(","),
                                                 lb_public:lb_public.join(","),
@@ -425,12 +425,12 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
                                         var publicIP = lb.metadata[i].public_ip.join(",");
                                         var sub_endpoint = lb.metadata[i].endpoints;
                                         sub_endpoint["xxx"] = "";
-                                        sub_endpoint.created_at = $filter("date")(lb.metadata[i].created_at,'yyyy-MM-dd h:mm:ss');
+                                        sub_endpoint.created_at = $filter("date")(lb.metadata[i].created_at,'yyyy-MM-dd HH:mm:ss');
 			        	$scope.tcontent.push({
 			        		name:lb.metadata[i].name,
 			        		sessionAffinity:$filter('i18n')(lb.metadata[i].sessionAffinity),
 			        		domain:lb.metadata[i].domain,
-			        		created_at:$filter("date")(lb.metadata[i].created_at,'yyyy-MM-dd h:mm:ss'),
+			        		created_at:$filter("date")(lb.metadata[i].created_at,'yyyy-MM-dd HH:mm:ss'),
 			        		collections:sub_endpoint,
                                                 publicip:publicIP,
                                                 private_ip:lb.metadata[i].private_ip
@@ -483,13 +483,13 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 						c.collections.push({
 							name:lsc.metadata[i].name,
 							private_ip:lsc.metadata[i].private_ip,
-							started_at:$filter("date")(lsc.metadata[i].started_at,"yyyy-MM-dd h:mm:ss"),
+							started_at:$filter("date")(lsc.metadata[i].started_at,"yyyy-MM-dd HH:mm:ss"),
 							status:lsc.metadata[i].status.component,
 							images:lsc.metadata[i].images,
 							component:lsc.metadata[i].component,
 							host:lsc.metadata[i].host,
                                                         protocol:lsc.metadata[i].protocol,
-							created_at:$filter("date")(lsc.metadata[i].created_at,"yyyy-MM-dd h:mm:ss"),
+							created_at:$filter("date")(lsc.metadata[i].created_at,"yyyy-MM-dd HH:mm:ss"),
                                                         xx:"",
 						})
 					}
@@ -621,7 +621,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 						var w = watch.get(req,function(){
 							Notify.showSimpleToast("请求成功",1);
 							var data = w.metadata[0];
-							var startday = "",endday="",pstart = 0,serdata = [],maxvalue = 0;
+							var startday = "",endday="",pstart = 0,serdata = [],maxvalue = 0,mintime = '';
 							if(name=="cpu_load"){
 								maxvalue = 1;
 								for(var x = 0;x<w.metadata.length;x++){
@@ -630,12 +630,13 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 									for(var n=0;n<data.values.length;n++){
 										if(n==0||n==data.values.length-1){
 											if(n==0){
-												startday = params&&params.start?$filter("date")(new Date(params.start*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"yyyy-MM-dd h:mm");
+												mintime = params&&params.start?$filter("date")(new Date(params.start*1000),"HH:mm"):$filter("date")(new Date((data.values[n][0])*1000),"HH:mm");
+												startday = params&&params.start?$filter("date")(new Date(params.start*1000),"yyyy-MM-dd HH:mm"):$filter("date")(new Date((data.values[n][0])*1000),"yyyy-MM-dd HH:mm");
 											}else{
-												endday = params&&params.end?$filter("date")(new Date(params.end*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"yyyy-MM-dd h:mm");
+												endday = params&&params.end?$filter("date")(new Date(params.end*1000),"yyyy-MM-dd HH:mm"):$filter("date")(new Date((data.values[n][0])*1000),"yyyy-MM-dd HH:mm");
 											}
 										}
-										time.push($filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"h:mm"));
+										time.push($filter("date")(new Date((data.values[n][0])*1000),"HH:mm"));
 										dataval.push(parseInt(data.values[n][1]));
 									}
 									serdata.push({
@@ -651,12 +652,13 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 								for(var n=0;n<data.values.length;n++){
 									if(n==0||n==data.values.length-1){
 										if(n==0){
-											startday = params&&params.start?$filter("date")(new Date(params.start*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"yyyy-MM-dd h:mm");
+												mintime = params&&params.start?$filter("date")(new Date(params.start*1000),"HH:mm"):$filter("date")(new Date((data.values[n][0])*1000),"HH:mm");
+											startday = params&&params.start?$filter("date")(new Date(params.start*1000),"yyyy-MM-dd HH:mm"):$filter("date")(new Date((data.values[n][0])*1000),"yyyy-MM-dd HH:mm");
 										}else{
-											endday = params&&params.end?$filter("date")(new Date(params.end*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"yyyy-MM-dd h:mm");
+											endday = params&&params.end?$filter("date")(new Date(params.end*1000),"yyyy-MM-dd HH:mm"):$filter("date")(new Date((data.values[n][0])*1000),"yyyy-MM-dd HH:mm");
 										}
 									}
-									time.push($filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"h:mm"));
+									time.push($filter("date")(new Date((data.values[n][0])*1000),"HH:mm"));
 									dataval.push(parseInt(data.values[n][1]));
 								}
 								serdata.push({
@@ -673,12 +675,13 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 									for(var n=0;n<data.values.length;n++){
 										if(n==0||n==data.values.length-1){
 											if(n==0){
-												startday = params&&params.start?$filter("date")(new Date(params.start*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"yyyy-MM-dd h:mm");
+												mintime = params&&params.start?$filter("date")(new Date(params.start*1000),"HH:mm"):$filter("date")(new Date((data.values[n][0])*1000),"HH:mm");
+												startday = params&&params.start?$filter("date")(new Date(params.start*1000),"yyyy-MM-dd HH:mm"):$filter("date")(new Date((data.values[n][0])*1000),"yyyy-MM-dd HH:mm");
 											}else{
-												endday = params&&params.end?$filter("date")(new Date(params.end*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"yyyy-MM-dd h:mm");
+												endday = params&&params.end?$filter("date")(new Date(params.end*1000),"yyyy-MM-dd HH:mm"):$filter("date")(new Date((data.values[n][0])*1000),"yyyy-MM-dd HH:mm");
 											}
 										}
-										time.push($filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"h:mm"));
+										time.push($filter("date")(new Date((data.values[n][0])*1000),"HH:mm"));
 										dataval.push(parseInt(data.values[n][1]));
 									}
 									serdata.push({
@@ -695,12 +698,13 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 									for(var n=0;n<data.values.length;n++){
 										if(n==0||n==data.values.length-1){
 											if(n==0){
-												startday = params&&params.start?$filter("date")(new Date(params.start*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]* 1000+8*3600*1000),"yyyy-MM-dd h:mm");
+												mintime = params&&params.start?$filter("date")(new Date(params.start*1000),"HH:mm"):$filter("date")(new Date((data.values[n][0])*1000),"HH:mm");
+												startday = params&&params.start?$filter("date")(new Date(params.start*1000),"yyyy-MM-dd HH:mm"):$filter("date")(new Date((data.values[n][0])*1000),"yyyy-MM-dd HH:mm");
 											}else{
-												endday = params&&params.end?$filter("date")(new Date(params.end*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]* 1000+8*3600*1000),"yyyy-MM-dd h:mm");
+												endday = params&&params.end?$filter("date")(new Date(params.end*1000),"yyyy-MM-dd HH:mm"):$filter("date")(new Date((data.values[n][0])*1000),"yyyy-MM-dd HH:mm");
 											}
 										}
-										time.push($filter("date")(new Date(data.values[n][0]* 1000+8*3600*1000),"h:mm"));
+										time.push($filter("date")(new Date((data.values[n][0])*1000),"HH:mm"));
 										dataval.push(parseInt(data.values[n][1]));
 									}
 									serdata.push({
@@ -710,42 +714,107 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 								}
 								console.log(serdata)
 							}
-							$('#'+name).highcharts({
-						        title: {
-						            text: $filter('i18n')(name),
-						            x: -20 //center
-						        },
-						        credits: {
-								    enabled:false//去掉highcharts.com水印，很重要
-								},
-						        subtitle: {
-						            text: '从'+startday+"到"+endday,
-						            x: -20
-						        },
-						        xAxis: {
-						            categories: time
-						        },
-						        yAxis: {
-						            title: {
-						                text: '使用量'//单位
-						            },
-						            plotLines: [{
-						                value: 0,
-						                width: maxvalue,
-						                color: '#ffffff'
-						            }]
-						        },
-						        tooltip: {
-						            valueSuffix: ''//单位
-						        },
-						        legend: {
-						            layout: 'vertical',
-						            align: 'center',
-						            verticalAlign: 'bottom',
-						            borderWidth: 0
-						        },
-						        series: serdata
-						    });
+							if(name=="cpu_load"){
+								$('#'+name).highcharts({
+							        title: {
+							            text: $filter('i18n')(name),
+							            x: -20 //center
+							        },
+							        credits: {
+									    enabled:false//去掉highcharts.com水印，很重要
+									},
+							        subtitle: {
+							            text: '从'+startday+"到"+endday,
+							            x: -20
+							        },
+							        xAxis: {
+							            categories: time
+							        },
+							        yAxis: {
+							            title: {
+							                text: '使用量'//单位
+							            },
+							            plotLines: [{
+							                value: 0,
+							                width: maxvalue,
+							                color: '#ffffff'
+							            }]
+							        },
+							        tooltip: {
+							            valueSuffix: ''//单位
+							        },
+							        legend: {
+							            layout: 'vertical',
+							            align: 'center',
+							            verticalAlign: 'bottom',
+							            borderWidth: 0
+							        },
+							        series: serdata
+							    });
+							}else{
+								console.log("232434")
+								var it = $('#'+name).highcharts({
+									chart:{
+										type:'areaspline'
+									},
+							        title: {
+							            text: $filter('i18n')(name),
+							            x: -20 //center
+							        },
+							        credits: {
+									    enabled:false//去掉highcharts.com水印，很重要
+									},
+							        subtitle: {
+							            text: '从'+startday+"到"+endday,
+							            x: -20
+							        },
+							        xAxis: {
+							            categories: time
+							        },
+							        yAxis: {
+							            title: {
+							                text: '使用量'//单位
+							            },
+							            labels: {
+							                formatter: function() {
+							                    return this.value;
+							                }
+							            }
+							            // plotLines: [{
+							            //     value: 0,
+							            //     width: maxvalue,
+							            //     color: '#ffffff'
+							            // }]
+							        },
+							         tooltip: {
+							            valueSuffix: ''
+							        },
+							        legend: {
+							            layout: 'vertical',
+							            align: 'left',
+							            verticalAlign: 'top',
+							            x: 150,
+							            y: 100,
+							            floating: true,
+							            borderWidth: 1,
+							            backgroundColor: '#FFFFFF'
+							        },
+							        plotOptions: {
+							            areaspline: {
+							                fillOpacity: 0.5
+							            }
+							        },
+							        // legend: {
+							        //     layout: 'vertical',
+							        //     align: 'center',
+							        //     verticalAlign: 'bottom',
+							        //     borderWidth: 0
+							        // },
+							        series: serdata
+							    });
+								console.log(it)
+							}
+							
 						})
 					})(i,indexs[i])
 				}
@@ -802,7 +871,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			}
 			$scope.gettime = function(c){
 				if(JSON.stringify(c)!="{}"){
-					return $filter('date')(c[$scope.getstatus(c)].startedAt,"MM-dd-yyyy h:mma");
+					return $filter('date')(c[$scope.getstatus(c)].startedAt,"MM-dd-yyyy HH:mm");
 				}else{
 					return '';
 				}

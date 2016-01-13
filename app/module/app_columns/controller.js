@@ -82,7 +82,7 @@ define(['angular','modal'],function(angular,modal){
 			        $scope.content = [];
 			        for(var i =0;i<sourcedata.length;i++){
 			        	var s = sourcedata[i];
-			        	// var time = $filter('date')(s.creationTimestamp,"MM-dd-yyyy h:mma");
+			        	// var time = $filter('date')(s.creationTimestamp,"MM-dd-yyyy HH:mm");
 			        	// var obj = {
 			        	// 	"name":s.name,
 			        	// 	"resourceVersion":s.resourceVersion,

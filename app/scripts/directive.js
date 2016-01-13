@@ -85,7 +85,10 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
             if ($scope.sortable.indexOf(field) > -1) { return true; } else { return false; }
         };
         $scope.setconsole = function(l){
+          $scope.console = "";
           $scope.consoles = l;
+          $scope.conscom = l.component;
+          console.log($scope.consoles)
         }
         $scope.current_tenant={
           id:$rootScope.current_tenant.id
@@ -93,6 +96,7 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
         $scope.token = $rootScope.token;
 
         $scope.linkconsole = function(){
+          console.log($scope.console)
           var link = "http://"+$scope.consoles.host+"/"+$scope.current_tenant.id+"/console/"+$scope.consoles.name+"/"+$scope.console+"?token="+$scope.token;
           var it = $('<a class="md-primary" layout layout-align="center end" href="'+link+'" id="console" target="_blank">确认连接</a>');
           if($("body").find("a#console").length>0){
@@ -199,10 +203,10 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
             +'</section>');
           t.append(se);
           // setTimeout(function(){
-              var bl = $(".inner_content")[0].offsetLeft,//$(".inner_content")[0].getBoundingClientRect().left,
-                  bt = $(".inner_content")[0].offsetTop-50,//$(".inner_content")[0].getBoundingClientRect().top,
-                  bw = $(".inner_content")[0].offsetWidth,
-                  bh = $(".inner_content")[0].offsetHeight;
+              var bl = 0,//$(".inner_content")[0].getBoundingClientRect().left,
+                  bt = $("#content")[0].offsetTop,//$(".inner_content")[0].getBoundingClientRect().top,
+                  bw = $("#content")[0].offsetWidth,
+                  bh = $("#content")[0].offsetHeight;
               if( !se.data( 'open' ) ) {
                 // $(".bl-main").addClass( 'bl-expand-item' );//section's parent 
                 se.css({
@@ -212,7 +216,6 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
                   height:bh+'px'
                 })
                 se.data( 'open', true ).addClass( 'bl-expand bl-expand-top' );
-                // return;
                 setTimeout(function(){
                   console.log(links)
                   $location.path(links);

@@ -393,7 +393,7 @@ li.menu ul li.active i{
 .inner_content {
     padding: 15px;
     margin: 0 auto;
-
+    /*display: inline;*/
     /*overflow: auto;
     position: fixed;
     bottom: 55px;
@@ -402,6 +402,12 @@ li.menu ul li.active i{
     right: 0;
     transition: all;
     transition-duration: 300ms;*/
+}
+[ng-view]{
+  /*padding:0 15px;*/
+}
+.page-header{
+  /*padding-left: 15px;*/
 }
 /* Custom page footer */
 .footer {
@@ -2319,4 +2325,8 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus {
   font-weight: 900;
   margin-left: -1px!important;
     margin-right: 0px!important;
+}
+#cluster md-tab-content.md-active{
+  position: static;
+  display: inline;
 }
