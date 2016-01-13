@@ -465,7 +465,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 	        	}
 	        }
 
-	        $scope.remove = function(){
+	        $scope.remove = function(ev){
 	        	var confirm = $mdDialog.confirm()
 			    .title('删除确认')
 			    .content('你确定要删除所选'+($scope.tab=='cluster'?"集群":"负载均衡")+'吗？')
