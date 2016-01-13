@@ -424,7 +424,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			        for(var i=0;i<lb.metadata.length;i++){
                                         var publicIP = lb.metadata[i].public_ip.join(",");
                                         var sub_endpoint = lb.metadata[i].endpoints;
-                                        sub_endpoint.xxx = "";
+                                        sub_endpoint["xxx"] = "";
                                         sub_endpoint.created_at = $filter("date")(lb.metadata[i].created_at,'yyyy-MM-dd h:mm:ss');
 			        	$scope.tcontent.push({
 			        		name:lb.metadata[i].name,
@@ -614,11 +614,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			var indexs = ["cpu_load","memory_usage","input_flow","output_flow"];
 			function getmonitor(params){
 				var req = {id:$rootScope.current_tenant.id,name:$scope.ins_name};
-				if(params){
-					for(var p in params){
-						req[p] = params[p];
-					}
-				}
+				if(params&&params.start)req["start"] = params.start,req["end"] = params.end;
 				for(var i=0;i<indexs.length;i++){
 					(function(i,name){
 						req["target"] = name;
@@ -634,12 +630,12 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 									for(var n=0;n<data.values.length;n++){
 										if(n==0||n==data.values.length-1){
 											if(n==0){
-												startday = $filter("date")(new Date(data.values[n][0]*1000+8*3600),"yyyy-MM-dd h:mm");
+												startday = params&&params.start?$filter("date")(new Date(params.start*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"yyyy-MM-dd h:mm");
 											}else{
-												endday = $filter("date")(new Date(data.values[n][0]*1000+8*3600),"yyyy-MM-dd h:mm");
+												endday = params&&params.end?$filter("date")(new Date(params.end*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"yyyy-MM-dd h:mm");
 											}
 										}
-										time.push($filter("date")(new Date(data.values[n][0]*1000+8*3600),"h:mm"));
+										time.push($filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"h:mm"));
 										dataval.push(parseInt(data.values[n][1]));
 									}
 									serdata.push({
@@ -655,12 +651,12 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 								for(var n=0;n<data.values.length;n++){
 									if(n==0||n==data.values.length-1){
 										if(n==0){
-											startday = $filter("date")(new Date(data.values[n][0]*1000+8*3600),"yyyy-MM-dd h:mm");
+											startday = params&&params.start?$filter("date")(new Date(params.start*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"yyyy-MM-dd h:mm");
 										}else{
-											endday = $filter("date")(new Date(data.values[n][0]*1000+8*3600),"yyyy-MM-dd h:mm");
+											endday = params&&params.end?$filter("date")(new Date(params.end*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"yyyy-MM-dd h:mm");
 										}
 									}
-									time.push($filter("date")(new Date(data.values[n][0]*1000+8*3600),"h:mm"));
+									time.push($filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"h:mm"));
 									dataval.push(parseInt(data.values[n][1]));
 								}
 								serdata.push({
@@ -677,12 +673,12 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 									for(var n=0;n<data.values.length;n++){
 										if(n==0||n==data.values.length-1){
 											if(n==0){
-												startday = $filter("date")(new Date(data.values[n][0]*1000+8*3600),"yyyy-MM-dd h:mm");
+												startday = params&&params.start?$filter("date")(new Date(params.start*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"yyyy-MM-dd h:mm");
 											}else{
-												endday = $filter("date")(new Date(data.values[n][0]*1000+8*3600),"yyyy-MM-dd h:mm");
+												endday = params&&params.end?$filter("date")(new Date(params.end*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"yyyy-MM-dd h:mm");
 											}
 										}
-										time.push($filter("date")(new Date(data.values[n][0]*1000+8*3600),"h:mm"));
+										time.push($filter("date")(new Date(data.values[n][0]*1000+8*3600*1000),"h:mm"));
 										dataval.push(parseInt(data.values[n][1]));
 									}
 									serdata.push({
@@ -699,12 +695,12 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 									for(var n=0;n<data.values.length;n++){
 										if(n==0||n==data.values.length-1){
 											if(n==0){
-												startday = $filter("date")(new Date(data.values[n][0]* 1000+8*3600),"yyyy-MM-dd h:mm");
+												startday = params&&params.start?$filter("date")(new Date(params.start*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]* 1000+8*3600*1000),"yyyy-MM-dd h:mm");
 											}else{
-												endday = $filter("date")(new Date(data.values[n][0]* 1000+8*3600),"yyyy-MM-dd h:mm");
+												endday = params&&params.end?$filter("date")(new Date(params.end*1000),"yyyy-MM-dd h:mm"):$filter("date")(new Date(data.values[n][0]* 1000+8*3600*1000),"yyyy-MM-dd h:mm");
 											}
 										}
-										time.push($filter("date")(new Date(data.values[n][0]* 1000+8*3600),"h:mm"));
+										time.push($filter("date")(new Date(data.values[n][0]* 1000+8*3600*1000),"h:mm"));
 										dataval.push(parseInt(data.values[n][1]));
 									}
 									serdata.push({
@@ -766,7 +762,26 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 				tempe+=":00";
 				tempe = new Date(tempe).getTime()/1000;
 				console.log(tempe)
-				getmonitor({start:temps,end:tempe})
+				getmonitor({start:parseInt(temps),end:parseInt(tempe)})
+			}
+
+			$scope.timezone = function(e,type){
+				$(e.target).parent().find(".active").removeClass("active");
+				$(e.target).addClass("active");
+				var now = new Date().getTime();
+				var start;
+				if(type=="hour"){
+					start = now-3600*1000;
+				}else if(type=="day"){
+					start = now-3600*24*1000;
+				}else if(type=="week"){
+					start = now-3600*24*7*1000;
+				}else if(type=="month"){
+					start = now-3600*24*30*1000;
+				}else{
+					start = now-3600*24*30*12*1000;
+				}
+				getmonitor({start:parseInt(start/1000),end:parseInt(now/1000)});
 			}
 
 			$rootScope.$watch("current_tenant",function(e,v){
