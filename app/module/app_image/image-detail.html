@@ -28,28 +28,25 @@
             </md-tab>
             <md-tab label="版本">
               <md-list>
-                  <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
-                    <div class="md-no-style md-list-item-inner">
-                      <md-icon class="fa fa-tags"></md-icon>
-                      <p class="ng-binding"> Latest </p>
+              <div ng-if="!tags">
+                <md-progress-circular md-mode="indeterminate" aria-valuemin="0" aria-valuemax="100" role="progressbar" class="md-default-theme" style="transform: scale(1);margin: 0 auto;">
+                  <div class="md-spinner-wrapper">
+                    <div class="md-inner">
+                      <div class="md-gap"></div>
+                      <div class="md-left">
+                        <div class="md-half-circle"></div>
+                      </div>
+                      <div class="md-right">
+                        <div class="md-half-circle"></div>
+                      </div>
                     </div>
-                  </md-list-item>
-                  <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                  </div>
+                </md-progress-circular>
+              </div>
+                  <md-list-item role="listitem" ng-repeat="t in tags track by $index" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
                     <div class="md-no-style md-list-item-inner">
                       <md-icon class="fa fa-tags"></md-icon>
-                      <p class="ng-binding"> 5.6 </p>
-                    </div>
-                  </md-list-item>
-                  <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
-                    <div class="md-no-style md-list-item-inner">
-                      <md-icon class="fa fa-tags"></md-icon>
-                      <p class="ng-binding"> 5.4 </p>
-                    </div>
-                  </md-list-item>
-                  <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
-                    <div class="md-no-style md-list-item-inner">
-                      <md-icon class="fa fa-tags"></md-icon>
-                      <p class="ng-binding"> 5.3 </p>
+                      <p class="ng-binding"> {{t}} </p>
                     </div>
                   </md-list-item>
                 </md-list>
@@ -59,10 +56,13 @@
       </div>
       <div flex='35'  class="noshadow">
         <md-content>
-          <md-button class="md-grid-item-content">
-              <img src="../images/docker.png" style="width:auto;height:auto;" alt="">
-            <!-- <div class="md-grid-text"> {{current_image.name}} </div> -->
-          </md-button>
+          <div style="padding:30px;text-align:center;border:1px solid #dee;margin: 30px 100px 0px 100px;">
+            <md-button class="md-grid-item-content">
+                <img src="../images/docker.png" style="width:auto;height:auto;" alt="">
+              <!-- <div class="md-grid-text"> {{current_image.name}} </div> -->
+            </md-button>
+            <p>创建于{{current_image.created_at}}</p>
+          </div>
           <!-- <md-tabs md-dynamic-height md-border-bottom md-no-pagination="true" md-swipe-content="false">
             <md-tab label="镜像信息">
                 <md-list>

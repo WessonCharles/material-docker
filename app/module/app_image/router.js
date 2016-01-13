@@ -11,7 +11,7 @@ define(['angular','app'], function(angular,app) {
             templateUrl:'module/app_image/create-image.html?v='+parseInt(new Date().format("yyyyMMdd")),
             controller:'createimagectrl'
         })
-        route.when('/image/:id',{
+        route.when('/image/:tid/:id',{
             templateUrl:'module/app_image/image-detail.html?v='+parseInt(new Date().format("yyyyMMdd")),
             controller:'imagedetailctrl'
         })
