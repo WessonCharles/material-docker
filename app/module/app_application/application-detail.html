@@ -135,7 +135,7 @@
   </div>
   <div class="content-table">
       <div layout="row" class="switchdiv" layout-margin layout-padding>
-        <div flex="30">
+        <div flex="25">
             <md-subheader class="md-primary">详情</md-subheader>
             <md-content>
               <p><b>名称&nbsp;&nbsp;&nbsp;&nbsp;</b><time>{{appone.create_user}}</time></p>
@@ -144,16 +144,16 @@
               <p><b>创建于&nbsp;&nbsp;&nbsp;&nbsp;</b><time>{{appone.created_at}}</time></p>
           </md-content>
         </div>
-        <div flex="65" class="bl-main" ng-click="toggleSearch=false">
+        <div flex="70" class="bl-main" ng-click="toggleSearch=false">
           <md-tabs md-dynamic-height md-border-bottom >
-              <md-tab label="集群" ng-click="tab='cluster';">
+              <md-tab label="集群" ng-click="tab='cluster';changetitle('cluster')">
                 <md-content class="md-padding">
                   <div id="cluter-table">
                     
                   </div> 
                 </md-content>
               </md-tab>
-              <md-tab label="负载均衡" ng-click="tab='loadbalancer';">
+              <md-tab label="负载均衡" ng-click="tab='loadbalancer';changetitle('loadbalancer')">
                 <md-content class="md-padding">
                   <div id="lb-table">
                     

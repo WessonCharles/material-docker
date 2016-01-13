@@ -113,13 +113,21 @@
                               <div layout="row" layout-sm-column style="padding-left:50px;">
                                 <md-radio-group class="line" ng-model="img.flavor">
                                   <md-radio-button value="{{f.uuid}}" ng-repeat="f in flavors track by $index" class="md-primary flavo">
-                                      <div class="md-label flavor">
+                                    <md-list-item style="min-height: 80px;border: 1px solid #eee;">
+                                      <a class="md-grid-item-content md-button md-default-theme" style="display: inline-block;width: 120px;height: 65px;padding: 10px;margin-bottom: 15px;background-color: transparent;">
+                                        <span>内存：{{f.memory}}</span>
+                                        <br>
+                                        <span>硬盘：{{f.disk}}</span>
+                                      </a>
+                                      <!-- <div class="md-grid-text ng-binding ng-scope"> ubuntu </div> -->
+                                    </md-list-item>
+                                      <!-- <div class="md-label flavor">
                                         <img src="../images/flavor{{$index+1}}x.png" alt="{{$index+1}}x flavor">
                                         <div class="des">
                                             <p>内存：{{f.memory}}</p>
                                             <p>硬盘：{{f.disk}}</p>
                                         </div>
-                                      </div>
+                                      </div> -->
                                   </md-radio-button>
                                 </md-radio-group>
                               </div>
