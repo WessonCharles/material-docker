@@ -6,37 +6,24 @@
         <button aria-label="returntolist" viewclose link="/image" md-button class="md-raised md-icon-btn" ng-click="backlist();">
           <md-icon class="fa fa-arrow-left fa-lg"></md-icon>
         </button>
-        {{imageone.name}}
+        {{current_image.name}}
       </md-subheader>
       </div>
     </div>
   </div>
   <div class="content-table">
-    <div layout="row"  class="unshadow" layout-margin>
-      <div flex  class="noshadow">
-        <md-button class="md-grid-item-content">
-          <md-icon class="docker-images">
-            <img src="../images/docker.png" alt="">
-          </md-icon>
-          <div class="md-grid-text"> {{current_image.name}} </div>
-        </md-button>
-      </div>
-    </div>
     <div layout="row" class="unshadow" layout-margin>
       <div flex="60" class="noshadow bl-main">
         <md-content>
           <md-tabs md-dynamic-height md-no-pagination="true" md-swipe-content="false">
             <md-tab label="简介">
-              <md-content class="md-padding" style="color: #eee;" onview data-content="{{current_image.readme}}">
-                
-              </md-content>
-            </md-tab>
-            <md-tab label="服务接口">
-              <md-content class="md-padding">
+              <md-content class="md-padding" style="color: #eee;" >
+                <pre ng-bind-html="current_image.readme | toHtml"></pre>
               </md-content>
             </md-tab>
             <md-tab label="Dockfile">
-              <md-content class="md-padding" style="color: #eee;" onview data-content="{{current_image.dockerfile}}">
+              <md-content class="md-padding" style="color: #eee;" >
+              <pre  ng-bind-html="current_image.dockerfile | toHtml"></pre>
               </md-content>
             </md-tab>
             <md-tab label="版本">
@@ -72,7 +59,11 @@
       </div>
       <div flex='35'  class="noshadow">
         <md-content>
-          <md-tabs md-dynamic-height md-border-bottom md-no-pagination="true" md-swipe-content="false">
+          <md-button class="md-grid-item-content">
+              <img src="../images/docker.png" style="width:auto;height:auto;" alt="">
+            <!-- <div class="md-grid-text"> {{current_image.name}} </div> -->
+          </md-button>
+          <!-- <md-tabs md-dynamic-height md-border-bottom md-no-pagination="true" md-swipe-content="false">
             <md-tab label="镜像信息">
                 <md-list>
                   <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
@@ -101,7 +92,7 @@
                   </md-list-item>
                 </md-list>
             </md-tab>
-          </md-tabs>
+          </md-tabs> -->
         </md-content>
       </div>
     </div>

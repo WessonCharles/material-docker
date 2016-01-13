@@ -391,17 +391,19 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
               }
           };
           var videoreg = /(&lt;video.+\/video&gt;)|(&lt;embed.+\/embed&gt;)/g;//有待测试，匹配多个的时候
-                                            //支持video 和 embed 等等视频
-          var result = a.content.match(videoreg);
-          var nresult = HtmlUtil.htmlDecode(result);
-            // console.log(result)
-            // console.log(nresult)
-            var ncon = a.content.replace(videoreg,nresult)
-            /*对video进行处理结束*/
-            // console.log(ncon)
+                                          //支持video 和 embed 等等视频
           $timeout(function(){
-            if(a.content)$(e).html('<pre>'+ncon+'</pre>');
-          })
+            var result = a.content;
+            console.log(a)
+            var nresult = HtmlUtil.htmlDecode(result);
+              // console.log(result)
+              // console.log(nresult)
+              var ncon = a.content.replace(videoreg,nresult)
+              /*对video进行处理结束*/
+              // console.log(ncon)
+              console.log(a.content)
+              if(a.content)$(e).html('<pre>'+result+'</pre>');
+          },0)
         }
       }
   }])
