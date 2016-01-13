@@ -296,7 +296,7 @@ define(['angular','modal'],function(angular,modal){
 			$scope.col  = {};
 			var col = restful.action({type:'@id'},$scope.baseurl+":id/volumes");
 			$scope.createimage = function(){
-				var co = col.save({id:$rootScope.current_tenant.id},{name:$scope.col.name,size:parseInt($scope.col.size)},function(){
+				var co = col.save({id:$rootScope.current_tenant.id},{name:$scope.col.name,quota:parseInt($scope.col.size),desc:$scope.col.desc},function(){
 					if(co.code==0){
 						Notify.showSimpleToast("操作成功",1);
 					}else if(co.code>0){
