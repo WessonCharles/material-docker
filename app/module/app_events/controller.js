@@ -32,6 +32,7 @@ define(['angular','modal'],function(angular,modal){
                             $scope.count = 100;
                             $scope.custom = {name: 'bold', kind:'grey',reason:'grey',message:'message',created_at:'grey'};
                             $scope.sortable = ['name','kind','reason','message','created_at'];
+                            $scope.selected = [];
 
                             var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" refresh="refresh" custom-class="custom" thumbs="thumbs" count="count" isselect="true" selected="selected" links="links" func="func"></md-table>')($scope);
                             $("#events").html(code);
