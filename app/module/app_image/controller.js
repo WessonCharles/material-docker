@@ -13,6 +13,10 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 
 				}
 			}
+	                $rootScope.intro = {
+	                	title:"镜像市场",
+	                	content:"这里提供了常用的镜像列表,您可以使用这里的任何一个镜像来创建对应的实例"
+	                }
 
 			/**
 			 * 获取我的列表
@@ -285,6 +289,10 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,restful,Notify,instance,$compile,AuthService,$mdDialog){
 			var plat = restful.action({type:"@id",jobid:"@jobid",number:"@number"},$scope.baseurl+":id/build/:jobid/:number");
 	        console.log($rootScope.current_tenant)
+	                $rootScope.intro = {
+	                	title:"构建代码",
+	                	content:"通过与git仓库结合,利用用户定义好的Dockerfile一键进行镜像构建,完成一系列的发布与运行"
+	                }
 		    $scope.refresh = function(){ 
 		        var pl = plat.get({id:$rootScope.current_tenant.id},function(e){
 		        	console.timeEnd("restful game");

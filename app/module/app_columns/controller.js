@@ -32,6 +32,10 @@ define(['angular','modal'],function(angular,modal){
 	        // $scope.ctrl.checkVoicemail = function() {
 	        //   // This never happens.
 	        // };
+	        $rootScope.intro = {
+	        	title:"共享存储",
+	        	content:"为实例提供一种持久化存储的能力,它独立于实例的生命周期而存在,它可以同时挂载到多个实例上.注意避免同一文件的同时写操作."
+	        }
 
 	        $scope.toggleSearch = false;
 	        	console.time("restful game");
