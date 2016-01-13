@@ -119,6 +119,7 @@ require([
 	'../module/app_publicip/router',
 	'../module/app_system/router',
 	'../module/app_users/router',
+	'../module/app_events/router',
         'app',
 	],function(angular){
 		angular.element().ready(function() {
