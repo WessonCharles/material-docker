@@ -786,7 +786,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 							            //     color: '#ffffff'
 							            // }]
 							        },
-							         tooltip: {
+							        tooltip: {
 							            valueSuffix: ''
 							        },
 							        legend: {
@@ -845,10 +845,10 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 					start = now-3600*24*1000;
 				}else if(type=="week"){
 					start = now-3600*24*7*1000;
-				}else if(type=="month"){
-					start = now-3600*24*30*1000;
+				}else if(type=="halfmonth"){
+					start = now-3600*24*15*1000;
 				}else{
-					start = now-3600*24*30*12*1000;
+					start = now-3600*24*30*1000;
 				}
 				getmonitor({start:parseInt(start/1000),end:parseInt(now/1000)});
 			}

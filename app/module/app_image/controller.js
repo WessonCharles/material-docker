@@ -36,7 +36,8 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 		        		$scope.items.push({
 		        			name:im.metadata[i].name,
 		        			icon:im.metadata[i].icon||'image',
-		        			id:im.metadata[i].uuid
+		        			id:im.metadata[i].uuid,
+		        			tenant_name:im.metadata[i].tenant_name
 		        		})
 		        		$scope.imageshash[im.metadata[i].uuid] = im.metadata[i];
 		        	}
@@ -59,7 +60,8 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 		        		$scope.hotitems.push({
 		        			name:h.metadata[i].name,
 		        			icon:h.metadata[i].icon||'image',
-		        			id:h.metadata[i].uuid
+		        			id:h.metadata[i].uuid,
+		        			tenant_name:h.metadata[i].tenant_name
 		        		})
 		        		$scope.hotimageshash[h.metadata[i].uuid] = h.metadata[i];
 		        	}
@@ -84,7 +86,8 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 		        		$scope.markitems.push({
 		        			name:to.metadata[i].name,
 		        			icon:to.metadata[i].icon||'image',
-		        			id:to.metadata[i].uuid
+		        			id:to.metadata[i].uuid,
+		        			tenant_name:to.metadata[i].tenant_name
 		        		})
 		        		$scope.markimageshash[to.metadata[i].uuid] = to.metadata[i];
 		        	}
@@ -176,7 +179,8 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 	.controller('imagedetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','instance','$routeParams',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,instance,$routeParams){
 			var id = $routeParams.id;
-			$http.get($scope.baseurl+$rootScope.current_tenant.id+"/images/"+id).success(function(data){
+			var tid = $routeParams.tid;
+			$http.get($scope.baseurl+$rootScope.current_tenant.id+"/images/"+tid+"/"+id).success(function(data){
 				console.log(data)
 				$scope.current_image = data.metadata[0];
 				if($scope.current_image.readme&&!$scope.current_image.convert_rm){
@@ -188,7 +192,17 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 		    		$scope.current_image.convert_df = true;
 		    	}
 		    	console.log($scope.current_image);
+		    	var url = "",name = $scope.current_image.name,tname=$scope.current_image.tenant_name;
+				if(name.indexOf("index.docker.io")>-1){
+					url = "docker-hub/tags/"+tname+"/"+name.split("index.docker.io/")[1];
+				}else{
+					url = $rootScope.current_tenant.id+"/tags/"+tname+"/"+name.split("/")[name.split("/").length-1];
+				}
+				$http.get($scope.baseurl+url).success(function(data){
+					$scope.tags = data.metadata;
+				})
 			})
+
 			// $timeout(function(){
 			// 	$("#images").css("height",200+$("#images md-bottom-sheet:first")[0].offsetHeight);
 			// },100)
