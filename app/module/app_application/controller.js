@@ -1129,9 +1129,17 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 					}
 					console.log(reqdata);
 					// return false;
-					var clu = Cluter.save({id:$rootScope.current_tenant.id},{app_uuid:$scope.app_uuid,name:$scope.cluter_name,replicas:reqdata.length,containers:reqdata},function(){
+					var clu = Cluter.save({id:$rootScope.current_tenant.id},{app_uuid:$scope.app_uuid,name:$scope.cluter_name,replicas:reqdata.length,containers:reqdata},function(e){
 						console.log(clu)
-						$location.path("/applications/"+$scope.app_uuid);
+						if(e.code==0){
+	                       Notify.showSimpleToast("创建集群成功",1);
+							$location.path("/applications/"+$scope.app_uuid);
+	                    }else if(e.code>0){
+	                        Notify.showSimpleToast(e.message,-1);
+	                    }else if(e.code<0){
+	                        Notify.showSimpleToast(e.message,0)
+	                    }
+						
 					});
 					
 					// App.save({name:$scope.app_name,containers:reqdata},function())
