@@ -128,12 +128,15 @@ var Modal = (function($) {
     }
   };
 
-  var close = function(event) {
+  var close = function(event,it) {
 
-		event.preventDefault();
-    event.stopImmediatePropagation();
+    if(event){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+		
 
-    var target = event.target;
+    var target = event?event.target:it;
 
     /**
      * make sure the modal__bg or modal__close was clicked, we don't want to be able to click
@@ -179,9 +182,8 @@ var Modal = (function($) {
 			* iterate through the modals and modal contents and triggers to remove their active classes.
       * remove the inline css from the trigger to move it back into its original position.
 			*/
-
-      targetmodal[0].classList.remove('modal--active');
-      targetmodal.find(".modal__content")[0].classList.remove('modal__content--active');
+      if(targetmodal[0])targetmodal[0].classList.remove('modal--active');
+      if(targetmodal.find(".modal__content")[0])targetmodal.find(".modal__content")[0].classList.remove('modal__content--active');
 
 
       if($qsa('.modal--active').length>1){
@@ -254,7 +256,8 @@ var Modal = (function($) {
   };
 
   return {
-    init: init
+    init: init,
+    close:close
   };
 
 }(window.jQuery));

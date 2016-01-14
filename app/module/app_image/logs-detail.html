@@ -23,7 +23,7 @@
               <md-tab label="构建日志">
                 <md-content class="md-padding"  id="images" style="min-height:500px">
                     <div class="imagesout" ng-repeat="img in loglist|orderBy:'-star_number'" style="margin-bottom:20px;">
-                      <md-list-item  class="imageitem" ng-class="(img.isopen||hasimg(img))?'background':''" ng-click="getdata(img);">
+                      <md-list-item  class="imageitem" ng-class="(img.isopen||hasimg(img))?'background':''" ng-click="getdata(null,img);">
                         <span class="label label-success" ng-if="img.result=='SUCCESS'">{{img.result|i18n}}</span>
                         <span class="label label-important"  ng-if="img.result=='FAILURE'">{{img.result|i18n}}</span>
                         <span class="label label-warning"  ng-if="img.result=='ABORTED'">{{img.result|i18n}}</span>
@@ -33,8 +33,8 @@
                         <md-icon style="position: absolute;top: 12px;right: 5%;font-size:2em;color:#2FBA66;" class="fa fa-check-circle" ng-if="img.result=='SUCCESS'"></md-icon>
                         <md-icon style="position: absolute;top: 12px;right: 5%;font-size:2em;color:#157EDD;" class="fa fa-spinner fa-pulse" ng-if="!img.result"></md-icon>
                         <md-icon style="position: absolute;top: 12px;right: 5%;font-size:2em;color:#EDAB21;" class="fa fa-dot-circle-o" ng-if="img.result=='ABORTED'"></md-icon>
-                        <button class="md-button md-raised" ng-click="getdata(img)" ng-if="!img.result" style="margin-right: 100px;background-color: #1680DF!important;border-bottom: 0;">刷新</button>
-                        <button class="md-button md-raised" ng-click="stopimage(img)" ng-if="!img.result" style="margin-right: 100px;background-color: #1680DF!important;border-bottom: 0;">停止</button>
+                        <button class="md-button md-raised" ng-click="getdata($event,img)" ng-if="!img.result" style="background-color: #1680DF!important;border-bottom: 0;">刷新</button>
+                        <button class="md-button md-raised" ng-click="stopimage($event,img)" ng-if="!img.result" style="margin-right: 100px;background-color: #1680DF!important;border-bottom: 0;">停止</button>
                       </md-list-item>
                       <div ng-if="img.isopen" class="imageitemdetail">
                          <pre><code>{{img.console}}

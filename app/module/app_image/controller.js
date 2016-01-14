@@ -526,17 +526,21 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 		    }
 		    $scope.refresh();
 
-	        $scope.getdata = function(l){
-	        	//先把其他的都关了
-	        	for(var i =0;i<$scope.loglist.length;i++){
-	        		if($scope.loglist[i]!=l){
-	        			$scope.loglist[i]["isopen"] = false;
-	        		}
-	        		
+	        $scope.getdata = function(e,l){
+	        	if(e){
+	        		e.stopPropagation();
+	        	}else{
+		        	//先把其他的都关了
+		        	for(var i =0;i<$scope.loglist.length;i++){
+		        		if($scope.loglist[i]!=l){
+		        			$scope.loglist[i]["isopen"] = false;
+		        		}
+		        		
+		        	}
+		        	l.isopen = !l.isopen;
 	        	}
-	        	l.isopen = !l.isopen;
+	        	
 	        	var t_log = logs.get({id:$rootScope.current_tenant.id,jobid:$routeParams.id,number:l.number},function(){
-	        		console.log(t_log)
 	        		l.console = t_log.metadata[0];
 	        		$timeout(function(){
 	        			$('pre code').each(function(i, block) {
@@ -546,8 +550,9 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 	        	})
 	        }
 
-	        $scope.stopimage = function(log){
-				$http.put($scope.baseurl+$rootScope.current_tenant.id+"/build/"+log.uuid+"/"+log.number+"?action=stop").success(function(datadata){
+	        $scope.stopimage = function(e,log){
+	        	e.stopPropagation();
+				$http.put($scope.baseurl+$rootScope.current_tenant.id+"/build/"+$routeParams.id+"/"+log.number+"?action=stop").success(function(datadata){
 					if(data.code==0){
 						Notify.showSimpleToast("操作成功",1);
 					}else if(data.code>0){

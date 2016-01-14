@@ -102,25 +102,34 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
           if($("body").find("a#console").length>0){
             $("body").find("a#console").remove();
           }
-          it.appendTo(document.body).css({"z-index":1600,
+          it.appendTo($("#cluter-table")[0]).css({"z-index":0,
           position:"absolute",
           opacity:0,
           display:"inline-block",
-          top:$("#consolel")[0].getBoundingClientRect().top+$("body")[0].scrollTop,
-          left:$("#consolel")[0].getBoundingClientRect().left,
+          top:$("#consolel")[0].offsetTop+20,
+          left:$("#consolel")[0].offsetLeft+$("#sidebar")[0].offsetWidth,
           width:$("#consolel")[0].offsetWidth,
           height:$("#consolel")[0].offsetHeight
           });
           console.log(it)
         }
-        $(document).scroll(function(){
-          if($("#console").length>0){
-            $("#console").css("top",($("#consolel")[0].getBoundingClientRect().top+$("body")[0].scrollTop)+"px");
-          }
+        $("#consolel").mouseover(function(){
+          $("#console").css('z-index',1600);
         })
+        $(document).delegate("#console",'mouseleave',function(event) {
+          $(this).css('z-index','-1');
+        }).delegate("#console","click",function(){
+          Modal.close(null,$("#termanal_sure").find(".modal__close")[0]);//自动触发关闭modal的方法
+        });
+        // $(document).scroll(function(){
+        //   if($("#console").length>0){
+        //     $("#console").css("top",($("#consolel")[0].getBoundingClientRect().top+$("body")[0].scrollTop)+"px");
+        //   }
+        // })
+
+
 
         $("#tiptool").mouseleave(function(){
-          console.log("2324")
           $(this).removeClass("show").html("");
         })
         $scope.order = function(predicate, reverse) {

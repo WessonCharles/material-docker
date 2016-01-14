@@ -48,17 +48,23 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
                     Notify.showSimpleToast("已使用IP池列表请求成功",1);
 
                     $scope.theaders = [{
-                        name:'名称',
-                        field:'name',
+                        name:'公网池名',
+                        field:'pool_name',
                     },{
-                        name:'总数',
-                        field:'number',
+                        name:'公网地址',
+                        field:'public_ip',
                     },{
-                        name:'可用个数',
-                        field:'available',
+                        name:'使用者',
+                        field:'user',
                     },{
-                        name:'掩码',
-                        field:'cidr',
+                        name:'使用的项目',
+                        field:'tenant_name',
+                    },{
+                        name:'绑定的集群名',
+                        field:'cluster_name'
+                    },{
+                        name:'分配的时间',
+                        field:'created_at'
                     }];
 
                     var sourcedata = u.metadata;
@@ -68,8 +74,8 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
                         $scope.tcontent.push(s);
                     }
                     console.log($scope.tcontent);
-                    $scope.tcustom = {name: 'bold',number:'grey',available:'grey',cidr:'grey'};
-                    $scope.tsortable = ['name','number','available','cidr'];
+                    $scope.tcustom = {pool_name: 'bold',public_ip:'grey',user:'grey',tenant_name:'grey',cluster_name:'grey',created_at:'grey'};
+                    $scope.tsortable = ['pool_name','public_ip','user','tenant_name','cluster_name','created_at'];
                     $scope.tcount = 100;
                     $scope.tselected = [];
                     var code = $compile('<md-table headers="theaders" refresh="trefresh" content="tcontent" sortable="tsortable" filters="search" custom-class="tcustom" thumbs="thumbs" action="action" count="tcount" isselect="true" selected="tselected" links="links" func="func"></md-table>')($scope);
