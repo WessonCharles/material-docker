@@ -11,8 +11,8 @@
           <form name="myForm">
             <div class="form-input message">
               <label>镜像名称<span>*</span></label>
-              <input ng-model="image.name" type="text" ng-required="true">
-              <span>请使用英文或数字进行命名,以代表它的用途</span>
+              <input ng-model="image.name" type="text" ng-required="true" style="width:300px">
+              <span class="hint">请使用英文或数字进行命名,以代表它的用途</span>
             </div>
             <!-- <md-content  class="form-input">
               <label for="">镜像图标
@@ -29,6 +29,7 @@
             </md-content> -->
             <div class="form-input"><!--layout="row" layout-sm-column style="padding-left:50px;"-->
               <div layout="row">
+                <label for="">镜像权限</label>
               <md-radio-group class="line" ng-model="image.is_private" ng-init="image.is_private='1'">
                 <md-radio-button value="1" class="md-primary">公有</md-radio-button>
                 <md-radio-button value="0" class="md-primary">私有</md-radio-button>
@@ -41,17 +42,17 @@
             </div> -->
             <md-subheader class="md-primary">源代码Git仓库</md-subheader>
               <div layout="row" layout-fill>
-                <div flex class="noshadow">
+                <div flex class="noshadow message">
                   <label for="">Git仓库地址<span>*</span></label>
-                  <input style="float:none;" type="text" ng-model="image.repo_url" ng-keydown="checkurl()" ng-keyup="checkurl()">
-                  <span>格式: https://[username:password@]github.com/coocla/docker.git</span>
+                  <input style="float:none;width:300px" type="text" ng-model="image.repo_url" ng-keydown="checkurl()" ng-keyup="checkurl()">
+                  <span class="hint">格式: https://[username:password@]github.com/coocla/docker.git</span>
                 </div>
               </div>
               </br>
               <div layout="row" layout-fill>
                 <div class="noshadow" flex>
                   <label for="">Git分支名</label>
-                  <input style="float:none;" type="text" ng-model="image.repo_branch">
+                  <input style="float:none;width:300px;" type="text" ng-model="image.repo_branch">
                 </div>
               </div>
               <div class="form-input">
@@ -69,15 +70,15 @@
               <div layout="row" layout-fill>
                 <div flex class="noshadow">
                   <label for="">Dockerfile名字</label>
-                  <input style="float:none;" ng-model="image.dockerfile_name" type="text">
+                  <input style="float:none;width:300px;" ng-model="image.dockerfile_name" type="text">
                 </div>
               </div>
               </br>
               <div layout="row" layout-fill>
-                <div flex class="noshadow">
+                <div flex class="noshadow message">
                   <label>Dockerfile路径</label>
-                  <input style="float:none;" ng-model="image.dockerfile_dir" type="text" ng-required="true">
-                  <span>注意: 该路径以Git仓库为根</span>
+                  <input style="float:none;width:300px;" ng-model="image.dockerfile_dir" type="text" ng-required="true">
+                  <span class="hint">注意: 该路径以Git仓库为根</span>
                 </div>
               </div>
             <!-- <md-subheader class="md-primary">发布镜像</md-subheader>
