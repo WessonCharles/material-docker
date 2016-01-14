@@ -11,6 +11,7 @@ define(['angular'], function(angular){
                 'image':'镜像',
                 'logs':'日志',
                 'create-image':'创建镜像',
+                'create-cluster':'创建集群',
                 'service':'服务',
                 'groups':'集群',
                 'users':'用户',
