@@ -28,7 +28,14 @@ define(['angular','modal'],function(angular,modal){
                                 field:'created_at',
                             }];
 
+                            data.metadata.reverse();
                             $scope.content = data.metadata;
+                            // for(var i =0;i<data.metadata.length;i++){
+                            //     data.metadata[i].created_at = $filter("date")(data.metadata[i].created_at,"yyyy-MM-dd HH:mm")
+                            //     cons.push(data.metadata[i]);
+                            // }
+                            // $scope.content = cons;
+                            // $scope.content.reverse();
                             $scope.count = 100;
                             $scope.custom = {name: 'bold', kind:'grey',reason:'grey',message:'message',created_at:'grey'};
                             $scope.sortable = ['name','kind','reason','message','created_at'];
