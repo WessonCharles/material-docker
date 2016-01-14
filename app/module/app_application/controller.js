@@ -301,7 +301,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 	                	content:"我们将所有的基础服务以集群的方式来运行,有了集群,在日后,您可以轻松的对集群进行横向扩展(扩容/缩容)."
 	                }:{
 	                	title:"负载均衡",
-	                	content:""
+	                	content:"对多个后端应用提供一个统一的接口,它自动将到达的流量按照分发策略转发到后端关联的集群应用中."
 	                }	
 	        }
 
@@ -411,7 +411,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			          //   field:'more_action'
 			          }
 			        ];
-			        $scope.collheaders = ["instance","protocol","xxx","endpoint","created_at","xxx"];
+			        $scope.collheaders = ["instance","protocol","xxx","endpoint","xxx","created_at"];
 			        /*if(lb.metadata[0]&&lb.metadata[0].lb[0]){
 			        	for(var f in lb.metadata[0].lb[0]){
 			        		if(f!='name'){

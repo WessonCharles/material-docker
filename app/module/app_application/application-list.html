@@ -121,9 +121,12 @@
               <h2>创建应用</h2>
               <div class="modal_content_inner">
               <form name="nameForm">
-                <div class="form-input" ng-class="nameifmatchreg">
+                <div class="form-input message" ng-class="nameifmatchreg">
                   <label for="">应用名称</label>
                   <input type="text" ng-model="app_name" ng-required="true" ng-keydown="checkname()" ng-keyup="checkname()" md-autofocus>
+                  <div class="hint">
+                      可以使用中文,英文,数字进行命名
+                  </div>
                 </div>
                 <div class="form-input">
                   <label for="">应用简介</label>

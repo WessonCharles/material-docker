@@ -29,9 +29,10 @@
                   </md-list>
               </div>
               <form name="nameForm" class="left">
-                <div ng-class="nameifmatchreg" style="padding-left: 33px;">
+                <div class="form-input message" ng-class="nameifmatchreg" style="padding-left: 33px;">
                   <label for="">集群名称</label>
                   <input type="text" ng-model="cluter_name" ng-required="true" ng-keydown="checkname()" ng-keyup="checkname()" md-autofocus>
+                  <div class="hit">* 请使用英文或数字进行命名,注意不能以数字开头</div>
                 </div>
                 <md-list ng-cloak>
                   <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
@@ -138,19 +139,23 @@
                               <div class="nopaddingbot">
                                 <label for="">命令</label>
                                 <input ng-model="img.strcom" type="text">
+                                <small class="pln">可选,这里的命令将会覆盖Dockerfile中的ENTRYPOINT</small>
                               </div>
                             </div>
+                        </div>
+                          <div class="unshadow" layout="row" layout-fill layout-padding>
                             <div class="unshadow" flex>
                               <div class="nopaddingbot">
                                 <label for="">参数</label>
                                 <input type="text" ng-model="img.strargs" placeholder="以空格分隔">
+                                <small class="pln">可选,这里的值将会作为ENTRYPOINT的参数</small>
                               </div>
                             </div>
                           </div>
                           <div class="unshadow" layout="row" layout-fill layout-padding>
                             <div class="unshadow" flex>
                               <div class="nopaddingbot">
-                                <label for="">选择挂载卷</label>
+                                <label for="">挂载卷</label>
                                 <md-select placeholder="挂载卷" name="volumn" ng-model="img.tempvol" multiple="true" placeholder="卷列表，多选" required>
                                   <md-option ng-repeat="vo in volumns track by $index" value="{{vo.uuid}}_{{vo.name}}">{{vo.name}}</md-option>
                                 </md-select>

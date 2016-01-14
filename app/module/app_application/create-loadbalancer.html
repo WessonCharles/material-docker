@@ -16,7 +16,7 @@
             <div layout="row" layout-fill layout-padding>
               <div flex>
                 <div class="nopaddingbot">
-                  <label>关联集群：</label>
+                  <label>关联集群</label>
                   <md-select placeholder="集群列表" name="cluster" ng-model="lbl.cluster_name" required>
                     <md-option ng-repeat="t in clusters track by $index" value="{{t.name}}">{{t.name}}</md-option>
                   </md-select>
@@ -49,12 +49,12 @@
               <div layout="row" style="background-color:transparent;" layout-fill layout-padding ng-init="lbl.ports = [];lbl.temppot = {};">
                 <div layout="row" style="background-color:transparent;" layout-fill layout-padding>
                   <div class="noshadow">
-                    <label for="">端口</label>
-                    <input ng-model="lbl.temppot.port" type="text" placeholder="port">
+                    <label for="">负载均衡端口</label>
+                    <input ng-model="lbl.temppot.port" type="text" placeholder="80">
                   </div>
                   <div class="noshadow" style="padding-left:30px">
-                    <label for="">服务端口</label>
-                    <input ng-model="lbl.temppot.targetport" type="text" placeholder="targetport">
+                    <label for="">后端服务端口</label>
+                    <input ng-model="lbl.temppot.targetport" type="text" placeholder="80">
                   </div>
                 </div>
               </div>
