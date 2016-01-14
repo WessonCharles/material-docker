@@ -77,7 +77,7 @@ define(['angular','modal'],function(angular,modal){
 			        // 	// 	field:i
 			        // 	// })
 			        // };
-			        
+			        $scope.tcollheaders = ["name","mountpath","user","created_at","xx"];
 			        var sourcedata = pl.metadata;
 			        $scope.content = [];
 			        for(var i =0;i<sourcedata.length;i++){
@@ -93,6 +93,7 @@ define(['angular','modal'],function(angular,modal){
 			        	// 	"collections":s.containers,
 			        	// 	"subshow":false
 			        	// };
+			        	s["collections"] = [];
 			        	$scope.content.push(s);
 			        }
 			        console.log($scope.content)
@@ -141,11 +142,29 @@ define(['angular','modal'],function(angular,modal){
 
 			        // $scope.loadtable = function(t){
 			        	// console.log(t);
-		        	var code = $compile('<md-table headers="headers" content="content" refresh="refresh" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" action="action" count="count" isselect="true" selected="selected" links="links" func="func"></md-table>')($scope);
+		        	var code = $compile('<md-table headers="headers" content="content" getapidata="getapidata" collheaders="tcollheaders" refresh="refresh" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" action="action" count="count" isselect="true" selected="selected" ></md-table>')($scope);
 		        	$("#columns").html(code);
 		        });
 			}
 			$scope.refresh();
+
+
+			$scope.getapidata=function(c){
+				console.log(c)
+				c.collections = [];
+				var it = [];
+				for(var i in c.mount_at){
+					it.push({
+						name:i,
+						mountpath:c.mount_at[i].mountpath,
+						user:c.mount_at[i].user,
+						created_at:c.mount_at[i].created_at,
+						xx:''
+					})
+				}
+				console.log(it)
+				c.collections = it;
+			}
 	        $scope.listItemClick = function($event,it) {
 	        	console.log(it)
 				instance.current_column = it;

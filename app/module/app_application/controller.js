@@ -403,6 +403,9 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
                                   },{
 			            name:'内部域名',
 			            field:'domain'
+                                  },{
+                                    name:'绑定的集群',
+                                    field:'clusters'
 			          },{
 			            name: '创建时间', 
 			            field: 'created_at'
@@ -411,7 +414,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			          //   field:'more_action'
 			          }
 			        ];
-			        $scope.collheaders = ["instance","protocol","xxx","endpoint","xxx","created_at"];
+			        $scope.collheaders = ["instance","protocol","xxx","endpoint","xxx","xxx","created_at"];
 			        /*if(lb.metadata[0]&&lb.metadata[0].lb[0]){
 			        	for(var f in lb.metadata[0].lb[0]){
 			        		if(f!='name'){
@@ -433,7 +436,8 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			        		created_at:$filter("date")(lb.metadata[i].created_at,'yyyy-MM-dd HH:mm:ss'),
 			        		collections:sub_endpoint,
                                                 publicip:publicIP,
-                                                private_ip:lb.metadata[i].private_ip
+                                                private_ip:lb.metadata[i].private_ip,
+                                                clusters:lb.metadata[i].binds.join(",")
 			        	})
 			        }
 
@@ -463,8 +467,8 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 
 
 			        $scope.tselected = [];
-			        $scope.tcustom = {name: 'bold', sessionAffinity:'grey',domain:'grey',created_at:'grey',publicip:'grey',private_ip:'grey'};
-			        $scope.tsortable = ['name', 'sessionAffinity','domain','created_at','publicip','private_ip'];
+			        $scope.tcustom = {name: 'bold', sessionAffinity:'grey',domain:'grey',created_at:'grey',publicip:'grey',private_ip:'grey',clusters:'grey'};
+			        $scope.tsortable = ['name', 'sessionAffinity','domain','created_at','publicip','private_ip','clusters'];
 			        // $scope.tmodal = "#container_detail";
 			        // $scope.thumbs = 'thumb';
 			        $scope.tcount = 5;

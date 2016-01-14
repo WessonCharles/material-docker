@@ -38,9 +38,9 @@ define([
       'ThCofAngSeed.system_ctrl',
       'ThCofAngSeed.users_ctrl',
       'ThCofAngSeed.events_ctrl',
-  ]).controller("baseCtrl",["$scope", "$http","$rootScope", "$location","$timeout", "$filter","$window",'$route','AuthService','$mdBottomSheet','instance',
+  ]).controller("baseCtrl",["$scope", "$http","$rootScope", "$location","$timeout", "$filter","$window",'$route','AuthService','$mdBottomSheet','instance','$mdDialog',
       
-      function($scope,$http,$rootScope,$location,$timeout,$filter,$window,$route,AuthService,$mdBottomSheet,instance){
+      function($scope,$http,$rootScope,$location,$timeout,$filter,$window,$route,AuthService,$mdBottomSheet,instance,$mdDialog){
         $scope.go = 1;
 
         $scope.baseurl = "http://42.51.161.236:8337/";
@@ -80,6 +80,16 @@ define([
           $http.get($scope.baseurl+"menus").success(function(data){
             $scope.menus = data.metadata;
           })
+
+          $scope.getpass = function(ev){
+            $http.get($scope.baseurl+"account").success(function(data){
+              console.log(data)
+              var confirm = $mdDialog.confirm().title('密码').content('您的镜像仓库密码是   '+data.metadata[0].password+'').targetEvent(ev).ok('确定');
+              $mdDialog.show(confirm).then(function(){
+                }, function(){
+              });
+            });
+          }
         }else{
           $rootScope.islogin = false;
           $location.path("/login");
