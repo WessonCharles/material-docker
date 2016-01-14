@@ -2259,9 +2259,6 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus {
     content: "*";
 }
 .hint {
-    position: absolute;
-    left: 85px;
-    right: auto;
     bottom: 0;
     font-size: 12px;
     font-style: italic;
