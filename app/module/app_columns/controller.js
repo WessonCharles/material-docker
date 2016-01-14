@@ -53,18 +53,21 @@ define(['angular','modal'],function(angular,modal){
 			        $scope.headers = [{
 			        	name:'名称',
 			        	field:'name'
-			        },{
+                                },{
+                                        name:'挂载的集群',
+                                        field:'cluster_name',
+                                },{
+                                        name:'挂载点',
+                                        field:'mountpath',
+                                },{
 			        	name:'大小',
 			        	field:'quota'
 			        },{
+                                        name:'挂载人',
+                                        field:'mount_user',
+			        },{
 			        	name:'创建人',
 			        	field:'create_user'
-			        // },{
-			        // 	name:'镜像',
-			        // 	field:'images'
-			        // },{
-			        // 	name:'服务地址',
-			        // 	field:'selfLink'
 			        },{
 			        	name:'创建时间',
 			        	field:'created_at'
@@ -77,28 +80,17 @@ define(['angular','modal'],function(angular,modal){
 			        // 	// 	field:i
 			        // 	// })
 			        // };
-			        $scope.tcollheaders = ["name","mountpath","user","created_at","xx"];
+			        $scope.tcollheaders = ["name","cluster_name","mountpath","quota","mount_user","created_user","created_at","xx"];
 			        var sourcedata = pl.metadata;
 			        $scope.content = [];
 			        for(var i =0;i<sourcedata.length;i++){
 			        	var s = sourcedata[i];
-			        	// var time = $filter('date')(s.creationTimestamp,"MM-dd-yyyy HH:mm");
-			        	// var obj = {
-			        	// 	"name":s.name,
-			        	// 	"resourceVersion":s.resourceVersion,
-			        	// 	"status":"",
-			        	// 	"images":s.images||"",
-			        	// 	"selfLink":"",
-			        	// 	"createtime":time,
-			        	// 	"collections":s.containers,
-			        	// 	"subshow":false
-			        	// };
 			        	s["collections"] = [];
 			        	$scope.content.push(s);
 			        }
 			        console.log($scope.content)
-			        $scope.custom = {name: 'bold',quota:'grey', create_user:'grey',created_at:'grey'};
-			        $scope.sortable = ['name','quota','create_user','created_at'];
+			        $scope.custom = {name:'bold',cluster_name:'grey',mountpath:'grey',quota:'grey',mount_user:'grey',create_user:'grey',created_at:'grey',xx:'grey'};
+			        $scope.sortable = ['name',"cluster_name","mountpath","quota","mount_user","create_user","created_at","xx"];
 			        $scope.count = 100;
 			        // $scope.links = '/volumes';
 			        $scope.selected = [];
@@ -155,9 +147,9 @@ define(['angular','modal'],function(angular,modal){
 				var it = [];
 				for(var i in c.mount_at){
 					it.push({
-						name:i,
+						cluster_name:i,
 						mountpath:c.mount_at[i].mountpath,
-						user:c.mount_at[i].user,
+						mount_user:c.mount_at[i].user,
 						created_at:c.mount_at[i].created_at,
 						xx:''
 					})
