@@ -9,9 +9,10 @@
         创建镜像</md-subheader>
        <md-content id="imageform" class="md-padding">
           <form name="myForm">
-            <div  class="form-input">
+            <div class="form-input message">
               <label>镜像名称<span>*</span></label>
               <input ng-model="image.name" type="text" ng-required="true">
+              <span>请使用英文或数字进行命名,以代表它的用途</span>
             </div>
             <!-- <md-content  class="form-input">
               <label for="">镜像图标
@@ -38,18 +39,18 @@
               <label for="">简介</label>
               <textarea name="" id="" cols="30" rows="10" ng-model="image.intro"></textarea>
             </div> -->
-            <div class="form-input">
-              <label for="">分类</label>
-              <input type="text" ng-model="image.category">
-            </div>
-            <md-subheader class="md-primary">仓库</md-subheader>
+            <md-subheader class="md-primary">源代码Git仓库</md-subheader>
               <div layout="row" layout-fill>
                 <div flex class="noshadow">
-                  <label for="">仓库地址<span>*</span></label>
+                  <label for="">Git仓库地址<span>*</span></label>
                   <input style="float:none;" type="text" ng-model="image.repo_url" ng-keydown="checkurl()" ng-keyup="checkurl()">
+                  <span>格式: https://[username:password@]github.com/coocla/docker.git</span>
                 </div>
+              </div>
+              </br>
+              <div layout="row" layout-fill>
                 <div class="noshadow" flex>
-                  <label for="">仓库分支名</label>
+                  <label for="">Git分支名</label>
                   <input style="float:none;" type="text" ng-model="image.repo_branch">
                 </div>
               </div>
@@ -67,12 +68,16 @@
             <md-subheader class="md-primary">Dockerfile</md-subheader>
               <div layout="row" layout-fill>
                 <div flex class="noshadow">
-                  <label for="">名字</label>
+                  <label for="">Dockerfile名字</label>
                   <input style="float:none;" ng-model="image.dockerfile_name" type="text">
                 </div>
+              </div>
+              </br>
+              <div layout="row" layout-fill>
                 <div flex class="noshadow">
-                  <label>路径<span>*</span></label>
+                  <label>Dockerfile路径</label>
                   <input style="float:none;" ng-model="image.dockerfile_dir" type="text" ng-required="true">
+                  <span>注意: 该路径以Git仓库为根</span>
                 </div>
               </div>
             <!-- <md-subheader class="md-primary">发布镜像</md-subheader>
