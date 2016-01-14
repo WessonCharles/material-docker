@@ -233,6 +233,7 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 			var Images = restful.action({id:"@id"},$scope.baseurl+":id/build"); 
 			$scope.image = {
 				dockerfile_dir:"/",
+                                repo_branch:"master",
 				dockerfile_name:"Dockerfile"
 			}; 
 			$scope.myImage = '';
