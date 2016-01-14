@@ -154,6 +154,7 @@ define([
         });
 
         $rootScope.$on('$routeChangeSuccess',function(){
+            $rootScope.intro={}
             $mdBottomSheet.hide();
         });
         /**
@@ -248,6 +249,11 @@ define([
   ])
   .controller("indexctrl",["$scope", "$http","$rootScope", "$location","$timeout", "$filter","$window",'$route','AuthService',
     function($scope,$http,$rootScope,$location,$timeout,$filter,$window,$route,AuthService){
+      $rootScope.intro={
+        title:"概览",
+        content:"资源配额使用详情，自定义监控等可定制化预览界面"
+      }
+
       function loadsur(){
         $scope.percentlist = {cpu: 0,
                             memory: 0,

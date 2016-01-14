@@ -645,9 +645,11 @@ a.hq-button{
 }
 .form-input.message{
   height:50px;
+  position:relative;
 }
 [flex].message{
   height:50px;
+  position:relative;
 }
 .left{
   margin:0;
@@ -2165,7 +2167,7 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus {
 .stat-list {
     list-style: none;
     padding: 0;
-    margin: 20px;
+    margin:15px 20px;
 }
 .stat-list li:first-child {
     margin-top: 0;
@@ -2253,15 +2255,18 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus {
   width:42px;
   height:42px;
 }
+.hint::before {
+    content: "*";
+}
 .hint {
     position: absolute;
     left: 85px;
     right: auto;
     bottom: 0;
     font-size: 12px;
+    font-style: italic;
     line-height: 14px;
     transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-    color: grey;
 }
 .btn-group, .btn-group-vertical {
     position: relative;

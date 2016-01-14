@@ -1,63 +1,79 @@
 <div class="content-table">
-	<div layout="row">
-		<div flex>
+	<div layout="row" layout-sm="column" style="background-color:transparent;">
+		<div flex style="background-color:#fff;" layout-margin>
 			<md-subheader class="md-primary">资源使用概览</md-subheader>
-		</div>
-	</div>
-	<div layout="row" layout-sm="column">
-	  <div flex>
-	    <ul class="stat-list m-t-lg">
-            <li>
-                <h2 class="no-margins" style="height: 32px;line-height: 32px;">CPU</h2>
-                <small>{{used.cpu}}</small>
-                <div class="progress progress-mini">
-                    <div class="progress-bar" style="width: {{percentlist.cpu*100}}%;"></div>
-                </div>
-            </li>
-        </ul>
-	  </div>
-	  <div flex>
-	    <ul class="stat-list m-t-lg">
-            <li>
-                <h2 class="no-margins ">内存</h2>
-                <small>{{used.memory}}</small>
-                <div class="progress progress-mini">
-                    <div class="progress-bar" style="width: {{percentlist.memory*100}}%;"></div>
-                </div>
-            </li>
-        </ul>
-	  </div>
-	  <div flex>
-	    <ul class="stat-list m-t-lg">
-            <li>
-                <h2 class="no-margins ">实例</h2>
-                <small>{{used.pods}}</small>
-                <div class="progress progress-mini">
-                    <div class="progress-bar" style="width: {{percentlist.pods*100}}%;"></div>
-                </div>
-            </li>
-        </ul>
-	  </div>
-	</div>
-	<div layout="row" layout-sm="column">
-		<div flex>
-			<ul class="stat-list m-t-lg">
-				<h2 class="no-margins">集群</h2>
-                                <small>{{used.replicationcontrollers}}</small>
-				<div class="progress progress-mini">
-					<div class="progress-bar" style="width:{{percentlist.replicationcontrollers*100}}%"></div>
+			<md-divider class="md-default-theme"></md-divider>
+			<div layout="row">
+				<div flex>
+				    <ul class="stat-list m-t-lg">
+			            <li>
+			                <b class="no-margins" style="height: 32px;line-height: 32px;">CPU</b>
+			                <small>{{used.cpu}}</small>
+			                <div class="progress progress-mini" style="width:70%;float:right;margin-top:15px;">
+			                    <div class="progress-bar" style="width: {{percentlist.cpu*100}}%;"></div>
+			                </div>
+			            </li>
+			        </ul>
+		        </div>
+			  </div>
+			  <div layout="row">
+			  	<div flex>
+				    <ul class="stat-list m-t-lg">
+			            <li>
+			                <b class="no-margins ">内存</b>
+			                <small>{{used.memory}}</small>
+			                <div class="progress progress-mini" style="width:70%;float:right;margin-top:15px;">
+			                    <div class="progress-bar" style="width: {{percentlist.memory*100}}%;"></div>
+			                </div>
+			            </li>
+			        </ul>
+			    </div>    
+			  </div>
+			  <div layout="row">
+			  	<div flex>
+				    <ul class="stat-list m-t-lg">
+			            <li>
+			                <b class="no-margins ">实例</b>
+			                <small>{{used.pods}}</small>
+			                <div class="progress progress-mini" style="width:70%;float:right;margin-top:15px;">
+			                    <div class="progress-bar" style="width: {{percentlist.pods*100}}%;"></div>
+			                </div>
+			            </li>
+			        </ul>
+			    </div>    
+			  </div>
+			  <div layout="row">
+			  	<div flex>
+					<ul class="stat-list m-t-lg">
+						<b class="no-margins">集群</b>
+		                                <small>{{used.replicationcontrollers}}</small>
+						<div class="progress progress-mini" style="width:70%;float:right;margin-top:15px;">
+							<div class="progress-bar" style="width:{{percentlist.replicationcontrollers*100}}%"></div>
+						</div>
+					</ul>
 				</div>
-			</ul>
-		</div>
-		<div flex>
-			<ul class="stat-list m-t-lg">
-				<h2 class="no-margins">负载均衡</h2>
-                                <small>{{used.services}}</small>
-				<div class="progress progress-mini">
-					<div class="progress-bar" style="width:{{percentlist.services*100}}%"></div>
+			  </div>	
+			  <div layout="row">
+			  	<div flex>
+					<ul class="stat-list m-t-lg">
+						<b class="no-margins">负载均衡</b>
+			                            <small>{{used.services}}</small>
+						<div class="progress progress-mini" style="width:70%;float:right;margin-top:15px;">
+							<div class="progress-bar" style="width:{{percentlist.services*100}}%"></div>
+						</div>
+					</ul>
 				</div>
-			</ul>
+			   </div>	
 		</div>
-		<div flex></div>
+		<div flex style="background-color:#fff;" layout-margin>
+			
+		</div>
+		<div flex style="background-color:#fff;" layout-margin>
+			<md-subheader class="md-primary">公告</md-subheader>
+			<md-divider class="md-default-theme"></md-divider>
+			<div layout="row" layout-padding layout-margin>
+				巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉
+			</div>
+		</div>
 	</div>
 </div>

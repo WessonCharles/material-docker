@@ -234,10 +234,10 @@
         <form name="myForm">
           <md-content class="md-padding">
             <div class="form-input">
-              <label for="">当前副本数-{{current_size}},调整为：</label>
-              <input type="text" ng-model="resizenum" ng-required>
+              <label for="">当前副本数{{current_size}},调整为：</label>
+              <input ng-model="resizenum" type="number" step="1" ng-required>
             </div>
-            <div align="right">
+            <div align="right" style="margin:10px 0 -2.4rem 0;">
               <md-button ng-click="resizem($event)" ng-disabled="myForm.$invalid" class="md-primary" layout layout-align="center end">提交</md-button>
             </div>
         </form>

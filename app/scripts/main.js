@@ -56,12 +56,12 @@ require.config({
 		colresize:'../libs/colresize/colresize',
 		modernizr:'../libs/custom/modernizr.custom',
 		socket:'../libs/socket/socket.io',
-		term:'../libs/term.js-master/src/term',
+		// term:'../libs/term.js-master/src/term',
 		markdown:'../libs/markdown/markdown',
 		highlight:'//cdn.jsdelivr.net/highlight.js/9.0.0/highlight.min',
 		imgcrop:'../libs/ngImgCrop/ng-img-crop',
 		datetime:'../libs/datePicker/js/bootstrap-datetimepicker.min',
-		highcharts:'http://cdn.hcharts.cn/highcharts/highcharts'
+		highcharts:'../libs/highcharts/highcharts'
 	},
 	shim:{
 		'angular' : {'exports' : 'angular'},
@@ -75,7 +75,7 @@ require.config({
         'modernizr':{'exports':'modernizr'},
         'colresize':['jquery'],
         'socket':{'exports':'socket'},
-        'term':{'exports':'term'},
+        // 'term':{'exports':'term'},
         'markdown':{'exports':'markdown'},
         'imgcrop':['angular'],
         'highlight':{'exports':'highlight'},
@@ -102,7 +102,7 @@ require([
 	'modernizr',
 	'colresize',
 	'socket',
-	'term',
+	// 'term',
 	'markdown',
 	'imgcrop',
 	'highlight',
