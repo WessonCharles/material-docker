@@ -518,9 +518,18 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 	        }
 
 	        $scope.remove = function(ev){
+	        	var alert = "";
+	        	if($scope.tab=='cluster'){
+		        	console.log($scope.selected)
+		        	for(var i =0;i<$scope.selected.length;i++){
+		        		if($scope.selected[i].lb_lists){
+		        			alert = "（所选集群有绑定负载均衡，请先释放！）"
+		        		}
+		        	}
+		        }
 	        	var confirm = $mdDialog.confirm()
 			    .title('删除确认')
-			    .content('你确定要删除所选'+($scope.tab=='cluster'?"集群":"负载均衡")+'吗？')
+			    .content('你确定要删除所选'+($scope.tab=='cluster'?"集群":"负载均衡")+'吗？'+alert)
 			    .ariaLabel('Lucky day')
 			    .targetEvent(ev)
 			    .ok('确定')
