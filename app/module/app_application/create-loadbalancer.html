@@ -12,37 +12,35 @@
             <div ng-class="nameifmatchreg" style="padding-left: 16px;">
               <label for="">负载均衡名</label>
               <input type="text" ng-model="lbl.name" ng-required="true" ng-keydown="checkname()" ng-keyup="checkname()" md-autofocus>
+              <span class="hint"> 请使用英文或数字进行命令,此名需符合域名的格式,在集群中可以通过此名访问负载均衡</span>
             </div>
             <div layout="row" layout-fill layout-padding>
               <div flex>
-                <div class="nopaddingbot">
+                  <div class="nopaddingbot">
                   <label>关联集群</label>
                   <md-select placeholder="集群列表" name="cluster" ng-model="lbl.cluster_name" required>
                     <md-option ng-repeat="t in clusters track by $index" value="{{t.name}}">{{t.name}}</md-option>
                   </md-select>
+                  <span class="hint">负载均衡将会将流量分发到对应的集群中</span>
                 </div>
               </div>
             </div>
             <div style="padding-top:0px;" layout="row" layout-fill layout-padding>
                 <div layout="row" layout-fill layout-padding>
                 <label>分发策略</label>
-                <div layout="row" layout-sm-column style="padding-left:50px;">
                   <md-radio-group class="line" ng-model="lbl.policy" ng-init="lbl.policy='roundrobin'">
                     <md-radio-button value="roundrobin" class="md-primary">轮询</md-radio-button>
                     <md-radio-button value="clientip" class="md-primary">客户端IP</md-radio-button>
                   </md-radio-group>
                 </div>
-                </div>
             </div>
             <div style="padding-top:0px;" layout="row" layout-fill layout-padding>
                 <div layout="row" layout-fill layout-padding>
                 <label>公网/私网</label>
-                <div layout="row" layout-sm-column style="padding-left:50px;">
                   <md-radio-group class="line" ng-model="lbl.is_public" ng-init="lbl.is_public=1">
                     <md-radio-button value="1" class="md-primary">公网</md-radio-button>
                     <md-radio-button value="0" class="md-primary">私网</md-radio-button>
                   </md-radio-group>
-                </div>
                 </div>
             </div>
             <div style="background-color:#EDF0F5;">
