@@ -184,11 +184,11 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 				console.log(data)
 				$scope.current_image = data.metadata[0];
 				if($scope.current_image.readme&&!$scope.current_image.convert_rm){
-		    		// $scope.current_image.readme = markdown.toHTML($scope.current_image.readme);
+		    		$scope.current_image.readme = markdown.toHTML($scope.current_image.readme);
 		    		$scope.current_image.convert_rm = true;
 		    	}
 		    	if($scope.current_image.dockerfile&&!$scope.current_image.convert_df){
-		    		// $scope.current_image.dockerfile = markdown.toHTML($scope.current_image.dockerfile);	
+		    		$scope.current_image.dockerfile = markdown.toHTML($scope.current_image.dockerfile);	
 		    		$scope.current_image.convert_df = true;
 		    	}
 		    	console.log($scope.current_image);

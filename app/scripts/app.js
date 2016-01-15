@@ -164,7 +164,10 @@ define([
         });
 
         $rootScope.$on('$routeChangeSuccess',function(){
-            $rootScope.intro={}
+            $rootScope.intro={};
+            $(".inner_content").css("display","block");
+            $(".inner_content div[ng-view]").css("padding","0");
+            $(".inner_content .page-header").removeAttr("style")
             $mdBottomSheet.hide();
         });
         /**
