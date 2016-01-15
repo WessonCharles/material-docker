@@ -9,7 +9,7 @@
           <md-icon class="fa fa-plus fa-lg"></md-icon>
           添加集群
         </button>
-        <button ng-show="tab=='cluster'" md-button class="md-raised md-primary modal__trigger" ng-click="ifcheckone($event)" data-modal="#resizem">
+        <button ng-show="tab=='cluster'" ng-disabled="selected.length!=1" md-button class="md-raised md-primary modal__trigger" ng-click="ifcheckone($event)" data-modal="#resizem">
           <md-icon class="fa fa-plus fa-lg"></md-icon>
           扩容/缩容
         </button>
