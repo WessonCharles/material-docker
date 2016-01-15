@@ -108,8 +108,17 @@ var Modal = (function($) {
       zindex++;
       // reveal the modal content
       content.classList.add('modal__content--active');
+      console.log(w.innerWidth)
+      console.log(content.offsetWidth)
+      var left = w.innerWidth/2-content.offsetWidth/2;
+      var top = w.innerHeight/2-content.offsetHeight/2;
+      $(content).parent().css("top",top);
       // alert(1)
-
+      if($(".inner_content").length>0){
+        $(".inner_content").css("display","inline");
+        $(".inner_content div[ng-view]").css("padding","0 15px");
+        $(".inner_content .page-header").css("padding","0 15px");
+      }
       /**
        * when the modal content is finished transitioning, fadeout the temporary
        * expanding div so when the window resizes it isn't visible ( it doesn't
@@ -209,12 +218,16 @@ var Modal = (function($) {
       isOpen["#"+targetmodal.attr("id")] = false;
 
     }
-
     function removeDiv() {
       setTimeout(function() {
         window.requestAnimationFrame(function() {
           // remove the temp div from the dom with a slight delay so the animation looks good
-          div.remove()
+          div.remove();
+          if($(".inner_content").length>0){
+            $(".inner_content").css("display","block");
+            $(".inner_content div[ng-view]").css("padding","0");
+            $(".inner_content .page-header").removeAttr("style")
+          }
           // if($qsa('.modal--active').length==0){
           //   div.remove();
           // }

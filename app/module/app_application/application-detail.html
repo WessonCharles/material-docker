@@ -5,7 +5,7 @@
         <button  aria-label="returntolist" viewclose link="/projects" md-button class="md-raised md-icon-btn" ng-click="backlist();">
           <md-icon class="fa fa-arrow-left fa-lg"></md-icon>
         </button>
-        <button ng-if="tab=='cluster'" md-button class="md-raised md-primary" viewload href="/applications/{{appone.uuid}}/create-cluter">
+        <button ng-if="tab=='cluster'" md-button class="md-raised md-primary" viewload href="/applications/{{appone.uuid}}/create-cluster">
           <md-icon class="fa fa-plus fa-lg"></md-icon>
           添加集群
         </button>
@@ -231,13 +231,13 @@
       <div class="modal__content">
         <h2>扩容/缩容</h2>
         <div class="modal_content_inner">
-        <form name="myForm">
+        <form name="myForm" style="padding:0">
           <md-content class="md-padding">
             <div class="form-input">
               <label for="">当前副本数{{current_size}},调整为：</label>
-              <input ng-model="resizenum" type="number" step="1" ng-required>
+              <input ng-model="resizenum" type="number" min="0" step="1" ng-required>
             </div>
-            <div align="right" style="margin:10px 0 -2.4rem 0;">
+            <div align="right" style="margin:10px 0 0 0;">
               <md-button ng-click="resizem($event)" ng-disabled="myForm.$invalid" class="md-primary" layout layout-align="center end">提交</md-button>
             </div>
         </form>

@@ -15,7 +15,7 @@ define(['angular','app'], function(angular,app) {
             templateUrl:'module/app_application/application-detail.html?v='+parseInt(new Date().format("yyyyMMdd")),
             controller:'prodetailctrl'
         })
-        route.when('/applications/:id/create-cluter',{
+        route.when('/applications/:id/create-cluster',{
             templateUrl:'module/app_application/create-cluter.html?v='+parseInt(new Date().format("yyyyMMdd")),
             controller:'createcluterctrl'
         })

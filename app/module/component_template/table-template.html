@@ -113,7 +113,7 @@
                 <td class="md-table-content" ng-repeat="ch in collheaders track by $index" ng-if="ch=='name'" >
                   <a ng-if="innerlinks&&subhover" href="{{innerlinks}}/instance?name={{l[ch]}}" ng-mouseover="subhover($event,l,true)">{{l[ch]}}</a>
                   <a ng-if="l.component&&l.host" class="modal__trigger" ng-click="setconsole(l)" data-modal="#termanal_sure"><i class="fa fa-desktop"></i></a>
-                 <a ng-if="innerlinks" href="{{innerlinks}}/{{l[ch]}}">{{l[ch]}}</a>
+                 <a ng-if="innerlinks&&!subhover" href="{{innerlinks}}/{{l[ch]}}">{{l[ch]}}</a>
                  <a ng-if="innerlinks&&subclick" href="{{innerlinks}}/instance?name={{l[ch]}}" ng-click="subclick(l)">{{l[ch]}}</a>
                   <span ng-if="!innerlinks&&!subhover&&!l.component&&!subclick">{{l[ch]}}</span>
                </td>
