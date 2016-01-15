@@ -169,7 +169,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 		       		console.log(selects)
 		       		for(var i=0;i<selects.length;i++){
 		       			(function(c,i){
-		       				plat.delete({id:$rootScope.current_tenant.id,name:app.uuid}, function() {
+		       				plat.delete({id:$rootScope.current_tenant.id,name:c.uuid}, function() {
 						        for(var n = 0;n<$scope.content.length;n++){
 						        	if(c.uuid==$scope.content[n].uuid){
 						        		$scope.content.splice(n,1);
