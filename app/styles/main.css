@@ -489,6 +489,9 @@ a.md-button.md-raised, .md-button.md-raised{
 a.md-button.md-raised:hover, .md-button.md-raised:hover{
   background-color:#2B2B38!important;
 }
+a.md-button.md-raised[disabled], .md-button.md-raised[disabled] {
+    color:#aaa;
+}
 a.md-button.md-raised[disabled]:hover, .md-button.md-raised[disabled]:hover {
     color: #ccc;
     background-color: #ccc!important;
