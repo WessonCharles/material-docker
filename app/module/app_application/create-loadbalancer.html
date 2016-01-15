@@ -67,7 +67,7 @@
                       <md-radio-button value="UDP" class="md-primary">UDP</md-radio-button>
                     </md-radio-group>
                   </div>
-                  <a ng-click="lbl.ports.push({port:lbl.temppot.port,targetport:lbl.temppot.targetport,protocol:lbl.temppot.protocol});lbl.temppot = {protocol:'TCP'};" style="line-height:35px;">添加</a>
+                  <button class="md-button md-raised" ng-disabled="!lbl.temppot.port||!lbl.temppot.targetport" ng-click="lbl.ports.push({port:lbl.temppot.port,targetport:lbl.temppot.targetport,protocol:lbl.temppot.protocol});lbl.temppot = {protocol:'TCP'};" style="line-height:35px;">添加</button>
                 </div>
               </div>
             </div>
