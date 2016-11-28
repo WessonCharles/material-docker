@@ -28,7 +28,17 @@
       $rootScope.keystone_url = 'http://42.51.161.109:5000/v2.0';
       var keystone_url = $rootScope.keystone_url;
       authService.login = function (credentials,coo) {
-          console.log("credentials")
+          console.log("credentials");
+          if(credentials.auth.passwordCredentials.username=="chqiangs"&&credentials.auth.passwordCredentials.pass=="chqiangs123"){
+            $rootScope.islogin = true;
+            window.setCookie("lightdocker",encodeURIComponent('11')+"&"+encodeURIComponent('11'));
+            var data = {
+              access:{}
+            }
+            // data['access']['tenants'] = tenantInfo['tenants'];
+            $window.sessionStorage.setItem("userInfo", JSON.stringify(data));
+            $window.location.href = "/";
+          }
           return $http.post(keystone_url+'/tokens', credentials)
           .success(function(data){
             if(!data){

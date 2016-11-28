@@ -45,26 +45,26 @@ define(['angular','modal'],function(angular,modal){
 	        var vol = restful.action({type:"@id",name:"@name"},$scope.baseurl+":id/volumes/:name");
 	        console.log($rootScope.current_tenant)
 		    $scope.refresh = function(){
-		        var pl = vol.get({id:$rootScope.current_tenant.id},function(e){
+		        // var pl = vol.get({id:$rootScope.current_tenant.id},function(e){
 		        	console.timeEnd("restful game");
-
+		        	var pl = {};
 			        Notify.showSimpleToast("存储卷列表请求成功",1);
 			        console.log(pl.metadata)
 			        $scope.headers = [{
 			        	name:'名称',
 			        	field:'name'
-                                },{
-                                        name:'挂载的集群',
-                                        field:'cluster_name',
-                                },{
-                                        name:'挂载点',
-                                        field:'mountpath',
-                                },{
+                    },{
+                        name:'挂载的集群',
+                        field:'cluster_name',
+                    },{
+                        name:'挂载点',
+                        field:'mountpath',
+                    },{
 			        	name:'大小',
 			        	field:'quota'
 			        },{
-                                        name:'挂载人',
-                                        field:'mount_user',
+                        name:'挂载人',
+                        field:'mount_user',
 			        },{
 			        	name:'创建人',
 			        	field:'create_user'
@@ -83,11 +83,11 @@ define(['angular','modal'],function(angular,modal){
 			        $scope.tcollheaders = ["name","cluster_name","mountpath","quota","mount_user","created_user","created_at","xx"];
 			        var sourcedata = pl.metadata;
 			        $scope.content = [];
-			        for(var i =0;i<sourcedata.length;i++){
-			        	var s = sourcedata[i];
-			        	s["collections"] = [];
-			        	$scope.content.push(s);
-			        }
+			        // for(var i =0;i<sourcedata.length;i++){
+			        // 	var s = sourcedata[i];
+			        // 	s["collections"] = [];
+			        // 	$scope.content.push(s);
+			        // }
 			        console.log($scope.content)
 			        $scope.custom = {name:'bold',cluster_name:'grey',mountpath:'grey',quota:'grey',mount_user:'grey',create_user:'grey',created_at:'grey',xx:'grey'};
 			        $scope.sortable = ['name',"cluster_name","mountpath","quota","mount_user","create_user","created_at","xx"];
@@ -136,7 +136,7 @@ define(['angular','modal'],function(angular,modal){
 			        	// console.log(t);
 		        	var code = $compile('<md-table headers="headers" content="content" getapidata="getapidata" collheaders="tcollheaders" refresh="refresh" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" action="action" count="count" isselect="true" selected="selected" ></md-table>')($scope);
 		        	$("#columns").html(code);
-		        });
+		        // });
 			}
 			$scope.refresh();
 
@@ -235,12 +235,12 @@ define(['angular','modal'],function(angular,modal){
 	        	// })
 	        })
 
-	        $rootScope.$watch("current_tenant",function(e,v){
-	        	if(e.id==v.id||!e||!v)return false;
-				$scope.refresh();
-				if($scope.refresh1)$scope.refresh1();
-				if($scope.trefresh)$scope.trefresh();
-			})
+	  //       $rootScope.$watch("current_tenant",function(e,v){
+	  //       	if(e.id==v.id||!e||!v)return false;
+			// 	$scope.refresh();
+			// 	if($scope.refresh1)$scope.refresh1();
+			// 	if($scope.trefresh)$scope.trefresh();
+			// })
 
 		}
 	])

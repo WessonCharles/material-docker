@@ -21,7 +21,8 @@ define(['angular','modal'],function(angular,modal){
 			var users = restful.action(null,$scope.baseurl+"admin/users");
 			var tenants = restful.action(null,$scope.baseurl+"admin/tenants");
 			$scope.refresh = function(){
-				var user = users.get(null,function(){
+				// var user = users.get(null,function(){
+					var user = {};
 					console.log(user);
 					$scope.headers = [
 			          {
@@ -40,17 +41,17 @@ define(['angular','modal'],function(angular,modal){
 			        ];
 			        
 			        $scope.content = [];
-			        for(var i=0;i<user.metadata.length;i++){
-			        	// $scope.content.push({
-			        	// 	name:user.metadata[i].name,
-			        	// 	replicas:user.metadata[i].replicas,
-			        	// 	health_status:user.metadata[i].status.current+"/"+user.metadata[i].status.desired,
-			        	// 	created_at:$filter("date")(user.metadata[i].created_at,'MM/dd/yyyy HH:mm:ss'),
-			        	// 	collections:[],
-			        	// 	bindtenantl:user.metadata[i].bind.gamepublic&&user.metadata[i].bind.gamepublic.length>0?user.metadata[i].bind.gamepublic.join(","):""
-			        	// })
-			        	$scope.content.push(user.metadata[i])
-			        }
+			        // for(var i=0;i<user.metadata.length;i++){
+			        // 	// $scope.content.push({
+			        // 	// 	name:user.metadata[i].name,
+			        // 	// 	replicas:user.metadata[i].replicas,
+			        // 	// 	health_status:user.metadata[i].status.current+"/"+user.metadata[i].status.desired,
+			        // 	// 	created_at:$filter("date")(user.metadata[i].created_at,'MM/dd/yyyy HH:mm:ss'),
+			        // 	// 	collections:[],
+			        // 	// 	bindtenantl:user.metadata[i].bind.gamepublic&&user.metadata[i].bind.gamepublic.length>0?user.metadata[i].bind.gamepublic.join(","):""
+			        // 	// })
+			        // 	$scope.content.push(user.metadata[i])
+			        // }
 			        $scope.selected = [];
 			        $scope.custom = {name: 'bold', username:'grey',email: 'grey',enabled:'grey'};
 			        $scope.sortable = ['name', 'username', 'email','enabled'];
@@ -59,7 +60,7 @@ define(['angular','modal'],function(angular,modal){
 			        var code = $compile('<md-table headers="headers" innerlinks="applications/'+$routeParams.id+'" refresh="refresh" content="content" sortable="sortable" filters="search" thumbs="thumbs" isselect="true" selected="selected" modal="modal" collheaders="tcollheaders" getapidata="getcoldata" subhover="subhover" count="count"></md-table>')($scope);
 		        	$("#user-table").html(code);
 
-				})
+				// })
 			}
 			$scope.refresh();
 			$scope.trefresh = function(){
@@ -101,12 +102,12 @@ define(['angular','modal'],function(angular,modal){
 			}
 			$scope.trefresh();
 
-			$rootScope.$watch("current_tenant",function(e,v){
-				if(e.id==v.id||!e||!v)return false;
-				$scope.refresh();
-				if($scope.refresh1)$scope.refresh1();
-				if($scope.trefresh)$scope.trefresh();
-			})
+			// $rootScope.$watch("current_tenant",function(e,v){
+			// 	if(e.id==v.id||!e||!v)return false;
+			// 	$scope.refresh();
+			// 	if($scope.refresh1)$scope.refresh1();
+			// 	if($scope.trefresh)$scope.trefresh();
+			// })
 		}
 	])
 	.controller('createuserctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','Notify','restful','$compile',

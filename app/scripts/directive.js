@@ -1,5 +1,5 @@
 'use strict';
-define(['angular','colresize','socket','imgcrop','modal'],function(angular,colresize,io,imgcrop,modal){
+define(['angular','codemirror','imgcrop','modal'],function(angular,codemirror,imgcrop,modal){
   return angular.module("ThCofAngSeed.directives",[])
   .directive('mdColresize', ['$timeout',function ($timeout) {
     return {
@@ -16,6 +16,24 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
       }
     }
   }])
+  .directive('codemirror',['$timeout',function($timeout){
+    return {
+      restrict :'A',
+      link:function(scope,element,attr){
+        $timeout(function(){
+          console.log(element)
+          scope.editor = CodeMirror.fromTextArea(element[0], {
+            lineNumbers: true,
+            mode:attr.mode,
+            readonly:attr.read||false,
+            indentUnit : 2,  // 缩进单位，默认2
+            smartIndent : true,  // 是否智能缩进
+            tabSize : 4,  // Tab缩进，默认4
+          });
+        },0)
+      }
+    }
+  }])
   .directive('onRendered',['$timeout',function ($timeout) {
         return {
             restrict: 'A',
@@ -28,7 +46,7 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
             }
         };
   }])
-  .directive('datetimePicker',function($timeout){
+  .directive('datetimePicker',['$timeout',function($timeout){
     return {
       restrict:'A',
       link:function(scope,element,attr){
@@ -48,7 +66,7 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
         })
       }
     }
-  })
+  }])
   .directive('mdTable',["$filter","$timeout","$rootScope",function ($filter,$timeout,$rootScope) {
     return {
       restrict: 'E',
@@ -91,7 +109,7 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
           console.log($scope.consoles)
         }
         $scope.current_tenant={
-          id:$rootScope.current_tenant.id
+          // id:$rootScope.current_tenant.id
         }
         $scope.token = $rootScope.token;
 
@@ -102,12 +120,12 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
           if($("body").find("a#console").length>0){
             $("body").find("a#console").remove();
           }
-          it.appendTo($("#cluter-table")[0]).css({"z-index":0,
+          it.appendTo($("body")[0]).css({"z-index":0,
           position:"absolute",
           opacity:0,
           display:"inline-block",
-          top:$("#consolel")[0].offsetTop+20,
-          left:$("#consolel")[0].offsetLeft+$("#sidebar")[0].offsetWidth,
+          top:$("#consolel")[0].getBoundingClientRect().top+$("body")[0].scrollTop,
+          left:$("#consolel")[0].getBoundingClientRect().left,
           width:$("#consolel")[0].offsetWidth,
           height:$("#consolel")[0].offsetHeight
           });
@@ -121,11 +139,11 @@ define(['angular','colresize','socket','imgcrop','modal'],function(angular,colre
         }).delegate("#console","click",function(){
           Modal.close(null,$("#termanal_sure").find(".modal__close")[0]);//自动触发关闭modal的方法
         });
-        // $(document).scroll(function(){
-        //   if($("#console").length>0){
-        //     $("#console").css("top",($("#consolel")[0].getBoundingClientRect().top+$("body")[0].scrollTop)+"px");
-        //   }
-        // })
+        $(document).scroll(function(){
+          if($("#console").length>0){
+            $("#console").css("top",($("#consolel")[0].getBoundingClientRect().top+$("body")[0].scrollTop)+"px");
+          }
+        })
 
 
 

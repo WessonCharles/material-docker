@@ -10,7 +10,8 @@ define(['angular','modal'],function(angular,modal){
                         }
 			var url = restful.action({id:"@id"},$scope.baseurl+':id/events');
             $scope.refresh = function(){
-                var data = url.get({id:$rootScope.current_tenant.id},function(){
+                    var data = {};
+                // var data = url.get({id:$rootScope.current_tenant.id},function(){
                     Notify.showSimpleToast("操作事件请求成功",1);
                     $scope.headers = [{
                         name:'资源名称',
@@ -29,8 +30,8 @@ define(['angular','modal'],function(angular,modal){
                         field:'created_at',
                     }];
 
-                    data.metadata.reverse();
-                    $scope.content = data.metadata;
+                    // data.metadata.reverse();
+                    $scope.content = [];//data.metadata;
                     // for(var i =0;i<data.metadata.length;i++){
                     //     data.metadata[i].created_at = $filter("date")(data.metadata[i].created_at,"yyyy-MM-dd HH:mm")
                     //     cons.push(data.metadata[i]);
@@ -44,15 +45,15 @@ define(['angular','modal'],function(angular,modal){
 
                     var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" refresh="refresh" custom-class="custom" thumbs="thumbs" count="count" isselect="true" selected="selected" links="links" func="func"></md-table>')($scope);
                     $("#events").html(code);
-                })
+                // })
             }
             $scope.refresh();
-            $rootScope.$watch("current_tenant",function(e,v){
-                if(e.id==v.id||!e||!v)return false;
-                $scope.refresh();
-                if($scope.refresh1)$scope.refresh1();
-                if($scope.trefresh)$scope.trefresh();
-            })
+            // $rootScope.$watch("current_tenant",function(e,v){
+            //     if(e.id==v.id||!e||!v)return false;
+            //     $scope.refresh();
+            //     if($scope.refresh1)$scope.refresh1();
+            //     if($scope.trefresh)$scope.trefresh();
+            // })
 		}
 	])
 })

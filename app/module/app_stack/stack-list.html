@@ -1,0 +1,91 @@
+<div >
+  <div class="button-title">
+    <div layout="row" layout-margin >
+      <div flex flex-order="1" class="noshadow  bl-main">
+        <button viewload md-button class="md-raised md-button" href="/stack/create-stack">
+          <md-icon class="fa fa-plus fa-lg"></md-icon>
+          创建stack
+        </button>
+        <button md-button class="md-raised md-warn" ng-click="deleteapp($event);">
+          <md-icon class="fa fa-trash-o fa-lg"></md-icon>
+          删除
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="content-table">
+    <div layout="row" layout-margin>
+      <div flex flex-order="1" ng-if="!stacks" class="noshadow bl-main" ng-click="toggleSearch=false" id="prolist" ng-init="loadtable($event.target)">
+           <div>
+            <md-progress-circular md-mode="indeterminate" aria-valuemin="0" aria-valuemax="100" role="progressbar" class="md-default-theme" style="transform: scale(1);margin: 0 auto;">
+              <div class="md-spinner-wrapper">
+                <div class="md-inner">
+                  <div class="md-gap"></div>
+                  <div class="md-left">
+                    <div class="md-half-circle"></div>
+                  </div>
+                  <div class="md-right">
+                    <div class="md-half-circle"></div>
+                  </div>
+                </div>
+              </div>
+            </md-progress-circular>
+          </div>
+        </div>
+      <md-content class="md-padding">
+        <div layout="row">
+          <div flex  ng-repeat="st in stacks track by $index" ng-if="stacks.length>0" class="noshadow bl-main">
+            <md-card >
+              <md-card-title>
+                <md-card-title-text>
+                  <a  href="/stack/{{st.uuid}}" class="md-headline md-subheader md-primary">{{st.name}}</a>
+                  <span class="md-subhead">{{st.images}}
+                    <br>
+                    {{st.created_at}}
+                  </span>
+                </md-card-title-text>
+                <md-card-title-media>
+                  <div class="md-media-sm card-media"></div>
+                </md-card-title-media>
+              </md-card-title>
+              <md-card-actions layout="row" layout-align="end center">
+                <md-button class="md-primary md-button md-default-theme">部署</md-button>
+              </md-card-actions>
+            </md-card>
+          </div>
+        </div> 
+      </md-content>
+    </div>
+  </div>
+</div>          
+<div id="modal" class="modal modal__bg" role="dialog" aria-hidden="true">
+          <div class="modal__dialog">
+            <div class="modal__content">
+              <h2>创建应用</h2>
+              <div class="modal_content_inner">
+              <form name="nameForm">
+                <div class="form-input message" ng-class="nameifmatchreg">
+                  <label for="">应用名称</label>
+                  <input type="text" ng-model="app_name" ng-required="true" ng-keydown="checkname()" ng-keyup="checkname()" md-autofocus>
+                  <span class="hint">
+                      可以使用中文,英文,数字进行命名
+                  </span>
+                </div>
+                <div class="form-input">
+                  <label for="">应用简介</label>
+                  <textarea ng-model="app_desc"></textarea>
+                </div>
+                <div align="right">
+                  <md-button ng-click="createapps($event)" class="md-primary" layout layout-align="center end">创建</md-button>
+                </div>
+              </form>
+              </div>
+              <!-- modal close button -->
+              <a class="modal__close demo-close">
+                <i class="fa fa-times"></i>
+              </a>
+            </div>
+          </div>
+        </div>         
+        
+

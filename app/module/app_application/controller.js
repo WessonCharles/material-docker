@@ -43,7 +43,8 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 	        var plat = restful.action({type:"@id",name:"@name"},$scope.baseurl+":id/apps/:name");
 	        console.log($rootScope.current_tenant)
 	        $scope.refresh = function(){
-	        	var pl = plat.get({id:$rootScope.current_tenant.id},function(e){
+	        		var pl = {};
+	        	// var pl = plat.get({id:$rootScope.current_tenant.id},function(e){
 		        	console.timeEnd("restful game");
 
 		        	console.time("rendered table")
@@ -79,21 +80,21 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			        
 			        var sourcedata = pl.metadata;
 			        $scope.content = [];
-			        for(var i =0;i<sourcedata.length;i++){
-			        	var s = sourcedata[i];
-			        	// var time = $filter('date')(s.creationTimestamp,"MM-dd-yyyy HH:mm");
-			        	// var obj = {
-			        	// 	"name":s.name,
-			        	// 	"resourceVersion":s.resourceVersion,
-			        	// 	"status":"",
-			        	// 	"images":s.images||"",
-			        	// 	"selfLink":"",
-			        	// 	"createtime":time,
-			        	// 	"collections":s.containers,
-			        	// 	"subshow":false
-			        	// };
-			        	$scope.content.push(s);
-			        }
+			        // for(var i =0;i<sourcedata.length;i++){
+			        // 	var s = sourcedata[i];
+			        // 	// var time = $filter('date')(s.creationTimestamp,"MM-dd-yyyy HH:mm");
+			        // 	// var obj = {
+			        // 	// 	"name":s.name,
+			        // 	// 	"resourceVersion":s.resourceVersion,
+			        // 	// 	"status":"",
+			        // 	// 	"images":s.images||"",
+			        // 	// 	"selfLink":"",
+			        // 	// 	"createtime":time,
+			        // 	// 	"collections":s.containers,
+			        // 	// 	"subshow":false
+			        // 	// };
+			        // 	$scope.content.push(s);
+			        // }
 			        console.log($scope.content)
 			        // $scope.content = [
 			        //   {
@@ -128,12 +129,19 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			         * [请确保 custom，sortable,和headers中的field一一对应，并且拼写相同]
 			         * @type {Object}
 			         */
-			        $scope.custom = {name: 'bold', create_user:'grey',created_at:'grey'};
-			        $scope.sortable = ['name','create_user','created_at'];
+			        $scope.custom = {name: 'bold', create_user:'grey',created_at:'grey',xx:'grey'};
+			        $scope.sortable = ['name','create_user','created_at','xx'];
 			        $scope.count = 100;
 			        $scope.links = '/applications';
 			        $scope.selected = [];
-
+			        $scope.action = {
+			        	name:"创建集群",
+			        	icon:'',
+			       		getlink:function(id){
+			       			return "/applications/"+id+"/create-cluster";
+			       		}
+			        }
+			        
 			        instance["applications"] = $scope.content;
 			       	//如果不是links 就是func方法
 			      //  	$scope.func = function($event,c){
@@ -149,10 +157,10 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 
 			        // $scope.loadtable = function(t){
 			        	// console.log(t);
-		        	var code = $compile('<md-table headers="headers" content="content" sortable="sortable" filters="search" refresh="refresh" custom-class="custom" thumbs="thumbs" count="count" isselect="true" selected="selected" links="links" func="func"></md-table>')($scope);
+		        	var code = $compile('<md-table headers="headers" content="content" sortable="sortable" action="action" filters="search" refresh="refresh" custom-class="custom" thumbs="thumbs" count="count" isselect="true" selected="selected" links="links"></md-table>')($scope);
 		        	$("#prolist").html(code);
 			        // }
-		        });
+		        // });
 	        }
 	        $scope.refresh();
 	        
@@ -169,7 +177,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 		       		console.log(selects)
 		       		for(var i=0;i<selects.length;i++){
 		       			(function(c,i){
-		       				plat.delete({id:$rootScope.current_tenant.id,name:c.uuid}, function() {
+		       				// plat.delete({id:$rootScope.current_tenant.id,name:c.uuid}, function() {
 						        for(var n = 0;n<$scope.content.length;n++){
 						        	if(c.uuid==$scope.content[n].uuid){
 						        		$scope.content.splice(n,1);
@@ -180,7 +188,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 						        	Notify.showSimpleToast("应用删除成功",1);
 						        }
 						        
-						    });
+						    // });
 		       			})(selects[i],i);	
 		       		}
 			    }, function() {
@@ -188,6 +196,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			    });
 	       		
 	       	}
+
 	        $scope.$on("$viewContentLoaded",function(){
 	        	// $(".inner_content").css("height",$window.innerHeight-120).css("position","relative");
 
@@ -254,12 +263,12 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 				});
 			};
 
-			$rootScope.$watch("current_tenant",function(e,v){
-				if(e.id==v.id||!e||!v)return false;
-				$scope.refresh();
-				if($scope.refresh1)$scope.refresh1();
-				if($scope.trefresh)$scope.trefresh();
-			})
+			// $rootScope.$watch("current_tenant",function(e,v){
+			// 	if(e.id==v.id||!e||!v)return false;
+			// 	$scope.refresh();
+			// 	if($scope.refresh1)$scope.refresh1();
+			// 	if($scope.trefresh)$scope.trefresh();
+			// })
 		}
 	])
 	.controller('prodetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','restful','$compile','instance','Notify','$mdDialog',
@@ -608,12 +617,12 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 	        	})
 	        }
 
-	        $rootScope.$watch("current_tenant",function(e,v){
-				if(e.id==v.id||!e||!v)return false;
-				$scope.refresh();
-				if($scope.refresh1)$scope.refresh1();
-				if($scope.trefresh)$scope.trefresh();
-			})
+	  //       $rootScope.$watch("current_tenant",function(e,v){
+			// 	if(e.id==v.id||!e||!v)return false;
+			// 	$scope.refresh();
+			// 	if($scope.refresh1)$scope.refresh1();
+			// 	if($scope.trefresh)$scope.trefresh();
+			// })
 
 		}
 	])
@@ -867,10 +876,10 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 				getmonitor({start:parseInt(start/1000),end:parseInt(now/1000)});
 			}
 
-			$rootScope.$watch("current_tenant",function(e,v){
-				if(e.id==v.id||!e||!v)return false;
-				getmonitor();
-			})
+			// $rootScope.$watch("current_tenant",function(e,v){
+			// 	if(e.id==v.id||!e||!v)return false;
+			// 	getmonitor();
+			// })
 		}
 	])
 	.controller('appdetailctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$routeParams','instance',
@@ -947,6 +956,51 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 				}
 				console.log(instance.applications)
 			})
+
+			/**
+	       	 * 获取stack列表
+	       	 * @type {[type]}
+	       	 */
+       		var reg = /^(%\(*\)s$)*/g;
+       		var reg1 = /\(\w*?\)/g;
+       		var str2 = '[{"image":"index.opstack.cc/test/2048:%(ver)s"}]';
+       		console.log(str2.match(reg1))
+	       	var stack = restful.action({type:"@id"},$scope.baseurl+":id/stack");
+        	var sta = stack.get({id:$rootScope.current_tenant.id},function(e){
+				$scope.stacks = sta.metadata;
+			});
+
+			$scope.geteav = function(id){
+				$scope.current_stack = id;
+				$scope.ext_argsvals = [];
+				var stackdetail = restful.action({type:"@id",name:"@uuid"},$scope.baseurl+":id/stack/:uuid");
+	        	var sto = stackdetail.get({id:$rootScope.current_tenant.id,uuid:id},function(e){
+	        		var sfstr = JSON.stringify(sto.metadata.stack);
+	        		console.log(sfstr)
+	        		if(reg.test(sfstr)){
+	        			var arr = sfstr.match(reg1);
+	        			for(var i =0;i<arr.length;i++){
+	        				$scope.ext_argsvals.push(arr[i].replace(/\(/g,"").replace(/\)/g,""))
+	        			}
+	        		}
+	        	});
+				
+			}
+			// $scope.$watch('current_stack',function(){
+			// 	var stack;
+			// 	for(var i = 0;i<$scope.stacks.length;i++){
+			// 		if($scope.stacks[i].uuid == $scope.current_stack){
+			// 			stack = $scope.stacks[i];
+			// 		}
+			// 	}
+			// 	console.log(stack)
+			// },true);
+
+	       	// $scope.$watch('current_stack',function(){
+	       	// 	console.log($scope.current_stack)
+	       	// },true)
+	       
+
 			/**
 			 * 获取卷列表
 			 * @type {[type]}
@@ -988,7 +1042,7 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 			 * @type {Array}
 			 */
 			var App = restful.action({type:"@id"},$scope.baseurl+":id/apps");
-			var Cluter = restful.action({type:"@id"},$scope.baseurl+":id/cluster");
+			var Cluter = restful.action({type:"@id"},$scope.baseurl+":id/clusters");
 			$scope.checkname = function(){
 				var reg =/^[A-Za-z\d-.]+$/;
 				if(new RegExp(reg).test($scope.app_name)){
@@ -1138,12 +1192,13 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 						console.log(obj.image)
 						if(im.env.length>0)obj.env = im.env;
 						// if(im.ports.length>0)obj.ports  = im.ports;
-						// delete obj.ports;
+						delete obj.command;
+						delete obj.args;
 						reqdata.push(obj);
 					}
 					console.log(reqdata);
 					// return false;
-					var clu = Cluter.save({id:$rootScope.current_tenant.id},{app_uuid:$scope.app_uuid,name:$scope.cluter_name,replicas:reqdata.length,containers:reqdata},function(e){
+					var clu = Cluter.save({id:$rootScope.current_tenant.id},{app_uuid:$scope.app_uuid,name:$scope.cluter_name,replicas:reqdata.length,containers:reqdata,is_public:$scope.lbl.is_public,ports:$scope.lbl.ports},function(e){
 						console.log(clu)
 						if(e.code==0){
 	                       Notify.showSimpleToast("创建集群成功",1);
@@ -1160,6 +1215,48 @@ define(['angular','modal','highcharts'],function(angular,modal,highcharts){
 
 				}
 			}
+
+			$scope.createbystack = function(){
+				// $http.post($scope.baseurl+$rootScope.current_tenant.id+"/runstack/"+$scope.current_stack,{stack_uuid:$scope.current_stack,
+				// 	name:$scope.cluter_name,
+				// 	app_uuid:$scope.app_uuid,
+				// 	replicas:$scope.stack_replicas,
+				// 	ext_args:$scope.ext_args
+				// },function(e){
+				// 	if(e.code==0){
+    //                    Notify.showSimpleToast("创建集群成功",1);
+				// 		$location.path("/applications/"+$scope.app_uuid);
+    //                 }else if(e.code>0){
+    //                     Notify.showSimpleToast(e.message,-1);
+    //                 }else if(e.code<0){
+    //                     Notify.showSimpleToast(e.message,0)
+    //                 }
+				// })
+				var stack_ext_args = {};
+				$("#stack_creation .ext_argsvals").each(function(){
+					var t = $(this);
+					stack_ext_args[t.find("label").text()] = t.find("input").val();
+				})
+				var ext_args = $("#stack_creation .stack_replicas").find("input").val();
+				var clusterstack = restful.action({type:"@id",uuid:"@uuid"},$scope.baseurl+":id/runstack/:uuid");
+				var clusta = clusterstack.save({id:$rootScope.current_tenant.id,uuid:$scope.current_stack},{
+					stack_uuid:$scope.current_stack,
+					name:$scope.cluter_name,
+					app_uuid:$scope.app_uuid,
+					replicas:ext_args,
+					ext_args:stack_ext_args
+				},function(e){
+					if(e.code==0){
+                       Notify.showSimpleToast("创建集群成功",1);
+						$location.path("/applications/"+$scope.app_uuid);
+                    }else if(e.code>0){
+                        Notify.showSimpleToast(e.message,-1);
+                    }else if(e.code<0){
+                        Notify.showSimpleToast(e.message,0)
+                    }
+				})
+			}
+
 			$scope.removeOneImcfgpro = function(one,list){
 				list.splice(list.indexOf(one),1);
 			}

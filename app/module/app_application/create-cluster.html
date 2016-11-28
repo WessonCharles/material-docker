@@ -11,7 +11,7 @@
         <md-tabs md-selected="createstep" md-dynamic-height md-border-bottom md-stretch-tabs="always">
           <md-tab label="①镜像来源" id="image_source">
             <md-content class="md-padding" >
-              <div class="rightside" id="rightside">
+              <div class="rightside" id="rightside" ng-if="create_type=='image'">
                   <md-subheader class="md-primary">已保存清单</md-subheader>
                   <md-divider></md-divider>
                   <md-list>
@@ -37,6 +37,16 @@
                 <md-list ng-cloak>
                   <md-list-item role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
                     <div class="md-no-style md-list-item-inner">
+                      <p>创建方式：
+                        <md-radio-group class="line" ng-model="create_type"  ng-init="create_type='image'">
+                          <md-radio-button value="image" class="md-primary">镜像创建</md-radio-button>
+                          <md-radio-button value="stack" class="md-primary">Stack创建</md-radio-button>
+                        </md-radio-group>
+                      </p>
+                    </div>
+                  </md-list-item>
+                  <md-list-item ng-if="create_type=='image'" role="listitem" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                    <div class="md-no-style md-list-item-inner">
                       <p>选择镜像：
                         <md-radio-group class="line" ng-model="image_tag"  ng-init="image_tag='public'">
                           <md-radio-button value="public" class="md-primary">公有</md-radio-button>
@@ -60,14 +70,63 @@
                       </p>
                     </div>
                   </md-list-item> -->
+                  <div style="padding-top:0px;padding-left:25px;" ng-init="$parent.lbl = {};" ng-if="create_type=='image'" layout="row" layout-fill layout-padding>
+                    <div layout="row" layout-fill layout-padding>
+                    <label>公网/私网</label>
+                      <md-radio-group class="line" ng-model="lbl.is_public" ng-init="lbl.is_public=1">
+                        <md-radio-button value="1" class="md-primary">公网</md-radio-button>
+                        <md-radio-button value="0" class="md-primary">私网</md-radio-button>
+                      </md-radio-group>
+                    </div>
+                </div>
+                <div style="background-color:#EDF0F5;padding-left:20px;" ng-if="create_type=='image'">
+                  <div layout="row" style="background-color:transparent;" layout-fill layout-padding ng-init="lbl.ports = [];lbl.temppot = {};">
+                    <div layout="row" style="background-color:transparent;" layout-fill layout-padding>
+                      <div class="noshadow">
+                        <label for="">负载均衡端口</label>
+                        <input ng-model="lbl.temppot.port" type="text" placeholder="80">
+                      </div>
+                      <div class="noshadow" style="padding-left:30px">
+                        <label for="">后端服务端口</label>
+                        <input ng-model="lbl.temppot.targetport" type="text" placeholder="80">
+                      </div>
+                    </div>
+                  </div>
+                  <div layout="row" style="background-color:transparent;" layout-fill layout-padding>
+                    <div layout="row" style="background-color:transparent;" layout-fill layout-padding>
+                      <div class="noshadow">
+                        <label for="" style="float:left;">协议类型</label>
+                        <md-radio-group class="line" ng-model="lbl.temppot.protocol" ng-init="lbl.temppot.protocol='TCP'">
+                          <md-radio-button value="TCP" class="md-primary">TCP</md-radio-button>
+                          <md-radio-button value="UDP" class="md-primary">UDP</md-radio-button>
+                        </md-radio-group>
+                      </div>
+                      <button class="md-button md-raised" ng-disabled="!lbl.temppot.port||!lbl.temppot.targetport" ng-click="lbl.ports.push({port:lbl.temppot.port,targetport:lbl.temppot.targetport,protocol:lbl.temppot.protocol});lbl.temppot = {protocol:'TCP'};" style="line-height:35px;">添加</button>
+                    </div>
+                  </div>
+                </div>
+                <div style="padding-left:25px;margin: 10px 10px 20px 10px;" ng-if="create_type=='image'">
+                  <label for="">已添加的端口列表</label> 
+                  <table class="md-table">
+                    <thead class="thead-back"><tr class="md-table-headers-row"><th class="md-table-header">端口</th><th class="md-table-header">服务端口</th><th class="md-table-header">协议类型</th><th class="md-table-header">操作</th></tr></thead>
+                    <tbody>
+                      <tr class="md-table-content-row" ng-repeat="e in lbl.ports track by $index">
+                        <td class="md-table-content">{{e.port}}</td>
+                        <td class="md-table-content">{{e.targetport}}</td>
+                        <td class="md-table-content">{{e.protocol}}</td>
+                        <td class="md-table-content"><i class="fa fa-trash text-primary" ng-click="removeOnelblport(e,lbl.ports)"></i></td>
+                      </tr>
+                    </tbody>
+                  </table> 
+                </div>
                   <md-divider></md-divider>
-                  <md-list-item role="listitem" ng-if="image_tag=='thrd'" style="margin-left:16px;" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
+                  <md-list-item role="listitem" ng-if="image_tag=='thrd'&&create_type=='image'" style="margin-left:16px;" class="md-proxy-focus ng-scope md-clickable" tabindex="-1">
                     <div md-no-float class="nopaddingbot" style="width:50%;margin:0 auto;">
                       <md-icon class="fa fa-search" style="float:right;margin-top:6px;" ng-click="searchimage(search_image)"></md-icon>
                       <input ng-model="search_image" type="text" style="margin:0;width:100%;" placeholder="搜索镜像">
                     </div>
                   </md-list-item>
-                  <md-subheader class="md-no-sticky">镜像列表</md-subheader>
+                  <md-subheader  ng-if="create_type=='image'" class="md-no-sticky">镜像列表</md-subheader>
                   <div ng-if="!images">
                     <md-progress-circular md-mode="indeterminate" aria-valuemin="0" aria-valuemax="100" role="progressbar" class="md-default-theme" style="transform: scale(1);margin: 0 auto;">
                       <div class="md-spinner-wrapper">
@@ -83,7 +142,7 @@
                       </div>
                     </md-progress-circular>
                   </div>
-                  <div class="imagesout" ng-repeat="img in images|orderBy:'-star_number'">
+                  <div  ng-if="create_type=='image'" class="imagesout" ng-repeat="img in images|orderBy:'-star_number'">
                       <md-list-item  class="imageitem" ng-class="(img.isopen||hasimg(img))?'background':''" ng-click="getdata(img);toggle(img,selected);">
                         <!-- <md-checkbox ng-checked="exists(img, selected)" ng-click="toggle(img,selected)"></md-checkbox> -->
                         <label>{{img.name}}</label>
@@ -237,6 +296,28 @@
                           </div>
                       </div>
                       <md-divider></md-divider>
+                  </div>
+                  <div ng-if="create_type=='stack'" ng-init="ext_args = {};" id="stack_creation" class="imagesout" style="margin-top:15px;">
+                      <div class="form-input" style="padding-left: 33px;">
+                        <label for="">选择Stack</label>
+                        <md-select placeholder="请选择Stack" ng-model="current_stack" md-on-close="geteav(current_stack)">
+                          <md-option ng-repeat="sta in stacks track by $index" value="{{sta.uuid}}">{{sta.name}}</md-option>
+                        </md-select>
+                        <!-- {{current_stack}} -->
+                      </div>
+                      <div class="form-input ext_argsvals" ng-repeat="eag in ext_argsvals track by $index" style="padding-left:33px;">
+                          <label for="">{{eag}}</label>
+                          <input type="text" ng-model="ext_args[eag]" required>
+                          {{ext_args[eag]}}
+                      </div>
+                      <div class="form-input message stack_replicas" style="padding-left: 33px;">
+                        <label for="">replicas</label>
+                        <input type="text" ng-model="stack_replicas" required>
+                        <!-- <span class="hint">请使用英文或数字进行命名,注意不能以数字开头</span> -->
+                      </div>
+                      <div  align="right" >
+                        <md-button ng-click="createbystack()" class="md-primary" layout layout-align="center end">完成</md-button>
+                      </div>
                   </div>
                   
                 </md-list>

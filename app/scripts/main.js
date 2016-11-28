@@ -20,6 +20,56 @@ var cval=window.getCookie(name);
 if(cval!=null) document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/;";
 } 
 
+
+window.showStatus = function(wrap,text,code,n){
+	var enstr,chstr;
+	switch(code){
+	    case 3:
+	        enstr = "warning";
+	        chstr = "错误";
+	        break;
+	    case 4:
+	        enstr = "danger";
+	        chstr = "警告";
+	        break;
+	    case 5:
+	        enstr = "green";
+	        chstr = "成功";
+	        break;
+	    case 6:
+	        enstr = "blue";
+	        chstr = "提示";
+	        break;
+	    case 10:
+	        enstr = "blue";
+	        break;
+	    default:
+	        enstr = "basic";
+	        chstr = "信息";
+	}
+	var id = Math.random();
+    var style = n&&top>0?"style='top:"+top+"px;'":"";
+    var str = '<div id="'+id+'" class="alert alert-'+enstr+' alert-dismissible fade in" role="alert">'+
+      '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>'+
+      '<strong>'+text+'</strong></div>';
+    wrap.html(str).fadeIn(900);
+    if(!n){
+       setTimeout(function(){
+           $("#"+id).removeClass("fadeInUp").addClass("fadeOutUp");
+           setTimeout(function(){
+                $("#"+id).remove();
+           },500)
+       },15000); 
+    }
+    $(document.body).delegate(".alert.alert-dismissible button.close","click",function(){
+        var p =$(this).parents(".alert.alert-dismissible");
+        p.animate({opacity:"0"});
+        setTimeout(function(){
+            p.remove();    
+        },500)
+    });
+	};
+
 Date.prototype.format = function (format) {
    var args = {
        "M+": this.getMonth() + 1,
@@ -52,16 +102,20 @@ require.config({
 		// angularMaterial:'//cdn.bootcss.com/angular-material/0.10.1/angular-material.min',
 		angularMaterial:'../libs/angular-material/angular-material.min',
 		angularResource:'../libs/angular-resource/angular-resource.min',
+		codemirror:'../libs/codemirror/codemirror',
 		modal:'../libs/custom/modal',
-		colresize:'../libs/colresize/colresize',
-		modernizr:'../libs/custom/modernizr.custom',
-		socket:'../libs/socket/socket.io',
+		// colresize:'../libs/colresize/colresize',//拖动改变列宽 暂时也去除
+		// modernizr:'../libs/custom/modernizr.custom',//帮助检测feature是否被浏览器支持，暂时不需要
+		// socket:'../libs/socket/socket.io',
 		// term:'../libs/term.js-master/src/term',
 		markdown:'../libs/markdown/markdown',
 		highlight:'//cdn.jsdelivr.net/highlight.js/9.0.0/highlight.min',
 		imgcrop:'../libs/ngImgCrop/ng-img-crop',
 		datetime:'../libs/datePicker/js/bootstrap-datetimepicker.min',
-		highcharts:'../libs/highcharts/highcharts'
+		highcharts:'../libs/highcharts/highcharts',
+
+		json2yaml:'../libs/yaml-json/json2yaml',
+		yaml2json:'../libs/yaml-json/yaml2json'
 	},
 	shim:{
 		'angular' : {'exports' : 'angular'},
@@ -71,16 +125,20 @@ require.config({
         'angularAnimate':['angular'],
         'angularAria':['angular'],
         'angularMaterial':['angular','angularAnimate','angularAria'],
+        'codemirror':{'exports':'codemirror'},
         'modal':['jquery'],
-        'modernizr':{'exports':'modernizr'},
-        'colresize':['jquery'],
-        'socket':{'exports':'socket'},
+        // 'modernizr':{'exports':'modernizr'},
+        // 'colresize':['jquery'],
+        // 'socket':{'exports':'socket'},
         // 'term':{'exports':'term'},
         'markdown':{'exports':'markdown'},
         'imgcrop':['angular'],
         'highlight':{'exports':'highlight'},
         'highcharts':['jquery'],
-        'datetime':['jquery']
+        'datetime':['jquery'],
+
+        'json2yaml':{'exports':'json2yaml'},
+        'yaml2json':{'exports':'yaml2json'}
         // 'exporting':['highcharts']
 	},
 	priority: [
@@ -98,16 +156,20 @@ require([
 	'angularAnimate',
 	'angularAria',
 	'angularMaterial',
+	'codemirror',
 	'modal',
-	'modernizr',
-	'colresize',
-	'socket',
+	// 'modernizr',
+	// 'colresize',
+	// 'socket',
 	// 'term',
 	'markdown',
 	'imgcrop',
 	'highlight',
 	'highcharts',
 	'datetime',
+
+	'json2yaml',
+	'yaml2json',
 	// 'exporting',
 
 	'../module/routers',
@@ -119,6 +181,7 @@ require([
 	'../module/app_system/router',
 	'../module/app_users/router',
 	'../module/app_events/router',
+	'../module/app_stack/router',
         'app',
 	],function(angular){
 		angular.element().ready(function() {

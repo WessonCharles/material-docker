@@ -19,6 +19,7 @@ define([
   "../module/app_system/controller",
   "../module/app_users/controller",
   "../module/app_events/controller",
+  "../module/app_stack/controller"
   ],function(angular){
   window.ThCofAngSeedModule = angular.module('ThCofAngSeed', [
       'ngRoute',
@@ -38,13 +39,14 @@ define([
       'ThCofAngSeed.system_ctrl',
       'ThCofAngSeed.users_ctrl',
       'ThCofAngSeed.events_ctrl',
+      'ThCofAngSeed.stack_ctrl'
   ]).controller("baseCtrl",["$scope", "$http","$rootScope", "$location","$timeout", "$filter","$window",'$route','AuthService','$mdBottomSheet','instance','$mdDialog',
       
       function($scope,$http,$rootScope,$location,$timeout,$filter,$window,$route,AuthService,$mdBottomSheet,instance,$mdDialog){
         $scope.go = 1;
 
-        $scope.baseurl = "http://42.51.161.236:8337/";
-        $scope.storageurl = "http://42.51.131.4/";
+        // $scope.baseurl = "http://42.51.161.236:8337/";
+        // $scope.storageurl = "http://42.51.131.4/";
         /**
          * [判断是否登陆，然后选择跳转不同的view]
          * @param  {[type]} window.getCookie("lightdocker") [description]
@@ -55,10 +57,11 @@ define([
         //   $http.defaults.headers.common['X-Auth-Token'] = $rootScope.userinfo['access']['token']['id'];
         //   $http.defaults.headers.common['Content-type'] = 'application/json';
         //  } 
-        console.log(window.getCookie("lightdocker")+"--"+AuthService.isAuthenticated())
+        console.log(window.getCookie("lightdocker")+"--"+AuthService.isAuthenticated());
+        /*暂时注释以下部分**/
         if(window.getCookie("lightdocker")&&AuthService.isAuthenticated()){
           $rootScope.islogin = true;
-          $http.defaults.headers.common['X-Auth-Token'] = JSON.parse(AuthService.getInfo()).access['token']['id'];
+          // $http.defaults.headers.common['X-Auth-Token'] = JSON.parse(AuthService.getInfo()).access['token']['id'];
           $http.defaults.headers.common['Content-Type'] = 'application/json';
 
           /**
@@ -72,14 +75,14 @@ define([
            */
           console.log(JSON.parse(AuthService.getInfo()))
           $rootScope.tenants = AuthService.getInfo()?JSON.parse(AuthService.getInfo()).access.tenants:[];
-          if(!$rootScope.current_tenant) $rootScope.current_tenant = $rootScope.tenants[0];
-          if(!$rootScope.token) $rootScope.token = JSON.parse(AuthService.getInfo()).access.token.id;
+          // if(!$rootScope.current_tenant) $rootScope.current_tenant = $rootScope.tenants[0];
+          // if(!$rootScope.token) $rootScope.token = JSON.parse(AuthService.getInfo()).access.token.id;
           $scope.selectcurtenant = function(t){
             $rootScope.current_tenant = t;
           }
-          $http.get($scope.baseurl+"menus").success(function(data){
-            $scope.menus = data.metadata;
-          })
+          // $http.get($scope.baseurl+"menus").success(function(data){
+          //   $scope.menus = data.metadata;
+          // })
 
           $scope.getpass = function(ev){
             $http.get($scope.baseurl+"account").success(function(data){
@@ -274,27 +277,28 @@ define([
                             replicationcontrollers: 0,
                             resourcequotas: 0,
                             services: 0};
-        $http.get($scope.baseurl+$rootScope.current_tenant.id+"/resource").success(function(data){
-            $scope.used = data.metadata[0].used;
-            for(var i in data.metadata[0].hard){
-              if(i=='memory'){
-                  var hard = data.metadata[0].hard[i],h;
-                  console.log(hard,typeof hard)
-                  var used = data.metadata[0].used[i],u;
-                  if(hard.indexOf("G")>-1)h = parseInt(hard)*1024;
-                  if(hard.indexOf("M")>-1)h = parseInt(hard);
-                  if(used.indexOf("G")>-1)u = parseInt(used)*1024;
-                  if(used.indexOf("M")>-1)u = parseInt(used);
+                            $scope.used = {};
+        // $http.get($scope.baseurl+$rootScope.current_tenant.id+"/resource").success(function(data){
+        //     $scope.used = data.metadata[0].used;
+        //     for(var i in data.metadata[0].hard){
+        //       if(i=='memory'){
+        //           var hard = data.metadata[0].hard[i],h;
+        //           console.log(hard,typeof hard)
+        //           var used = data.metadata[0].used[i],u;
+        //           if(hard.indexOf("G")>-1)h = parseInt(hard)*1024;
+        //           if(hard.indexOf("M")>-1)h = parseInt(hard);
+        //           if(used.indexOf("G")>-1)u = parseInt(used)*1024;
+        //           if(used.indexOf("M")>-1)u = parseInt(used);
 
-                  var per = u/h>1?1:(u/h);
-                 $scope.percentlist[i] = per.toFixed(2);
-              }else{
-                  var per = parseInt(data.metadata[0].used[i])/parseInt(data.metadata[0].hard[i])>1?1:(parseInt(data.metadata[0].used[i])/parseInt(data.metadata[0].hard[i]));
-                 $scope.percentlist[i] = per.toFixed(2);
-              }
-            }
-            console.log($scope.percentlist)
-        })
+        //           var per = u/h>1?1:(u/h);
+        //          $scope.percentlist[i] = per.toFixed(2);
+        //       }else{
+        //           var per = parseInt(data.metadata[0].used[i])/parseInt(data.metadata[0].hard[i])>1?1:(parseInt(data.metadata[0].used[i])/parseInt(data.metadata[0].hard[i]));
+        //          $scope.percentlist[i] = per.toFixed(2);
+        //       }
+        //     }
+        //     console.log($scope.percentlist)
+        // })
       }
 
       loadsur();

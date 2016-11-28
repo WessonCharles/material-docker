@@ -80,8 +80,12 @@
             <span ng-if="h.field=='name'&&!c.collections&&!links"  class="trspan" title="{{c[h.field]}}">{{c[h.field]}}</span>
         </td>
         <td class="md-table-td-more" ng-if="action">
-          <md-button class="md-mini md-button md-raised" aria-label="Info" ng-if="!action.modal" ng-click="action.args['uuid']=c.uuid;action.args['name']=c.name;action.trigger($event);">
+          <md-button class="md-mini md-button md-raised" aria-label="Info" ng-if="!action.modal&&!action.getlink" ng-click="action.args['uuid']=c.uuid;action.args['name']=c.name;action.trigger($event);">
           <i ng-if="action.icon" class="fa {{action.icon}}" ></i>
+            {{action.name}}
+          </md-button>
+          <md-button class="md-mini md-button md-raised" ng-if="action.getlink" href="{{action.getlink(c.uuid)}}">
+            <i ng-if="action.icon" class="fa {{action.icon}}" ></i>
             {{action.name}}
           </md-button>
           <md-button class="md-mini md-button md-raised modal__trigger" ng-click="action.args['uuid']=c.uuid;action.args['name']=c.name;" ng-if="action.modal" aria-label="Info" data-modal="{{action.modal.target}}">

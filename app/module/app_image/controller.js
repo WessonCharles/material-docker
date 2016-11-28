@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular','modal','markdown','highlight','socket'],function(angular,modal,markdown,highlight,io){
+define(['angular','modal','markdown','highlight'],function(angular,modal,markdown,highlight){
 	return angular.module("ThCofAngSeed.images_ctrl",['ThCofAngSeed.services'])
 	.controller('imagesctrl',['$rootScope','$scope','$http','$timeout','$location','$window','$filter','$mdBottomSheet','restful','Notify','instance','$routeParams',
 		function($rootScope, $scope, $http,$timeout, $location, $window, $filter,$mdBottomSheet,restful,Notify,instance,$routeParams){
@@ -25,23 +25,24 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 
 			var image = restful.action({type:"@id"},$scope.baseurl+":id/images");
 	        $scope.refresh = function(){
-		        var im = image.get({id:$rootScope.current_tenant.id},function(e){
+		        // var im = image.get({id:$rootScope.current_tenant.id},function(e){
 		        	// $scope.images = im.metadata;
-		        	console.log(im.metadata)
+		        	var im = {};
+		        	// console.log(im.metadata)
 		        	Notify.showSimpleToast("我的列表请求成功",1);
-		        	if(typeof im.metadata=="string")im.metadata = JSON.parse(im.metadata);
+		        	// if(typeof im.metadata=="string")im.metadata = JSON.parse(im.metadata);
 		        	$scope.imageshash = {};
 		        	$scope.items = [];
-		        	for(var i =0;i<im.metadata.length;i++){
-		        		$scope.items.push({
-		        			name:im.metadata[i].name,
-		        			icon:im.metadata[i].icon||'image',
-		        			id:im.metadata[i].uuid,
-		        			tenant_name:im.metadata[i].tenant_name
-		        		})
-		        		$scope.imageshash[im.metadata[i].uuid] = im.metadata[i];
-		        	}
-		        });
+		        	// for(var i =0;i<im.metadata.length;i++){
+		        	// 	$scope.items.push({
+		        	// 		name:im.metadata[i].name,
+		        	// 		icon:im.metadata[i].icon||'image',
+		        	// 		id:im.metadata[i].uuid,
+		        	// 		tenant_name:im.metadata[i].tenant_name
+		        	// 	})
+		        	// 	$scope.imageshash[im.metadata[i].uuid] = im.metadata[i];
+		        	// }
+		        // });
 		    }
 		    $scope.refresh();
 
@@ -50,22 +51,23 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 	         */
 	        var hot = restful.action(null,$scope.baseurl+"hotimages");
 	        $scope.refresh1 = function(){
-		        var h = hot.get(function(){
-		        	console.log(h.metadata)
+		        // var h = hot.get(function(){
+		        	var h = {};
+		        	// console.log(h.metadata)
 		        	Notify.showSimpleToast("最近使用列表请求成功",1);
-		        	if(typeof h.metadata=="string")h.metadata = JSON.parse(h.metadata);
+		        	// if(typeof h.metadata=="string")h.metadata = JSON.parse(h.metadata);
 		        	$scope.hotimageshash = {};
 		        	$scope.hotitems = [];
-		        	for(var i =0;i<h.metadata.length;i++){
-		        		$scope.hotitems.push({
-		        			name:h.metadata[i].name,
-		        			icon:h.metadata[i].icon||'image',
-		        			id:h.metadata[i].uuid,
-		        			tenant_name:h.metadata[i].tenant_name
-		        		})
-		        		$scope.hotimageshash[h.metadata[i].uuid] = h.metadata[i];
-		        	}
-		        })
+		        	// for(var i =0;i<h.metadata.length;i++){
+		        	// 	$scope.hotitems.push({
+		        	// 		name:h.metadata[i].name,
+		        	// 		icon:h.metadata[i].icon||'image',
+		        	// 		id:h.metadata[i].uuid,
+		        	// 		tenant_name:h.metadata[i].tenant_name
+		        	// 	})
+		        	// 	$scope.hotimageshash[h.metadata[i].uuid] = h.metadata[i];
+		        	// }
+		        // })
 		    }
 		    $scope.refresh1();
 
@@ -76,23 +78,24 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 	        var topk = restful.action({top:"@top"},$scope.baseurl+"topimages?topk=:top");
 	        var q_topk = restful.action({name:"@name",top:"@top"},$scope.baseurl+"topimages?q=:name&topk=:top");
 	        $scope.trefresh = function(){
-		        var to = topk.get({top:20},function(){
-		        	console.log(to.metadata)
+		        // var to = topk.get({top:20},function(){
+		        	// console.log(to.metadata)
+		        	var to = {};
 		        	Notify.showSimpleToast("镜像市场请求成功",1);
-		        	if(typeof to.metadata=="string")to.metadata = JSON.parse(to.metadata);
+		        	// if(typeof to.metadata=="string")to.metadata = JSON.parse(to.metadata);
 		        	$scope.markimageshash = {};
 		        	$scope.markitems = [];
-		        	for(var i =0;i<to.metadata.length;i++){
-		        		$scope.markitems.push({
-		        			name:to.metadata[i].name,
-		        			icon:to.metadata[i].icon||'image',
-		        			id:to.metadata[i].uuid,
-		        			tenant_name:to.metadata[i].tenant_name
-		        		})
-		        		$scope.markimageshash[to.metadata[i].uuid] = to.metadata[i];
-		        	}
+		        	// for(var i =0;i<to.metadata.length;i++){
+		        	// 	$scope.markitems.push({
+		        	// 		name:to.metadata[i].name,
+		        	// 		icon:to.metadata[i].icon||'image',
+		        	// 		id:to.metadata[i].uuid,
+		        	// 		tenant_name:to.metadata[i].tenant_name
+		        	// 	})
+		        	// 	$scope.markimageshash[to.metadata[i].uuid] = to.metadata[i];
+		        	// }
 		        	$scope.defaultmark = $scope.markitems;
-		        })
+		        // })
 	    	}
 	    	$scope.trefresh();
 
@@ -163,12 +166,12 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 			    
 			}; 
 
-			$rootScope.$watch("current_tenant",function(e,v){
-				if(e.id==v.id||!e||!v)return false;
-				$scope.refresh();
-				if($scope.refresh1)$scope.refresh1();
-				if($scope.trefresh)$scope.trefresh();
-			})
+			// $rootScope.$watch("current_tenant",function(e,v){
+			// 	if(e.id==v.id||!e||!v)return false;
+			// 	$scope.refresh();
+			// 	if($scope.refresh1)$scope.refresh1();
+			// 	if($scope.trefresh)$scope.trefresh();
+			// })
 			// $timeout(function(){
 			// 	if($routeParams.name){
 		 //        	$("#tab-content-2 #images .images_list md-list md-list-item").find("button[data-name='"+$routeParams.name+"']").trigger("click");
@@ -309,9 +312,9 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 	                	content:"通过与git仓库结合,利用用户定义好的Dockerfile一键进行镜像构建,完成一系列的发布与运行"
 	                }
 		    $scope.refresh = function(){ 
-		        var pl = plat.get({id:$rootScope.current_tenant.id},function(e){
+		        // var pl = plat.get({id:$rootScope.current_tenant.id},function(e){
 		        	console.timeEnd("restful game");
-
+		        	var pl = {};
 		        	console.time("rendered table")
 			        Notify.showSimpleToast("构建记录列表请求成功",1);
 			        console.log(pl.metadata)
@@ -343,21 +346,21 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 			        // 	// })
 			        // };
 			        
-			        var sourcedata = pl.metadata;
+			        // var sourcedata = pl.metadata;
 			        $scope.content = [];
-			        for(var i =0;i<sourcedata.length;i++){
-			        	var s = sourcedata[i];
-			        	var time = $filter('date')(s.updated_at,"MM-dd-yyyy HH:mm");
-			        	var obj = {
-			        		"uuid":s.uuid,
-			        		"name":s.name,
-			        		"build_user":s.build_user,
-			        		"build_state":s.build_state,
-			        		"repo_url":s.repo_url,
-			        		"updated_at":time,
-			        	};
-			        	$scope.content.push(obj);
-			        }
+			        // for(var i =0;i<sourcedata.length;i++){
+			        // 	var s = sourcedata[i];
+			        // 	var time = $filter('date')(s.updated_at,"MM-dd-yyyy HH:mm");
+			        // 	var obj = {
+			        // 		"uuid":s.uuid,
+			        // 		"name":s.name,
+			        // 		"build_user":s.build_user,
+			        // 		"build_state":s.build_state,
+			        // 		"repo_url":s.repo_url,
+			        // 		"updated_at":time,
+			        // 	};
+			        // 	$scope.content.push(obj);
+			        // }
 			        console.log($scope.content)
 			        // $scope.content = [
 			        //   {
@@ -427,7 +430,7 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 		        	var code = $compile('<md-table headers="headers" content="content" refresh="refresh" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count" isselect="true" action="action" selected="selected" links="links" func="func"></md-table>')($scope);
 		        	$("#prolist").html(code);
 			        // }
-		        });
+		        // });
 			}
 			$scope.refresh();
 			$scope.rebuild = function(){
@@ -487,26 +490,26 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 			/**
 			 * socket
 			 */
-			var url = $scope.baseurl.replace("http","ws");
-			var token = JSON.parse(AuthService.getInfo()).access.token.id;
-			url += "socket/bus/"+$rootScope.current_tenant.id+"?token="+token;
-			var ws = new WebSocket(url);
-			console.log(ws)
-			// ws.debug = true;
-			ws.onopen = function(){
-				console.log("已连接")
-				ws.onmessage = function(event){
-					var data = JSON.parse(event.data);
-					console.log(data);
-				}
-			}
+			// var url = $scope.baseurl.replace("http","ws");
+			// var token = JSON.parse(AuthService.getInfo()).access.token.id;
+			// url += "socket/bus/"+$rootScope.current_tenant.id+"?token="+token;
+			// var ws = new WebSocket(url);
+			// console.log(ws)
+			// // ws.debug = true;
+			// ws.onopen = function(){
+			// 	console.log("已连接")
+			// 	ws.onmessage = function(event){
+			// 		var data = JSON.parse(event.data);
+			// 		console.log(data);
+			// 	}
+			// }
 
-			$rootScope.$watch("current_tenant",function(e,v){
-				if(e.id==v.id||!e||!v)return false;
-				$scope.refresh();
-				if($scope.refresh1)$scope.refresh1();
-				if($scope.trefresh)$scope.trefresh();
-			})
+			// $rootScope.$watch("current_tenant",function(e,v){
+			// 	if(e.id==v.id||!e||!v)return false;
+			// 	$scope.refresh();
+			// 	if($scope.refresh1)$scope.refresh1();
+			// 	if($scope.trefresh)$scope.trefresh();
+			// })
 
 		}
 	])
@@ -564,12 +567,12 @@ define(['angular','modal','markdown','highlight','socket'],function(angular,moda
 				console.log($scope.selected)
 			}
 
-			$rootScope.$watch("current_tenant",function(e,v){
-				if(e.id==v.id||!e||!v)return false;
-				$scope.refresh();
-				if($scope.refresh1)$scope.refresh1();
-				if($scope.trefresh)$scope.trefresh();
-			})
+			// $rootScope.$watch("current_tenant",function(e,v){
+			// 	if(e.id==v.id||!e||!v)return false;
+			// 	$scope.refresh();
+			// 	if($scope.refresh1)$scope.refresh1();
+			// 	if($scope.trefresh)$scope.trefresh();
+			// })
 
 		}
 	])

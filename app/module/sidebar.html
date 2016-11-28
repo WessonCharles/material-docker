@@ -62,6 +62,50 @@
             <li ng-class="current_app('log')"><i>·</i><a href="/log">代码构建</a></li>
           </ul>
         </li>
+        <li ng-class="current_app('publicip')">
+          <a href="/publicip">
+            <div class="icon">
+              <i class="fa fa-cloud"></i>
+              <md-tooltip md-direction="right">
+                公网管理
+            </md-tooltip>
+            </div>
+            <div class="text">公网管理</div>
+          </a>
+        </li>
+        <li ng-class="current_app('event')">
+          <a href="/event">
+            <div class="icon">
+              <i class="fa fa-cloud"></i>
+              <md-tooltip md-direction="right">
+                操作事件
+            </md-tooltip>
+            </div>
+            <div class="text">操作事件</div>
+          </a>
+        </li>
+        <li ng-class="current_app('system')">
+          <a href="/system">
+            <div class="icon">
+              <i class="fa fa-cloud"></i>
+              <md-tooltip md-direction="right">
+                系统设置
+            </md-tooltip>
+            </div>
+            <div class="text">系统设置</div>
+          </a>
+        </li>
+        <li ng-class="current_app('stack')">
+          <a href="/stack">
+            <div class="icon">
+              <i class="fa fa-cloud"></i>
+              <md-tooltip md-direction="right">
+                Stack
+            </md-tooltip>
+            </div>
+            <div class="text">Stack</div>
+          </a>
+        </li>
         <li ng-repeat="m in menus track by $index" ng-class="current_app(m.href.split('/')[1])">
           <a href="{{m.href}}">
             <div class="icon">
@@ -76,7 +120,7 @@
             <li ng-repeat="sum in m.sublist track by $index"><i>·</i><a href="{{sum.href}}">{{sum.name}}</a></li>
           </ul>
         </li>
-        <!-- <li ng-class="current_app('service')">
+        <li ng-class="current_app('service')">
           <a href="/service">
             <div class="icon">
               <i class="fa fa-cloud"></i>
@@ -87,7 +131,7 @@
             <div class="text">服务</div>
           </a>
         </li>
-        <li ng-class="current_app('groups')">
+        <!-- <li ng-class="current_app('groups')">
           <a href="/groups">
           <div class="icon">
             <i class="fa fa-group"></i>
@@ -97,7 +141,7 @@
           </div>
           <div class="text">集群</div>
           </a>
-        </li>
+        </li> -->
         <li ng-class="current_app('users')">
           <a href="/users">
           <div class="icon">
@@ -108,7 +152,7 @@
           </div>
           <div class="text">用户</div>
           </a>
-        </li> -->
+        </li>
       </ul>
     </div> 
 </div>

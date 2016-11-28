@@ -1,0 +1,35 @@
+<div return>
+  <div class="content-table">
+  <div layout="row" layout-margin>
+    <div flex flex-order="1" class="noshadow bl-main">
+        <md-subheader class="md-primary">
+        <button  aria-label="returntolist" viewclose link="/stack" md-button class="md-raised md-icon-btn" ng-click="backlist();">
+          <md-icon class="fa fa-arrow-left fa-lg"></md-icon>
+        </button>
+        创建stack</md-subheader>
+       <md-content id="imageform" class="md-padding">
+          <form name="myForm">
+            <div class="form-input message">
+              <label>Stack名称<span>*</span></label>
+              <input ng-model="stack.name" type="text" ng-required="true" style="width:300px">
+              <!-- <span class="hint">请使用英文或数字进行命名,以代表它的用途</span> -->
+            </div>
+            <div class="form-input">
+              <label style="float:left;" for="">StackFile</label>
+              <div id="alertify" style="width:750px;float:left;">
+                <div id="message"></div>
+                <textarea codemirror data-mode="yaml" name="" id="" style="width:640px;height:280px;" cols="60" rows="30"></textarea>    
+              </div>
+              
+            </div>
+            <div style="clear:both;"></div>
+              <div align="right">
+                <md-button ng-click="clearValue()" style="margin-right: 20px;">清除</md-button>
+                <md-button ng-click="createstack()" ng-disabled="myForm.$invalid" class="md-primary" layout layout-align="center end">创建</md-button>
+              </div>
+          </form>
+      </md-content>
+    </div>
+   </div>
+  </div>
+</div>      
